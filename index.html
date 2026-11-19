@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PKR Earnings</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f4f7f9;color:#111827;padding-bottom:85px}
+.top-bar{background:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:15}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-badge{width:34px;height:34px;border-radius:10px;background:#0f766e;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:bold}
+.brand-title{font-size:18px;font-weight:bold;color:#111827}
+.lang-pill{background:#f3f4f6;border:1px solid #d1d5db;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:bold;cursor:pointer}
+.container{padding:14px}
+.banner{background:linear-gradient(135deg,#064e3b,#115e59);color:#fff;border-radius:16px;padding:18px;margin-bottom:14px;border:1px solid #d4af37}
+.banner h2{font-size:24px;color:#fde047;margin:6px 0}
+.banner p{font-size:12px;color:#d1fae5}
+.purple-card{background:linear-gradient(135deg,#4c1d95,#5b21b6);color:#fff;border-radius:16px;padding:18px;margin-bottom:14px}
+.purple-top{display:flex;justify-content:space-between;align-items:flex-start}
+.purple-card .big{font-size:28px;font-weight:bold;margin:8px 0 4px}
+.purple-card small{color:#ddd6fe;font-size:12px}
+.purple-foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.18);font-size:13px}
+.quick-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.q-btn{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 6px;text-align:center;cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,0.04)}
+.q-btn div{font-size:20px;margin-bottom:4px}
+.q-btn span{font-size:12px;font-weight:600;color:#1f2937}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.white-card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.white-card h3{font-size:15px;margin-bottom:6px;color:#111827}
+.white-card p{font-size:13px;color:#4b5563;margin:4px 0}
+.plan-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.plan-price{font-size:20px;font-weight:bold;color:#111827}
+.plan-tag{font-size:12px;color:#0f766e;font-weight:bold;margin-top:2px}
+.btn-teal{background:#0f766e;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn-outline{background:#fff;color:#0f766e;border:1px solid #0f766e;padding:9px 14px;border-radius:10px;font-weight:bold;cursor:pointer}
+.btn-red{background:#dc2626;color:#fff;border:none;padding:10px 16px;border-radius:10px;font-weight:bold;cursor:pointer}
+input,select{width:100%;padding:11px;border:1px solid #d1d5db;border-radius:10px;margin:6px 0;font-size:14px;background:#fff;color:#111827}
+.section-hd{display:flex;justify-content:space-between;align-items:center;margin:10px 0}
+.section-hd h2{font-size:20px;color:#111827}
+.pill-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.pill{background:#e5e7eb;color:#374151;padding:6px 14px;border-radius:16px;font-size:12px;font-weight:bold;cursor:pointer;border:none}
+.pill.active{background:#99f6e4;color:#0f766e}
+.comm-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f3f4f6;font-size:13px}
+.comm-line:last-child{border-bottom:none}
+.comm-val{color:#0f766e;font-weight:bold}
+.page{display:none}
+.page.active{display:block}
+.support-float{position:fixed;right:16px;bottom:78px;width:48px;height:48px;border-radius:50%;background:#f59e0b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 4px 12px rgba(0,0,0,0.2);cursor:pointer;z-index:25;text-decoration:none}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e7eb;display:flex;justify-content:space-around;padding:8px 0;z-index:20}
+.nav-item{text-align:center;color:#6b7280;font-size:11px;cursor:pointer;font-weight:600}
+.nav-item.active{color:#0f766e}
+.nav-item div{font-size:20px;margin-bottom:2px}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div class="brand">
+        <div class="brand-badge">P</div>
+        <div class="brand-title">PKR Earnings</div>
+    </div>
+    <div class="lang-pill" id="topAuthPill" onclick="openTab('my',3)">Login / Sign Up</div>
+</div>
+
+<div class="container">
+
+<!-- 1. HOME -->
+<div id="home" class="page active">
+    <div class="banner">
+        <small>PKR EARNINGS PLATFORM</small>
+        <h2>Sign-up Bonus: Rs. 30</h2>
+        <p>Buy Investment Plans • Referral Commission (15% / 5% / 1%) • Max Withdraw Rs. 550 (Tax Rs. 50)</p>
+    </div>
+
+    <div class="purple-card">
+        <div class="purple-top">
+            <div>
+                <small>Wallet Balance</small>
+                <div class="big" id="homeBalance">Rs. 30</div>
+                <small>Sign-up Bonus: Rs. 30</small>
+            </div>
+            <div style="text-align:right;">
+                <small>Total Withdrawals</small>
+                <div style="font-size:20px;font-weight:bold;margin-top:6px;" id="homeWithdrawals">Rs. 0</div>
+                <small>Tax per withdraw: Rs. 50</small>
+            </div>
+        </div>
+        <div class="purple-foot">
+            <span id="homeEmail">Not Signed In</span>
+            <strong>PKR Earnings</strong>
+        </div>
+    </div>
+
+    <div class="quick-4">
+        <div class="q-btn" onclick="openTab('buy',1)"><div>🛒</div><span>Buy</span></div>
+        <div class="q-btn" onclick="openOrdersBox()"><div>📄</div><span>Orders</span></div>
+        <div class="q-btn" onclick="openTab('wallet',2)"><div>💳</div><span>Withdraw</span></div>
+        <div class="q-btn" onclick="openTab('my',3)"><div>👥</div><span>Invite</span></div>
+    </div>
+
+    <div id="ordersBox" class="white-card" style="display:none;">
+        <h3>My Investment Orders</h3>
+        <div id="ordersContent"><p>No active plans purchased yet.</p></div>
+    </div>
+
+    <div class="grid-2">
+        <div class="white-card">
+            <h3>Sign-up Bonus</h3>
+            <p style="font-size:18px;font-weight:bold;color:#0f766e;">Rs. 30</p>
+            <p>New account welcome bonus</p>
+        </div>
+        <div class="white-card">
+            <h3>Active Orders</h3>
+            <p style="font-size:18px;font-weight:bold;color:#111827;" id="homeOrdersCount">0</p>
+            <p>Purchased plans count</p>
+        </div>
+    </div>
+
+    <div class="white-card">
+        <h3>Referral Commission Structure</h3>
+        <div class="comm-line"><span>Level 1 Referral</span><span class="comm-val">15% Commission</span></div>
+        <div class="comm-line"><span>Level 2 Referral</span><span class="comm-val">5% Commission</span></div>
+        <div class="comm-line"><span>Level 3 Referral</span><span class="comm-val">1% Commission</span></div>
+    </div>
+</div>
+
+<!-- 2. BUY INVESTMENT PLANS -->
+<div id="buy" class="page">
+    <div class="section-hd">
+        <h2>Investment Plans</h2>
+        <button class="btn-outline" onclick="openOrdersBox();openTab('home',0)">Orders</button>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-bottom:10px;">Select an investment plan below and click Buy (10 Plans available)</p>
+
+    <div class="pill-row">
+        <button class="pill active">All (10)</button>
+        <button class="pill">Starter</button>
+        <button class="pill">Growth</button>
+        <button class="pill">VIP</button>
+    </div>
+
+    <div id="investmentPlansList"></div>
+</div>
+
+<!-- 3. WALLET (WITHDRAW - JAZZCASH & EASYPAISA) -->
+<div id="wallet" class="page">
+    <div class="section-hd">
+        <h2>Withdraw</h2>
+        <span style="font-size:12px;color:#0f766e;font-weight:bold;">JazzCash & Easypaisa</span>
+    </div>
+    <p style="font-size:12px;color:#4b5563;margin-bottom:10px;">Max Withdrawal Limit: Rs. 550 • Withdrawal Tax: Rs. 50</p>
+
+    <div class="white-card">
+        <div class="plan-row">
+            <div>
+                <h3>Available Balance</h3>
+                <div class="plan-price" id="walletBalText">Rs. 30</div>
+                <small style="color:#6b7280;">Max Limit: Rs. 550 • Tax: Rs. 50</small>
+            </div>
+            <span style="background:#dcfce7;color:#166534;padding:6px 12px;border-radius:16px;font-size:12px;font-weight:bold;">● Active</span>
+        </div>
+    </div>
+
+    <div class="white-card">
+        <h3>Withdrawal Method (JazzCash / Easypaisa)</h3>
+        <p style="font-size:12px;color:#b91c1c;font-weight:bold;">Maximum Limit: Rs. 550 | Tax per Withdrawal: Rs. 50</p>
+        <select id="wdMethod">
+            <option value="JazzCash">JazzCash</option>
+            <option value="Easypaisa">Easypaisa</option>
+        </select>
+        <input type="text" id="wdAccount" placeholder="Enter JazzCash / Easypaisa Number (03XXXXXXXXX)">
+        <input type="number" id="wdAmount" placeholder="Withdraw Amount (Max Rs. 550)">
+        <button class="btn-teal" style="width:100%;" onclick="requestWithdraw()">Submit Withdrawal (Rs. 50 Tax)</button>
+    </div>
+</div>
+
+<!-- 4. MY (LOGIN / SIGN UP, PROFILE, REFERRAL LINK & COMMISSION, HELP CENTRE) -->
+<div id="my" class="page">
+    <div class="white-card" id="loginCard">
+        <h3>Login / Sign Up (Rs. 30 Bonus)</h3>
+        <p>Sign up with email & password to receive Rs. 30 bonus</p>
+        <input type="email" id="emailInput" placeholder="Enter Email">
+        <input type="password" id="passwordInput" placeholder="Enter Password (min 6 chars)">
+        <div style="display:flex;gap:8px;margin-top:6px;">
+            <button class="btn-teal" onclick="doRegister()">Sign Up (Rs. 30)</button>
+            <button class="btn-outline" onclick="doLogin()">Login</button>
+        </div>
+    </div>
+
+    <div class="white-card" id="profileCard" style="display:none;">
+        <div class="plan-row">
+            <div>
+                <h3 id="profEmail">user@example.com</h3>
+                <p id="profCode">Referral Code: PKR-1001</p>
+            </div>
+            <button class="btn-red" onclick="doLogout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="white-card">
+        <h3>Referral Link & Commission</h3>
+        <p>Your Referral Link</p>
+        <div class="plan-row" style="background:#f3f4f6;padding:10px;border-radius:10px;margin:8px 0;">
+            <span id="refLinkText" style="font-size:12px;font-weight:bold;word-break:break-all;">https://pkr-earning-f15bd.web.app/?ref=PKR1001</span>
+            <button class="btn-teal" onclick="copyRefLink()">Copy</button>
+        </div>
+        <div class="comm-line"><span>Level 1 Referral</span><span class="comm-val">15% Commission</span></div>
+        <div class="comm-line"><span>Level 2 Referral</span><span class="comm-val">5% Commission</span></div>
+        <div class="comm-line"><span>Level 3 Referral</span><span class="comm-val">1% Commission</span></div>
+    </div>
+
+    <div class="white-card">
+        <h3>Help Centre & Support</h3>
+        <p>WhatsApp Support / Helpline: <strong style="color:#0f766e;">+923192649784</strong></p>
+        <a href="https://wa.me/923192649784" target="_blank" style="display:inline-block;margin-top:8px;text-decoration:none;">
+            <button class="btn-teal">Chat on WhatsApp (+923192649784)</button>
+        </a>
+    </div>
+</div>
+
+</div>
+
+<a class="support-float" href="https://wa.me/923192649784" target="_blank" title="WhatsApp Help Centre +923192649784">🎧</a>
+
+<div class="bottom-nav">
+    <div class="nav-item active" onclick="openTab('home',0)"><div>🏠</div>Home</div>
+    <div class="nav-item" onclick="openTab('buy',1)"><div>⇅</div>Buy</div>
+    <div class="nav-item" onclick="openTab('wallet',2)"><div>◎</div>Wallet</div>
+    <div class="nav-item" onclick="openTab('my',3)"><div>👤</div>My</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
+  authDomain: "pkr-earning-f15bd.firebaseapp.com",
+  projectId: "pkr-earning-f15bd",
+  storageBucket: "pkr-earning-f15bd.firebasestorage.app",
+  messagingSenderId: "1092045219657",
+  appId: "1:1092045219657:web:187ab6b4d5ed40f09e9c98",
+  measurementId: "G-98ZXWDD3RY"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const MAX_WITHDRAW = 550;
+const WITHDRAW_TAX = 50;
+
+let currentUser = null;
+let balance = 30;
+let withdrawalsTotal = 0;
+let orders = [];
+
+const plans = [
+    ["Plan 1 - Starter", 500, 50],
+    ["Plan 2 - Basic", 1000, 100],
+    ["Plan 3 - Plus", 1500, 150],
+    ["Plan 4 - Bronze", 2500, 250],
+    ["Plan 5 - Silver", 3500, 350],
+    ["Plan 6 - Gold", 5000, 500],
+    ["Plan 7 - Platinum", 7500, 750],
+    ["Plan 8 - Diamond", 10000, 1000],
+    ["Plan 9 - VIP", 15000, 1500],
+    ["Plan 10 - Royal", 25000, 2500]
+];
+
+document.getElementById("investmentPlansList").innerHTML = plans.map(p => `
+    <div class="white-card">
+        <div class="plan-row">
+            <div>
+                <div class="plan-price">Rs. ${p[1].toLocaleString()}</div>
+                <div class="plan-tag">${p[0]}</div>
+                <p>Profit / Reward: Rs. ${p[2].toLocaleString()}</p>
+            </div>
+            <button class="btn-teal" onclick="buyInvestment('${p[0]}', ${p[1]}, ${p[2]})">Buy</button>
+        </div>
+    </div>
+`).join("");
+
+function syncUI() {
+    document.getElementById("homeBalance").textContent = "Rs. " + balance.toLocaleString();
+    document.getElementById("homeWithdrawals").textContent = "Rs. " + withdrawalsTotal.toLocaleString();
+    document.getElementById("walletBalText").textContent = "Rs. " + balance.toLocaleString();
+    document.getElementById("homeOrdersCount").textContent = orders.length;
+    document.getElementById("ordersContent").innerHTML = orders.length
+        ? orders.map((o, i) => `<p><strong>#${101+i}</strong> ${o.name} — Rs. ${o.price.toLocaleString()} (Active)</p>`).join("")
+        : "<p>No active plans purchased yet.</p>";
+}
+
+onAuthStateChanged(auth, async (u) => {
+    currentUser = u;
+    if (u) {
+        const code = "PKR" + u.uid.slice(0, 6).toUpperCase();
+        document.getElementById("homeEmail").textContent = u.email;
+        document.getElementById("topAuthPill").textContent = u.email.split("@")[0];
+        document.getElementById("loginCard").style.display = "none";
+        document.getElementById("profileCard").style.display = "block";
+        document.getElementById("profEmail").textContent = u.email;
+        document.getElementById("profCode").textContent = "Referral Code: " + code;
+        document.getElementById("refLinkText").textContent = "https://pkr-earning-f15bd.web.app/?ref=" + code;
+        try {
+            const snap = await getDoc(doc(db, "users", u.uid));
+            if (snap.exists()) {
+                const d = snap.data();
+                balance = typeof d.balance === "number" ? d.balance : 30;
+                withdrawalsTotal = typeof d.withdrawalsTotal === "number" ? d.withdrawalsTotal : 0;
+                orders = Array.isArray(d.orders) ? d.orders : [];
+            } else {
+                balance = 30;
+                withdrawalsTotal = 0;
+                orders = [];
+            }
+        } catch (err) {}
+    } else {
+        document.getElementById("homeEmail").textContent = "Not Signed In";
+        document.getElementById("topAuthPill").textContent = "Login / Sign Up";
+        document.getElementById("loginCard").style.display = "block";
+        document.getElementById("profileCard").style.display = "none";
+        document.getElementById("refLinkText").textContent = "https://pkr-earning-f15bd.web.app/?ref=PKR1001";
+        balance = 30;
+        withdrawalsTotal = 0;
+        orders = [];
+    }
+    syncUI();
+});
+
+window.doRegister = async () => {
+    const email = document.getElementById("emailInput").value.trim();
+    const pass = document.getElementById("passwordInput").value.trim();
+    if (!email || pass.length < 6) return alert("Enter valid email and password (min 6 chars).");
+    try {
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
+        await setDoc(doc(db, "users", cred.user.uid), {
+            email,
+            balance: 30,
+            signupBonus: 30,
+            withdrawalsTotal: 0,
+            orders: []
+        });
+        alert("Account created! Rs. 30 sign-up bonus added.");
+    } catch (e) {
+        alert(e.message);
+    }
+};
+
+window.doLogin = async () => {
+    const email = document.getElementById("emailInput").value.trim();
+    const pass = document.getElementById("passwordInput").value.trim();
+    try {
+        await signInWithEmailAndPassword(auth, email, pass);
+        alert("Logged in successfully.");
+    } catch (e) {
+        alert(e.message);
+    }
+};
+
+window.doLogout = async () => {
+    await signOut(auth);
+    alert("Logged out.");
+};
+
+window.buyInvestment = async (name, price, reward) => {
+    if (balance < price) return alert("Insufficient balance. Need Rs. " + price);
+    balance -= price;
+    orders.push({ name, price, reward });
+    syncUI();
+    if (currentUser) {
+        try {
+            await updateDoc(doc(db, "users", currentUser.uid), { balance, orders });
+        } catch (e) {}
+    }
+    alert(name + " purchased!");
+};
+
+window.requestWithdraw = async () => {
+    const method = document.getElementById("wdMethod").value;
+    const acc = document.getElementById("wdAccount").value.trim();
+    const amt = Number(document.getElementById("wdAmount").value);
+    if (!acc || amt <= 0) return alert("Enter valid account number and amount.");
+    if (amt > MAX_WITHDRAW) return alert("Maximum withdrawal limit is Rs. " + MAX_WITHDRAW + ".");
+    const totalDeduction = amt + WITHDRAW_TAX;
+    if (totalDeduction > balance) return alert("Insufficient balance (Amount Rs. " + amt + " + Tax Rs. " + WITHDRAW_TAX + " = Rs. " + totalDeduction + ").");
+    balance -= totalDeduction;
+    withdrawalsTotal += amt;
+    syncUI();
+    if (currentUser) {
+        try {
+            await updateDoc(doc(db, "users", currentUser.uid), { balance, withdrawalsTotal });
+        } catch (e) {}
+    }
+    try {
+        await addDoc(collection(db, "withdrawals"), {
+            email: currentUser ? currentUser.email : "Guest",
+            method,
+            account: acc,
+            amount: amt,
+            tax: WITHDRAW_TAX,
+            deducted: totalDeduction,
+            status: "Pending"
+        });
+    } catch (e) {}
+    alert("Withdrawal request submitted via " + method + " for Rs. " + amt + " (Tax: Rs. " + WITHDRAW_TAX + ").");
+};
+
+window.openOrdersBox = () => {
+    document.getElementById("ordersBox").style.display = "block";
+};
+
+window.copyRefLink = () => {
+    const link = document.getElementById("refLinkText").textContent;
+    navigator.clipboard.writeText(link).then(() => alert("Referral Link Copied:\n" + link));
+};
+
+window.openTab = (id, idx) => {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    document.querySelectorAll(".nav-item").forEach((n, i) => {
+        n.classList.toggle("active", i === idx);
+    });
+    window.scrollTo(0, 0);
+};
+</script>
+</body>
+  </html>
+  
