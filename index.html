@@ -15,7 +15,12 @@
 body {
   background: #07111f;
   color: #ffffff;
-  padding-bottom: 86px;
+  padding-bottom: 84px;
+}
+
+/* Hide radio controllers */
+input.nav-radio {
+  display: none;
 }
 
 header {
@@ -42,16 +47,16 @@ header {
   margin-top: 2px;
 }
 
-button, .btn-link {
+.btn {
+  display: inline-block;
+  text-align: center;
   cursor: pointer;
-  border: none;
   border-radius: 8px;
   padding: 11px 13px;
   font-weight: bold;
   font-size: 13px;
   text-decoration: none;
-  display: inline-block;
-  text-align: center;
+  user-select: none;
 }
 
 .gold-btn {
@@ -76,6 +81,12 @@ button, .btn-link {
   font-size: 12px;
 }
 
+.full {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+}
+
 .container {
   max-width: 900px;
   margin: 0 auto;
@@ -96,7 +107,11 @@ button, .btn-link {
   line-height: 1.5;
 }
 
-input, select {
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+select {
   width: 100%;
   padding: 12px;
   margin: 7px 0 11px;
@@ -105,12 +120,6 @@ input, select {
   border-radius: 8px;
   color: #ffffff;
   font-size: 14px;
-}
-
-.full {
-  display: block;
-  width: 100%;
-  margin-top: 6px;
 }
 
 .grid {
@@ -159,17 +168,24 @@ input, select {
   line-height: 1.5;
 }
 
-.action-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.page-box {
+/* Pages controlled purely by CSS */
+.page {
   display: none;
 }
 
+#nav-auth:checked ~ .container #page-auth,
+#nav-reg:checked ~ .container #page-reg,
+#nav-home:checked ~ .container #page-home,
+#nav-plans:checked ~ .container #page-plans,
+#nav-deposit:checked ~ .container #page-deposit,
+#nav-withdraw:checked ~ .container #page-withdraw,
+#nav-referral:checked ~ .container #page-referral,
+#nav-profile:checked ~ .container #page-profile,
+#nav-admin:checked ~ .container #page-admin {
+  display: block;
+}
+
+/* Bottom Navigation Bar */
 .bottom-nav {
   position: fixed;
   left: 0;
@@ -184,15 +200,21 @@ input, select {
   z-index: 999;
 }
 
-.nav-btn {
-  background: transparent;
+.nav-tab {
+  text-align: center;
   color: #9aabc1;
   padding: 8px 4px;
   font-size: 11px;
+  font-weight: bold;
   border-radius: 8px;
+  cursor: pointer;
 }
 
-.nav-btn.active {
+#nav-home:checked ~ .bottom-nav label[for="nav-home"],
+#nav-plans:checked ~ .bottom-nav label[for="nav-plans"],
+#nav-withdraw:checked ~ .bottom-nav label[for="nav-withdraw"],
+#nav-referral:checked ~ .bottom-nav label[for="nav-referral"],
+#nav-profile:checked ~ .bottom-nav label[for="nav-profile"] {
   background: rgba(216, 180, 90, 0.18);
   color: #d8b45a;
   border: 1px solid rgba(216, 180, 90, 0.5);
@@ -208,443 +230,225 @@ footer {
 </head>
 <body>
 
+<!-- Pure CSS Navigation State -->
+<input type="radio" name="ak_nav" id="nav-auth" class="nav-radio" checked>
+<input type="radio" name="ak_nav" id="nav-reg" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-home" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-plans" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-deposit" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-withdraw" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-referral" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-profile" class="nav-radio">
+<input type="radio" name="ak_nav" id="nav-admin" class="nav-radio">
+
 <header>
   <div class="brand">
     AK CAPITAL GROUP
     <small>CAPITAL • TRUST • GROWTH</small>
   </div>
   <div style="display:flex;gap:6px;">
-    <button type="button" id="adminHeaderBtn" class="soft-btn small-btn" style="display:none;" onclick="akGo('admin')">Admin</button>
-    <button type="button" id="logoutHeaderBtn" class="outline-btn small-btn" style="display:none;" onclick="akLogout()">Logout</button>
+    <label for="nav-admin" class="btn soft-btn small-btn">Admin Demo</label>
+    <label for="nav-auth" class="btn outline-btn small-btn">Logout</label>
   </div>
 </header>
 
 <div class="container">
 
-  <!-- AUTH -->
-  <div id="p-auth" class="page-box" style="display:block;">
+  <!-- LOGIN PAGE -->
+  <div id="page-auth" class="page">
     <div class="card">
-      <h2 style="color:#d8b45a;margin-bottom:6px;">AK Capital Group</h2>
-      <p class="muted" style="margin-bottom:12px;">Sign in or create an account. New accounts receive a Rs. 30 welcome bonus.</p>
+      <h2 style="color:#d8b45a;margin-bottom:6px;">AK Capital Group — Demo</h2>
+      <p class="muted" style="margin-bottom:12px;">Pure HTML/CSS Demo UI. New demo accounts include Rs. 30 welcome bonus display. No real funds or payouts.</p>
 
-      <div id="loginBox">
-        <h3 style="margin-bottom:8px;">Login</h3>
-        <input type="email" id="loginEmail" placeholder="Email Address">
-        <input type="password" id="loginPass" placeholder="Password">
-        <button type="button" class="gold-btn full" onclick="akLogin()">Login</button>
-        <button type="button" class="outline-btn full" onclick="akAuthMode('reg')">Register New Account (Rs. 30 Bonus)</button>
-      </div>
-
-      <div id="regBox" style="display:none;">
-        <h3 style="margin-bottom:8px;">Register Account</h3>
-        <input type="email" id="regEmail" placeholder="Email Address">
-        <input type="password" id="regPass" placeholder="Password (min 6 chars)">
-        <input type="text" id="regRef" placeholder="Referral Code (Optional)">
-        <button type="button" class="gold-btn full" onclick="akRegister()">Create Account</button>
-        <button type="button" class="outline-btn full" onclick="akAuthMode('login')">Back to Login</button>
-      </div>
+      <h3 style="margin-bottom:8px;">Login (Gmail)</h3>
+      <input type="email" placeholder="Gmail Address">
+      <input type="password" placeholder="Password">
+      <label for="nav-home" class="btn gold-btn full">Login</label>
+      <label for="nav-reg" class="btn outline-btn full">Register New Account</label>
     </div>
   </div>
 
-  <!-- HOME -->
-  <div id="p-home" class="page-box">
+  <!-- REGISTER PAGE -->
+  <div id="page-reg" class="page">
+    <div class="card">
+      <h2 style="color:#d8b45a;margin-bottom:6px;">Create Demo Account</h2>
+      <p class="muted" style="margin-bottom:12px;">Includes Rs. 30 demo welcome bonus.</p>
+
+      <input type="email" placeholder="Gmail Address">
+      <input type="password" placeholder="Create Password">
+      <input type="text" placeholder="Referral Code (Optional)">
+      <label for="nav-home" class="btn gold-btn full">Register &amp; Open Home</label>
+      <label for="nav-auth" class="btn outline-btn full">Back to Login</label>
+    </div>
+  </div>
+
+  <!-- HOME PAGE -->
+  <div id="page-home" class="page">
     <div class="card">
       <h2 style="margin-bottom:4px;">Home</h2>
-      <p class="muted">Account: <strong id="homeEmail" style="color:#d8b45a;">-</strong></p>
+      <p class="muted">Welcome to <strong style="color:#d8b45a;">AK Capital Group</strong> (Demo UI)</p>
     </div>
 
     <div class="grid" style="margin-bottom:14px;">
-      <div class="stat">Balance<strong id="homeBal">Rs. 0</strong></div>
-      <div class="stat">Welcome Bonus<strong>Rs. 30</strong></div>
-      <div class="stat">Active Plan<strong id="homePlan">None</strong></div>
-      <div class="stat">24h Cycle<strong>24:00:00</strong></div>
+      <div class="stat">Demo Balance<strong>Rs. 30</strong></div>
+      <div class="stat">Welcome Bonus<strong>Rs. 30 (Demo)</strong></div>
+      <div class="stat">Active Plan<strong>None</strong></div>
+      <div class="stat">24h Cycle<strong>24:00:00 (Demo)</strong></div>
     </div>
 
     <div class="card">
       <h3 style="margin-bottom:6px;">Quick Actions</h3>
-      <button type="button" class="gold-btn full" onclick="akGo('plans')">Buy Plans</button>
-      <button type="button" class="outline-btn full" onclick="akGo('deposit')">Deposit &amp; TID</button>
+      <label for="nav-plans" class="btn gold-btn full">View VIP Plans</label>
+      <label for="nav-deposit" class="btn outline-btn full">Go to Deposit &amp; TID</label>
     </div>
   </div>
 
-  <!-- PLANS -->
-  <div id="p-plans" class="page-box">
+  <!-- PLANS PAGE -->
+  <div id="page-plans" class="page">
     <div class="card">
-      <h2 style="margin-bottom:4px;">Buy Plans</h2>
-      <p class="muted">Select a plan to open Deposit &amp; TID.</p>
+      <h2 style="margin-bottom:4px;">Buy Plans (Demo)</h2>
+      <p class="muted">Tap any plan to go to Deposit &amp; TID.</p>
     </div>
 
     <div class="grid">
-      <div class="card plan"><h3>Plan 1</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 500</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 1', 500)">Select Plan</button></div>
-      <div class="card plan"><h3>Plan 2</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 1,000</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 2', 1000)">Select Plan</button></div>
-      <div class="card plan"><h3>Plan 3</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 2,000</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 3', 2000)">Select Plan</button></div>
-      <div class="card plan"><h3>Plan 4</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 3,500</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 4', 3500)">Select Plan</button></div>
-      <div class="card plan"><h3>Plan 5</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 5,000</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 5', 5000)">Select Plan</button></div>
-      <div class="card plan"><h3>Plan 6</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 7,500</div><button type="button" class="gold-btn full" onclick="akPickPlan('Plan 6', 7500)">Select Plan</button></div>
+      <div class="card plan"><h3>Plan 1</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
+      <div class="card plan"><h3>Plan 2</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 1,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
+      <div class="card plan"><h3>Plan 3</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 2,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
+      <div class="card plan"><h3>Plan 4</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 3,500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
+      <div class="card plan"><h3>Plan 5</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 5,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
+      <div class="card plan"><h3>Plan 6</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 7,500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
     </div>
   </div>
 
-  <!-- DEPOSIT & TID -->
-  <div id="p-deposit" class="page-box">
+  <!-- DEPOSIT & TID PAGE -->
+  <div id="page-deposit" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Deposit &amp; TID</h2>
-      <p class="muted" style="margin-bottom:10px;">Selected Plan: <strong id="depPlanLabel" style="color:#d8b45a;">None</strong></p>
+      <h2 style="margin-bottom:6px;">Deposit &amp; TID (Demo)</h2>
 
       <div class="stat" style="margin-bottom:12px;">
-        <div class="muted">EasyPaisa Payment Details</div>
+        <div class="muted">EasyPaisa Payment Details (Demo Display)</div>
         <div style="margin-top:8px;font-size:14px;">Account Name: <strong>Waqas Nadeem</strong></div>
         <div style="margin-top:4px;font-size:14px;">EasyPaisa Number: <strong>03192649784</strong></div>
       </div>
 
-      <input type="number" id="depAmt" placeholder="Deposit Amount (PKR)">
-      <input type="text" id="depTid" placeholder="Transaction ID (TID)">
-      <button type="button" class="gold-btn full" onclick="akSubmitDeposit()">Submit Deposit Request</button>
+      <input type="number" placeholder="Deposit Amount (PKR)">
+      <input type="text" placeholder="Transaction ID (TID)">
+      <label for="nav-home" class="btn gold-btn full">Submit Demo Deposit</label>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">My Deposit History</h3>
-      <div id="depHistoryBox"><p class="muted">No deposit requests yet.</p></div>
+      <h3 style="margin-bottom:8px;">Demo Deposit History</h3>
+      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | Status: <strong>Pending (Demo)</strong></div>
     </div>
   </div>
 
-  <!-- WITHDRAWAL -->
-  <div id="p-withdraw" class="page-box">
+  <!-- WITHDRAWAL PAGE -->
+  <div id="page-withdraw" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Withdrawal</h2>
-      <p class="muted" style="margin-bottom:10px;">Available Balance: <strong id="wdBalLabel" style="color:#d8b45a;">Rs. 0</strong> (Minimum: Rs. 500)</p>
+      <h2 style="margin-bottom:6px;">Withdrawal (Demo)</h2>
+      <p class="muted" style="margin-bottom:10px;">Example: Rs. 700 balance - Rs. 500 request = Rs. 200 remaining.</p>
 
-      <select id="wdMethod">
+      <select>
         <option value="JazzCash">JazzCash</option>
         <option value="EasyPaisa">EasyPaisa</option>
       </select>
-      <input type="number" id="wdAmt" placeholder="Amount (Minimum Rs. 500)">
-      <input type="text" id="wdAcc" placeholder="Wallet / Account Number">
-      <button type="button" class="gold-btn full" onclick="akSubmitWithdraw()">Submit Withdrawal Request</button>
+      <input type="number" placeholder="Amount (Minimum Rs. 500)">
+      <input type="text" placeholder="Wallet / Account Number">
+      <label for="nav-home" class="btn gold-btn full">Submit Demo Withdrawal</label>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">My Withdrawals</h3>
-      <div id="wdHistoryBox"><p class="muted">No withdrawals yet.</p></div>
+      <h3 style="margin-bottom:8px;">Demo Withdrawal History</h3>
+      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | Status: <strong>Pending (Demo)</strong></div>
     </div>
   </div>
 
-  <!-- REFERRAL -->
-  <div id="p-referral" class="page-box">
+  <!-- REFERRAL PAGE -->
+  <div id="page-referral" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Referral Link</h2>
-      <p class="muted">Your referral code &amp; link:</p>
-      <input type="text" id="refLinkBox" readonly>
-      <button type="button" class="gold-btn full" onclick="akCopyRef()">Copy Referral Link</button>
-      <div class="log-item" style="margin-top:12px;">Referrals: <strong id="refCountBox">0</strong></div>
+      <h2 style="margin-bottom:6px;">Referral Link (Demo)</h2>
+      <p class="muted">Your demo referral link:</p>
+      <input type="text" value="https://akcapital.demo/?ref=AK-DEMO1" readonly>
+      <div class="log-item" style="margin-top:8px;">Demo Referrals: <strong>0</strong></div>
+      <p class="muted">Demo display only. No real commissions or payouts.</p>
     </div>
   </div>
 
   <!-- PROFILE & WHATSAPP SUPPORT -->
-  <div id="p-profile" class="page-box">
+  <div id="page-profile" class="page">
     <div class="card">
       <h2 style="margin-bottom:10px;">Profile</h2>
       <p class="muted">Email</p>
-      <strong id="profEmailBox" style="display:block;margin-bottom:10px;">-</strong>
+      <strong style="display:block;margin-bottom:10px;">demo.user@gmail.com</strong>
 
       <p class="muted">Account Status</p>
-      <strong id="profStatusBox" style="display:block;margin-bottom:10px;">Active</strong>
-
-      <p class="muted">Active Plan</p>
-      <strong id="profPlanBox" style="display:block;margin-bottom:14px;">None</strong>
+      <strong style="display:block;margin-bottom:10px;">Active (Demo)</strong>
 
       <h3 style="margin-bottom:6px;">WhatsApp Support</h3>
-      <p class="muted" style="margin-bottom:8px;">Support Number: 03192649784</p>
-      <a href="https://wa.me/923192649784" target="_blank" class="btn-link gold-btn full">
-        WhatsApp Support
+      <p class="muted" style="margin-bottom:6px;">Support Number: 03192649784</p>
+      <a href="https://wa.me/923192649784" target="_blank" class="btn gold-btn full">
+        Open WhatsApp Support
       </a>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:8px;">Quick Help (Demo)</h3>
+      <div class="log-item"><strong>Welcome Bonus:</strong> New demo accounts start with Rs. 30 demo balance.</div>
+      <div class="log-item"><strong>Withdrawal Rule:</strong> Deducted once on request; Admin approval does not deduct twice.</div>
     </div>
   </div>
 
-  <!-- ADMIN PANEL (ONLY FOR AUTHORIZED ADMIN) -->
-  <div id="p-admin" class="page-box">
+  <!-- ADMIN DEMO PAGE -->
+  <div id="page-admin" class="page">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
         <div>
-          <h2 style="color:#d8b45a;margin-bottom:2px;">Admin Control Panel</h2>
-          <p class="muted">Authorized administrator controls.</p>
+          <h2 style="color:#d8b45a;margin-bottom:2px;">Admin Panel — Demo</h2>
+          <p class="muted">Static UI preview only. Real admin security &amp; live balances require a backend &amp; database.</p>
         </div>
-        <button type="button" class="outline-btn small-btn" onclick="akGo('home')">Back</button>
+        <label for="nav-home" class="btn outline-btn small-btn">Back</label>
       </div>
     </div>
 
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Select Target User</h3>
-      <select id="admTargetUser"></select>
+    <div class="grid" style="margin-bottom:14px;">
+      <div class="stat">Total Demo Users<strong>1</strong></div>
+      <div class="stat">24h Earnings Timer<strong>24:00:00 (Demo)</strong></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Balance Add / Deduct</h3>
-      <input type="number" id="admDeltaAmt" placeholder="Amount (+ to add, - to deduct)">
-      <button type="button" class="gold-btn full" onclick="akAdminAdjustBalance()">Update User Balance</button>
+      <h3 style="margin-bottom:8px;">User Balance Add / Deduct (Demo Preview)</h3>
+      <input type="text" placeholder="User Gmail">
+      <input type="number" placeholder="Amount (+ / -)">
+      <div class="btn gold-btn full">Update Demo Balance</div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Block / Unblock User</h3>
-      <div class="action-row">
-        <button type="button" class="gold-btn small-btn" onclick="akAdminSetBlock(true)">Block Selected User</button>
-        <button type="button" class="soft-btn small-btn" onclick="akAdminSetBlock(false)">Unblock Selected User</button>
-      </div>
+      <h3 style="margin-bottom:8px;">Deposit &amp; Withdrawal Requests (Demo Preview)</h3>
+      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | <strong>Pending</strong></div>
+      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | <strong>Pending</strong></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Users</h3>
-      <div id="admUsersBox"></div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Deposit Requests</h3>
-      <div id="admDepBox"><p class="muted">No deposit requests.</p></div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Withdrawal Requests</h3>
-      <div id="admWdBox"><p class="muted">No withdrawal requests.</p></div>
+      <h3 style="margin-bottom:8px;">User Activity Log (Demo Preview)</h3>
+      <div class="log-item">Demo initialized with Rs. 30 welcome bonus.</div>
     </div>
   </div>
 
 </div>
 
 <!-- BOTTOM MENU -->
-<div class="bottom-nav" id="bottomNav" style="display:none;">
-  <button type="button" class="nav-btn active" id="tab-home" onclick="akGo('home')">Home</button>
-  <button type="button" class="nav-btn" id="tab-plans" onclick="akGo('plans')">Plans</button>
-  <button type="button" class="nav-btn" id="tab-withdraw" onclick="akGo('withdraw')">Withdraw</button>
-  <button type="button" class="nav-btn" id="tab-referral" onclick="akGo('referral')">Referral</button>
-  <button type="button" class="nav-btn" id="tab-profile" onclick="akGo('profile')">Profile</button>
+<div class="bottom-nav">
+  <label for="nav-home" class="nav-tab">Home</label>
+  <label for="nav-plans" class="nav-tab">Plans</label>
+  <label for="nav-withdraw" class="nav-tab">Withdraw</label>
+  <label for="nav-referral" class="nav-tab">Referral</label>
+  <label for="nav-profile" class="nav-tab">Profile</label>
 </div>
 
 <footer>
-  AK CAPITAL GROUP
+  AK CAPITAL GROUP — Pure HTML/CSS Demo UI
 </footer>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  getDoc,
-  updateDoc,
-  addDoc,
-  collection,
-  query,
-  where,
-  onSnapshot,
-  runTransaction,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const ADMIN_EMAIL = "Ladlawaqas527@gmail.com";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
-  authDomain: "pkr-earning-f15bd.firebaseapp.com",
-  projectId: "pkr-earning-f15bd",
-  storageBucket: "pkr-earning-f15bd.firebasestorage.app",
-  messagingSenderId: "1092045219657",
-  appId: "1:1092045219657:web:187ab8b4d5ed40f09e9c98",
-  measurementId: "G-98ZXWDD3RY"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-let currentAuthUser = null;
-let currentProfile = null;
-let isAdmin = false;
-let chosenPlan = "None";
-let allUsers = [];
-let unsubUser = null;
-let unsubUserDep = null;
-let unsubUserWd = null;
-let unsubAdminUsers = null;
-let unsubAdminDep = null;
-let unsubAdminWd = null;
-
-function isAuthorizedAdmin() {
-  return Boolean(currentAuthUser && currentAuthUser.email && currentAuthUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
-}
-
-window.akGo = function(page) {
-  if (!currentAuthUser && page !== "auth") {
-    page = "auth";
-  }
-  if (page === "admin" && !isAuthorizedAdmin()) {
-    alert("Access denied: Admin privileges required.");
-    page = "home";
-  }
-  const pages = ["auth", "home", "plans", "deposit", "withdraw", "referral", "profile", "admin"];
-  pages.forEach((p) => {
-    const el = document.getElementById("p-" + p);
-    if (el) el.style.display = (p === page) ? "block" : "none";
-  });
-  const tabs = ["home", "plans", "withdraw", "referral", "profile"];
-  tabs.forEach((t) => {
-    const btn = document.getElementById("tab-" + t);
-    if (btn) btn.className = (t === page) ? "nav-btn active" : "nav-btn";
-  });
-};
-
-window.akAuthMode = function(mode) {
-  document.getElementById("loginBox").style.display = (mode === "login") ? "block" : "none";
-  document.getElementById("regBox").style.display = (mode === "reg") ? "block" : "none";
-};
-
-window.akLogin = async function() {
-  const email = document.getElementById("loginEmail").value.trim();
-  const pass = document.getElementById("loginPass").value;
-  if (!email || !pass) {
-    alert("Please enter email and password.");
-    return;
-  }
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-window.akRegister = async function() {
-  const email = document.getElementById("regEmail").value.trim();
-  const pass = document.getElementById("regPass").value;
-  const refCodeInput = document.getElementById("regRef").value.trim();
-  if (!email || pass.length < 6) {
-    alert("Enter a valid email and a password of at least 6 characters.");
-    return;
-  }
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass);
-    const uid = cred.user.uid;
-    const myCode = "AK-" + uid.slice(0, 6).toUpperCase();
-    await setDoc(doc(db, "akcg_users", uid), {
-      uid,
-      email,
-      balance: 30,
-      welcomeBonus: 30,
-      plan: "None",
-      blocked: false,
-      refCount: 0,
-      myCode,
-      referredBy: refCodeInput || null,
-      createdAt: serverTimestamp()
-    });
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-window.akLogout = async function() {
-  await signOut(auth);
-};
-
-window.akPickPlan = function(name, amount) {
-  chosenPlan = `${name} (Rs. ${amount})`;
-  document.getElementById("depPlanLabel").textContent = chosenPlan;
-  document.getElementById("depAmt").value = amount;
-  akGo("deposit");
-};
-
-window.akSubmitDeposit = async function() {
-  if (!currentAuthUser || !currentProfile) return;
-  if (currentProfile.blocked) {
-    alert("Account is blocked.");
-    return;
-  }
-  const amount = Number(document.getElementById("depAmt").value);
-  const tid = document.getElementById("depTid").value.trim();
-  if (!amount || amount <= 0 || !tid) {
-    alert("Please enter amount and Transaction ID (TID).");
-    return;
-  }
-  try {
-    await addDoc(collection(db, "akcg_deposits"), {
-      uid: currentAuthUser.uid,
-      email: currentAuthUser.email,
-      plan: chosenPlan,
-      amount,
-      tid,
-      status: "Pending",
-      createdAt: serverTimestamp()
-    });
-    document.getElementById("depTid").value = "";
-    alert("Deposit request submitted with Pending status.");
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-window.akSubmitWithdraw = async function() {
-  if (!currentAuthUser || !currentProfile) return;
-  if (currentProfile.blocked) {
-    alert("Account is blocked.");
-    return;
-  }
-  const method = document.getElementById("wdMethod").value;
-  const amount = Number(document.getElementById("wdAmt").value);
-  const account = document.getElementById("wdAcc").value.trim();
-  if (!amount || amount < 500 || !account) {
-    alert("Minimum withdrawal is Rs. 500 and account number is required.");
-    return;
-  }
-  try {
-    await runTransaction(db, async (tx) => {
-      const userRef = doc(db, "akcg_users", currentAuthUser.uid);
-      const snap = await tx.get(userRef);
-      if (!snap.exists()) throw new Error("Profile not found.");
-      const data = snap.data();
-      if (data.blocked) throw new Error("Account is blocked.");
-      const bal = Number(data.balance || 0);
-      if (amount > bal) throw new Error("Insufficient balance.");
-
-      const nextBal = bal - amount;
-      tx.update(userRef, { balance: nextBal });
-
-      const wdRef = doc(collection(db, "akcg_withdrawals"));
-      tx.set(wdRef, {
-        uid: currentAuthUser.uid,
-        email: currentAuthUser.email,
-        method,
-        amount,
-        account,
-        status: "Pending",
-        createdAt: serverTimestamp()
-      });
-    });
-    document.getElementById("wdAmt").value = "";
-    alert("Withdrawal request submitted (Pending).");
-  } catch (err) {
-    alert(err.message);
-  }
-};
-
-window.akAdminApproveDep = async function(depId) {
-  if (!isAuthorizedAdmin()) return alert("Unauthorized.");
-  try {
-    await runTransaction(db, async (tx) => {
-      const depRef = doc(db, "akcg_deposits", depId);
-      const depSnap = await tx.get(depRef);
-      if (!depSnap.exists()) throw new Error("Deposit not found.");
-      const dep = depSnap.data();
-      if (dep.status !== "Pending") throw new Error("Already processed.");
-
-      const userRef = doc(db, "akcg_users", dep.uid);
-      const userSnap = await tx.get(userRef);
-      if (!userSnap.exists()) throw new Error("User not found.");
-      const userBal = Number(userSnap.data().balance || 0);
-
-      tx.update(depRef, { status: "Approved" });
-      tx.update(userRef, {
-        balan
+</body>
+  </html>
+  
