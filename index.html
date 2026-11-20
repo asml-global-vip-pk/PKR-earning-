@@ -958,14 +958,50 @@ let curUser = null, curProf = null, unsubs = [], latestUsers = [], latestDeps = 
 const isAdmin = () => Boolean(curUser && curUser.email && curUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
 const clearSubs = () => { unsubs.forEach(f => { try { f(); } catch (e) {} }); unsubs = []; };
 
-window.toast = function(m) { const t = document.getElementById("toast"); if (!t) return; t.innerText = m; t.style.display = "block"; clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => { t.style.display = "none"; }, 2800); };
-window.showAuth = function(tab) { document.getElementById("registerPanel").classList.remove("active"); document.getElementById("loginPanel").classList.remove("active"); document.getElementById(tab + "Panel").classList.add("active"); };
-window.navigate = function(sec, btn) { if (!curUser && sec !== "authSection") sec = "authSection"; document.querySelectorAll(".section").forEach(s => s.classList.remove("active")); const t = document.getElementById(sec); if (t) t.classList.add("active"); document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active")); const el = btn || document.querySelector(`.nav-btn[onclick*="'${sec}'"]`); if (el) el.classList.add("active"); window.scrollTo({ top: 0, behavior: "smooth" }); };
-window.toggleWithdraw = function() { const b = document.getElementById("withdrawBox"); if (!b) return; b.style.display = b.style.display === "none" ? "block" : "none"; window.calculateWithdraw(); };
-window.calculateWithdraw = function() { const a = Number(document.getElementById("withdrawAmount").value) || 0, tax = Math.round(a * WITHDRAW_TAX_RATE); document.getElementById("taxAmount").innerText = "Rs " + tax; document.getElementById("netAmount").innerText = "Rs " + Math.max(0, a - tax); };
+window.toast = function(m) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.innerText = m;
+  t.style.display = "block";
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(() => { t.style.display = "none"; }, 2800);
+};
+window.demoMessage = function() { window.toast("Select a plan or use Deposit / Withdraw."); };
+window.showAuth = function(tab) {
+  document.getElementById("registerPanel").classList.remove("active");
+  document.getElementById("loginPanel").classList.remove("active");
+  document.getElementById(tab + "Panel").classList.add("active");
+};
+window.navigate = function(sec, btn) {
+  if (!curUser && sec !== "authSection") sec = "authSection";
+  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+  const t = document.getElementById(sec);
+  if (t) t.classList.add("active");
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  const el = btn || document.querySelector(`.nav-btn[onclick*="'${sec}'"]`);
+  if (el) el.classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
+window.toggleWithdraw = function() {
+  const b = document.getElementById("withdrawBox");
+  if (!b) return;
+  b.style.display = b.style.display === "none" ? "block" : "none";
+  window.calculateWithdraw();
+};
+window.calculateWithdraw = function() {
+  const a = Number(document.getElementById("withdrawAmount").value) || 0, tax = Math.round(a * WITHDRAW_TAX_RATE);
+  document.getElementById("taxAmount").innerText = "Rs " + tax;
+  document.getElementById("netAmount").innerText = "Rs " + Math.max(0, a - tax);
+};
 window.toggleSound = function() { window.toast(document.getElementById("soundToggle").checked ? "Sound effects enabled" : "Sound effects disabled"); };
-window.copyReferral = function() { const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c); navigator.clipboard?.writeText ? navigator.clipboard.writeText(u).then(() => window.toast("Referral link copied")).catch(() => window.toast(c)) : window.toast(c); };
-window.shareReferral = function() { const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c); navigator.share ? navigator.share({ title: "AK Capital Group", text: "Join with code " + c, url: u }).catch(() => {}) : window.copyReferral(); };
+window.copyReferral = function() {
+  const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
+  navigator.clipboard?.writeText ? navigator.clipboard.writeText(u).then(() => window.toast("Referral link copied")).catch(() => window.toast(c)) : window.toast(c);
+};
+window.shareReferral = function() {
+  const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
+  navigator.share ? navigator.share({ title: "AK Capital Group", text: "Join with code " + c, url: u }).catch(() => {}) : window.copyReferral();
+};
 
 window.register = async function() {
   const email = document.getElementById("regEmail").value.trim(), pass = document.getElementById("regPassword").value, refCode = document.getElementById("regRef").value.trim();
