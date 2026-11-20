@@ -2167,3 +2167,79 @@ onAuthStateChanged(auth, async (u) => {
 })();
     </script>
     
+<script type="module">
+(function() {
+  const TARGET_ADMIN = "ladlawaqas527@gmail.com";
+
+  function ensureFallbackSections() {
+    const mainEl = document.querySelector("main.page") || document.querySelector("main") || document.body;
+    if (!mainEl) return;
+
+    let teamSec = document.getElementById("team");
+    if (!teamSec) { teamSec = document.createElement("section"); teamSec.id = "team"; teamSec.className = "section"; mainEl.appendChild(teamSec); }
+    if (!teamSec.innerHTML.trim()) {
+      teamSec.innerHTML = `<div class="top-banner"><h2>Team</h2><span class="badge">3-LEVEL</span></div><div class="hero-orange"><small>Total Team Earnings</small><h1 id="teamEarnings">Rs 0</h1><p>Total Team Members: <strong id="teamCount">0</strong></p><div class="row" style="background:#fff;color:var(--ink);padding:8px 10px;border-radius:12px;margin-top:12px"><span id="refLinkPreview" style="font-size:11px">ASML-GLOBAL</span><button class="btn btn-grad" style="width:auto;margin:0;padding:7px 14px;font-size:12px" onclick="copyReferral()">Copy</button></div></div><div class="card"><h3>Team Overview</h3><div class="history-item"><div class="row"><span><strong>Level 1 (18%)</strong></span><span>Qty: <strong id="lvl1Qty">0</strong></span></div></div><div class="history-item"><div class="row"><span><strong>Level 2 (2%)</strong></span><span>Qty: <strong id="lvl2Qty">0</strong></span></div></div><div class="history-item" style="border-bottom:none"><div class="row"><span><strong>Level 3 (1%)</strong></span><span>Qty: <strong id="lvl3Qty">0</strong></span></div></div></div><div class="card"><h3>Referred Members</h3><div id="teamList"><p class="muted" style="margin-top:8px">No team members yet.</p></div></div>`;
+    }
+
+    let taskSec = document.getElementById("task");
+    if (!taskSec) { taskSec = document.createElement("section"); taskSec.id = "task"; taskSec.className = "section"; mainEl.appendChild(taskSec); }
+    if (!taskSec.innerHTML.trim()) {
+      taskSec.innerHTML = `<div class="top-banner"><button class="back-btn" onclick="navigate('home')">‹ Back</button><h2>Task Center</h2><span style="width:52px"></span></div><div class="hero-orange"><small>Cumulative Team Invitation</small><h1 id="taskTeamInv">Rs 0</h1><p>Complete team investment milestones to claim rewards</p></div><div id="taskCardsContainer"><div class="card"><div class="row"><p style="font-size:13px">Downline reaching <strong>Rs 3,000</strong> investment unlocks <strong>Rs 300</strong>.</p><span class="pill">Task 1</span></div></div><div class="card"><div class="row"><p style="font-size:13px">Downline reaching <strong>Rs 9,000</strong> investment unlocks <strong>Rs 900</strong>.</p><span class="pill">Task 2</span></div></div><div class="card"><div class="row"><p style="font-size:13px">Downline reaching <strong>Rs 27,000</strong> investment unlocks <strong>Rs 2,700</strong>.</p><span class="pill">Task 3</span></div></div></div>`;
+    }
+        let mineSec = document.getElementById("mine");
+    if (!mineSec) { mineSec = document.createElement("section"); mineSec.id = "mine"; mineSec.className = "section"; mainEl.appendChild(mineSec); }
+    if (!mineSec.innerHTML.trim()) {
+      mineSec.innerHTML = `<div class="hero-orange"><div class="row"><div><small>Account ID</small><h2 id="mineUserId" style="margin:4px 0">ASML-ADMIN</h2><p id="profileEmail">Member</p></div><span id="statusPill" class="pill">Active Member</span></div><div class="grid" style="margin-top:14px"><div style="background:rgba(255,255,255,0.18);padding:10px;border-radius:12px"><small style="color:#fff">Account Balance</small><strong id="profileBalance" style="color:#fff;display:block;font-size:18px;margin-top:4px">Rs 0</strong></div><div style="background:rgba(255,255,255,0.18);padding:10px;border-radius:12px"><small style="color:#fff">Active Plan</small><strong id="profilePlan" style="color:#fff;display:block;font-size:15px;margin-top:4px">None</strong></div></div></div><div class="grid-3" style="margin-bottom:14px"><button class="btn btn-grad" style="margin:0" onclick="navigate('deposit')">Recharge</button><button class="btn btn-outline" style="margin:0" onclick="openWithdrawPage()">Withdraw</button><button class="btn btn-outline" style="margin:0" onclick="navigate('bank')">Bank</button></div><button class="menu-list-item" onclick="navigate('deposit')"><span>💳 Deposit & Payment Accounts</span><span>›</span></button><button class="menu-list-item" onclick="openWithdrawPage()"><span>💸 Withdraw Funds</span><span>›</span></button><button class="menu-list-item" onclick="navigate('bank')"><span>🏦 Bind Bank / Wallet Account</span><span>›</span></button><button class="menu-list-item" onclick="openSupportModal()"><span>🎧 Customer Support (WhatsApp & Telegram)</span><span>›</span></button><button class="menu-list-item" onclick="logout()"><span>🚪 Logout</span><span>›</span></button><div id="adminArea"></div>`;
+    }
+
+    if (!document.getElementById("deposit")) {
+      const depSec = document.createElement("section"); depSec.id = "deposit"; depSec.className = "section";
+      depSec.innerHTML = `<div class="top-banner"><button class="back-btn" onclick="navigate('home')">‹ Back</button><h2>Recharge / Deposit</h2><span style="width:52px"></span></div><div class="card"><label>Select Payment Account</label><select id="depositAccountSelect" onchange="updateDepositAccountInfo()"><option value="ep_waqas">EasyPaisa — Waqas Nadeem (03192649784)</option><option value="ep_qutab">EasyPaisa — Qutab sher (03010901786)</option><option value="up_tasleem">UPaisa — Tasleem Khatoon (033324232482)</option><option value="jc_shaheen">JazzCash — Shaheen Akhtar (03037939388)</option></select><div class="notice" id="depositAccountBox">Method: <strong>EasyPaisa</strong><br>Account Title: <strong>Waqas Nadeem</strong><br>Account Number: <strong>03192649784</strong></div><label>Amount (Min Rs 500)</label><input id="depositAmount" type="number" min="500" placeholder="Enter amount"><label>Transaction ID (TID)</label><input id="depositTID" type="text" placeholder="Enter Transaction ID"><button class="btn btn-grad" onclick="submitDeposit()">Submit Deposit Request</button></div><div class="card"><h3>My Deposit History</h3><div id="depositHistory"><p class="muted" style="margin-top:10px">No deposit history available.</p></div></div>`;
+      mainEl.appendChild(depSec);
+        }
+        if (!document.getElementById("withdraw")) {
+      const wdSec = document.createElement("section"); wdSec.id = "withdraw"; wdSec.className = "section";
+      wdSec.innerHTML = `<div class="top-banner"><button class="back-btn" onclick="navigate('mine')">‹ Back</button><h2>Withdraw</h2><span style="width:52px"></span></div><div class="card"><div class="notice">Bound Account: <strong id="boundAccSummary">Not bound yet</strong><br>Tax: <strong>10%</strong> · Min: <strong>Rs 500</strong></div><label>Payment Method</label><select id="withdrawMethod" onchange="updateWithdrawFields()"><option value="EasyPaisa">EasyPaisa</option><option value="JazzCash">JazzCash</option><option value="UPaisa">UPaisa</option><option value="Bank Transfer">Bank Transfer</option></select><div id="bankNameWrap" style="display:none"><label>Selected Bank</label><input id="withdrawBank" type="text" placeholder="Bank name"></div><label id="withdrawAccLabel">Account / Wallet Number</label><input id="withdrawAccount" type="text" placeholder="03XXXXXXXXX"><label>Account Holder Name</label><input id="withdrawTitle" type="text" placeholder="Holder name"><label>Withdrawal Amount (Min Rs 500)</label><input id="withdrawAmount" type="number" min="500" placeholder="Amount" oninput="calculateWithdraw()"><div class="grid" style="margin-bottom:10px"><div class="stat"><small>10% Tax</small><strong id="taxAmount">Rs 0</strong></div><div class="stat"><small>Net Amount</small><strong id="netAmount" class="green">Rs 0</strong></div></div><button class="btn btn-grad" onclick="submitWithdraw()">Submit Withdrawal</button></div><div class="card"><h3>My Withdrawals</h3><div id="withdrawHistory"><p class="muted" style="margin-top:10px">No withdrawal history available.</p></div></div>`;
+      mainEl.appendChild(wdSec);
+    }
+
+    if (!document.getElementById("bank")) {
+      const bSec = document.createElement("section"); bSec.id = "bank"; bSec.className = "section";
+      bSec.innerHTML = `<div class="top-banner"><button class="back-btn" onclick="navigate('mine')">‹ Back</button><h2>Bank Account</h2><span style="width:52px"></span></div><div class="card"><h3>Bind your withdrawal account</h3><label>Bank / Wallet Name</label><select id="bindBankName"><option value="">Select</option><option value="EasyPaisa">EasyPaisa</option><option value="JazzCash">JazzCash</option><option value="UPaisa">UPaisa</option><option value="Meezan Bank">Meezan Bank</option><option value="HBL">HBL</option></select><label>Account Holder Name</label><input id="bindHolderName" type="text" placeholder="Your name"><label>Account Number</label><input id="bindAccountNumber" type="text" placeholder="Account number"><button class="btn btn-grad" onclick="saveBankAccount()">Confirm</button></div>`;
+      mainEl.appendChild(bSec);
+    }
+
+    if (!document.getElementById("support")) {
+      const sSec = document.createElement("section"); sSec.id = "support"; sSec.className = "section";
+      sSec.innerHTML = `<div class="top-banner"><button class="back-btn" onclick="navigate('mine')">‹ Back</button><h2>Customer Support</h2><span style="width:52px"></span></div><div class="card"><h3>WhatsApp Support</h3><a href="https://wa.me/923192649784" target="_blank" class="btn btn-green" style="display:block;text-align:center;text-decoration:none">WhatsApp: +923192649784</a><a href="https://wa.me/923295412047" target="_blank" class="btn btn-grad" style="display:block;text-align:center;text-decoration:none">WhatsApp: +923295412047</a></div><div class="card"><h3>Telegram Help Centre</h3><div class="notice">Help Centre ID: <strong>HelpcentrePKRwebsite_13</strong><br>Promotion ID: <strong>@Top_Promotion1</strong></div><a href="https://t.me/HelpcentrePKRwebsite_13" target="_blank" class="btn btn-outline" style="display:block;text-align:center;text-decoration:none">Open HelpcentrePKRwebsite_13</a><a href="https://t.me/Top_Promotion1" target="_blank" class="btn btn-outline" style="display:block;text-align:center;text-decoration:none">Open @Top_Promotion1</a></div>`;
+      mainEl.appendChild(sSec);
+    }
+  }
+
+  function ensureAdminBoxVisible() {
+    const emailTxt = (document.getElementById("userEmail")?.innerText || document.getElementById("profileEmail")?.innerText || "").toLowerCase();
+    const adminArea = document.getElementById("adminArea");
+    if (adminArea && emailTxt.includes(TARGET_ADMIN) && !adminArea.innerHTML.trim()) {
+      adminArea.innerHTML = `<div class="card admin-section"><h3>ASML Global Admin Panel (Ladlawaqas527@gmail.com)</h3><p class="subtitle">Admin session active.</p><button class="btn btn-grad" onclick="location.reload()">Refresh Live Admin Data</button></div>`;
+    }
+  }
+
+  ensureFallbackSections();
+  ensureAdminBoxVisible();
+
+  const origNav = window.navigate;
+  window.navigate = function(sec, btn) {
+    ensureFallbackSections();
+    if (typeof origNav === "function") origNav(sec, btn);
+    else {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      const t = document.getElementById(sec);
+      if (t) t.classList.add("active");
+    }
+    if (sec === "deposit" && typeof window.updateDepositAccountInfo === "function") window.updateDepositAccountInfo();
+    if (sec === "mine") ensureAdminBoxVisible();
+  };
+})();
+</script>
+</body>
+</html>
