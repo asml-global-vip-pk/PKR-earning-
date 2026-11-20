@@ -4,616 +4,1111 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AK Capital Group</title>
+
 <style>
+:root {
+    --bg: #09090d;
+    --card: #14141b;
+    --card2: #1b1b24;
+    --red: #ef4444;
+    --white: #ffffff;
+    --muted: #9999a8;
+    --green: #22c55e;
+    --border: #292932;
+}
+
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: #07111f;
-  color: #ffffff;
-  padding-bottom: 84px;
+    background: var(--bg);
+    color: var(--white);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Hide radio controllers */
-input.nav-radio {
-  display: none;
+button, input, select {
+    font: inherit;
 }
 
-header {
-  padding: 14px 16px;
-  background: #0b1829;
-  border-bottom: 1px solid #27384c;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+button {
+    cursor: pointer;
 }
 
-.brand {
-  color: #d8b45a;
-  font-size: 18px;
-  font-weight: bold;
+.app {
+    max-width: 480px;
+    min-height: 100vh;
+    margin: auto;
+    background: var(--bg);
+    padding-bottom: 100px;
 }
 
-.brand small {
-  display: block;
-  color: #ffffff;
-  font-size: 9px;
-  letter-spacing: 2px;
-  margin-top: 2px;
+/* Header */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #09090d;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
 }
 
-.btn {
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-  padding: 11px 13px;
-  font-weight: bold;
-  font-size: 13px;
-  text-decoration: none;
-  user-select: none;
-  border: none;
+.logo {
+    font-size: 21px;
+    font-weight: 900;
 }
 
-.gold-btn {
-  background: #d8b45a;
-  color: #111827;
+.logo span {
+    color: var(--red);
 }
 
-.outline-btn {
-  background: transparent;
-  border: 1px solid #d8b45a;
-  color: #d8b45a;
+.badge {
+    background: #301818;
+    color: #ff7777;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 11px;
 }
 
-.soft-btn {
-  background: #1a2d46;
-  color: #ffffff;
-  border: 1px solid #304766;
+/* Content */
+
+.page {
+    padding: 16px;
 }
 
-.small-btn {
-  padding: 7px 10px;
-  font-size: 12px;
+.section {
+    display: none;
 }
 
-.full {
-  display: block;
-  width: 100%;
-  margin-top: 8px;
+.section.active {
+    display: block;
 }
 
-.container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 14px;
+h2 {
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 18px;
 }
 
 .card {
-  background: #111f31;
-  border: 1px solid #25364b;
-  border-radius: 14px;
-  padding: 16px;
-  margin-bottom: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 17px;
+    margin-bottom: 14px;
 }
 
-.muted {
-  color: #9aabc1;
-  font-size: 12px;
-  line-height: 1.5;
+.hero {
+    background: linear-gradient(135deg, #2b1014, #15151d 65%);
+    border: 1px solid #542127;
+    border-radius: 20px;
+    padding: 23px 18px;
+    margin-bottom: 16px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-select {
-  width: 100%;
-  padding: 12px;
-  margin: 7px 0 11px;
-  background: #081423;
-  border: 1px solid #34465b;
-  border-radius: 8px;
-  color: #ffffff;
-  font-size: 14px;
+.hero small {
+    color: #c9a4a4;
+}
+
+.hero h1 {
+    font-size: 34px;
+    margin: 12px 0;
+}
+
+.hero p {
+    color: #c8a8a8;
+    font-size: 12px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
-
-@media (max-width: 520px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
 }
 
 .stat {
-  background: #0a1727;
-  border: 1px solid #1e3046;
-  border-radius: 12px;
-  padding: 14px;
+    background: var(--card2);
+    padding: 15px;
+    border-radius: 14px;
+}
+
+.stat small {
+    display: block;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 8px;
 }
 
 .stat strong {
-  display: block;
-  color: #d8b45a;
-  font-size: 20px;
-  margin-top: 8px;
+    font-size: 20px;
+}
+
+.red {
+    color: var(--red);
+}
+
+.green {
+    color: var(--green);
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.btn {
+    border: none;
+    padding: 13px;
+    border-radius: 11px;
+    font-weight: 700;
+    width: 100%;
+    margin-top: 9px;
+}
+
+.btn-red {
+    background: var(--red);
+    color: white;
+}
+
+.btn-dark {
+    background: #262630;
+    color: white;
+    border: 1px solid #383842;
+}
+
+.btn-green {
+    background: #166534;
+    color: white;
+}
+
+.btn-small {
+    width: auto;
+    padding: 8px 13px;
+    margin: 0;
+    font-size: 12px;
+}
+
+input, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    background: #101016;
+    color: white;
+    margin-top: 7px;
+    margin-bottom: 13px;
+}
+
+label {
+    color: #c6c6cf;
+    font-size: 12px;
 }
 
 .plan {
-  border: 1px solid #d8b45a;
-  text-align: center;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card);
+    padding: 17px;
+    margin-bottom: 14px;
+}
+
+.plan.featured {
+    border-color: var(--red);
 }
 
 .plan h3 {
-  color: #d8b45a;
-  margin-bottom: 4px;
+    margin-bottom: 10px;
 }
 
-.log-item {
-  background: #0a1727;
-  border: 1px solid #223449;
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  font-size: 12px;
-  line-height: 1.5;
+.plan-price {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 10px 0;
 }
 
-.ref-box {
-  background: #0a1727;
-  border: 1px solid rgba(216, 180, 90, 0.45);
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 10px;
+.plan-details {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 2;
 }
 
-.ref-badge {
-  display: inline-block;
-  background: rgba(216, 180, 90, 0.16);
-  color: #d8b45a;
-  border: 1px solid rgba(216, 180, 90, 0.4);
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: bold;
-  margin-bottom: 8px;
+.history-item {
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
 }
 
-.ref-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 4px;
+.pill {
+    border-radius: 30px;
+    padding: 6px 10px;
+    font-size: 10px;
+    background: #24242c;
 }
 
-.ref-status {
-  margin-top: 8px;
-  font-size: 12px;
-  color: #d8b45a;
-  min-height: 18px;
+.notice {
+    padding: 12px;
+    border-radius: 10px;
+    background: #281919;
+    color: #ffaaaa;
+    font-size: 12px;
+    margin-bottom: 13px;
+    line-height: 1.6;
 }
 
-/* Pages controlled purely by CSS */
-.page {
-  display: none;
+.auth {
+    padding: 20px;
 }
 
-#nav-auth:checked ~ .container #page-auth,
-#nav-reg:checked ~ .container #page-reg,
-#nav-home:checked ~ .container #page-home,
-#nav-plans:checked ~ .container #page-plans,
-#nav-deposit:checked ~ .container #page-deposit,
-#nav-withdraw:checked ~ .container #page-withdraw,
-#nav-referral:checked ~ .container #page-referral,
-#nav-profile:checked ~ .container #page-profile,
-#nav-admin:checked ~ .container #page-admin {
-  display: block;
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
-/* Bottom Navigation Bar */
+.auth-tabs button {
+    flex: 1;
+}
+
+.auth-panel {
+    display: none;
+}
+
+.auth-panel.active {
+    display: block;
+}
+
+/* Bottom navigation */
+
 .bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #0b1829;
-  border-top: 1px solid #d8b45a;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  padding: 8px 6px;
-  z-index: 999;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 480px;
+    width: 100%;
+    background: #121218;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 4px 15px;
+    z-index: 200;
 }
 
-.nav-tab {
-  text-align: center;
-  color: #9aabc1;
-  padding: 8px 4px;
-  font-size: 11px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #858591;
+    font-size: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    min-width: 54px;
 }
 
-#nav-home:checked ~ .bottom-nav label[for="nav-home"],
-#nav-plans:checked ~ .bottom-nav label[for="nav-plans"],
-#nav-withdraw:checked ~ .bottom-nav label[for="nav-withdraw"],
-#nav-referral:checked ~ .bottom-nav label[for="nav-referral"],
-#nav-profile:checked ~ .bottom-nav label[for="nav-profile"] {
-  background: rgba(216, 180, 90, 0.18);
-  color: #d8b45a;
-  border: 1px solid rgba(216, 180, 90, 0.5);
+.nav-btn span {
+    font-size: 20px;
 }
 
-footer {
-  text-align: center;
-  padding: 18px 12px;
-  color: #8497ac;
-  font-size: 12px;
+.nav-btn.active {
+    color: var(--red);
+}
+
+.nav-deposit {
+    background: var(--red);
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    color: white !important;
+    font-size: 22px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -17px;
+    box-shadow: 0 0 20px #ef444433;
+}
+
+/* Toast */
+
+.toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #25252c;
+    color: white;
+    padding: 13px 20px;
+    border-radius: 12px;
+    z-index: 500;
+    display: none;
+    width: max-content;
+    max-width: 90%;
+    font-size: 13px;
+    border: 1px solid #444;
+}
+
+/* Admin */
+
+.admin-section {
+    border: 1px solid #5a2626;
+}
+
+@media (min-width: 481px) {
+    body {
+        background: #000;
+    }
+    .app {
+        border-left: 1px solid #202020;
+        border-right: 1px solid #202020;
+    }
 }
 </style>
 </head>
+
 <body>
 
-<!-- Pure CSS Navigation State -->
-<input type="radio" name="ak_nav" id="nav-auth" class="nav-radio" checked>
-<input type="radio" name="ak_nav" id="nav-reg" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-home" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-plans" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-deposit" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-withdraw" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-referral" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-profile" class="nav-radio">
-<input type="radio" name="ak_nav" id="nav-admin" class="nav-radio">
+<div class="app">
 
-<header>
-  <div class="brand">
-    AK CAPITAL GROUP
-    <small>CAPITAL • TRUST • GROWTH</small>
-  </div>
-  <div style="display:flex;gap:6px;">
-    <label for="nav-admin" class="btn soft-btn small-btn">Admin</label>
-    <label for="nav-auth" class="btn outline-btn small-btn">Logout</label>
-  </div>
+<header class="header">
+    <div class="logo">AK <span>CAPITAL</span></div>
+    <div class="badge">DEMO PLATFORM</div>
 </header>
 
-<div class="container">
+<main class="page">
 
-  <!-- LOGIN PAGE -->
-  <div id="page-auth" class="page">
-    <div class="card">
-      <h2 style="color:#d8b45a;margin-bottom:6px;">AK Capital Group</h2>
-      <p class="muted" style="margin-bottom:12px;">New accounts include Rs. 30 welcome bonus display.</p>
+<!-- AUTH -->
+<section id="authSection" class="section active">
+<div class="auth">
 
-      <h3 style="margin-bottom:8px;">Login (Gmail)</h3>
-      <input type="email" placeholder="Gmail Address">
-      <input type="password" placeholder="Password">
-      <label for="nav-home" class="btn gold-btn full">Login</label>
-      <label for="nav-reg" class="btn outline-btn full">Register New Account</label>
-    </div>
-  </div>
+<div style="text-align:center;margin:20px 0 25px">
+    <h1 style="font-size:32px">AK <span class="red">CAPITAL GROUP</span></h1>
+    <p class="subtitle">Welcome to AK Capital Group</p>
+</div>
 
-  <!-- REGISTER PAGE -->
-  <div id="page-reg" class="page">
-    <div class="card">
-      <h2 style="color:#d8b45a;margin-bottom:6px;">Create Account</h2>
-      <p class="muted" style="margin-bottom:12px;">Includes Rs. 30 welcome bonus.</p>
+<div class="notice">
+    Demo mode: Registration and login are simulated. No real funds or investment transactions are processed.
+</div>
 
-      <input type="email" placeholder="Gmail Address">
-      <input type="password" placeholder="Create Password">
-      <input type="text" id="regRefInput" placeholder="Referral Code (Optional)">
-      <label for="nav-home" class="btn gold-btn full">Register &amp; Open Home</label>
-      <label for="nav-auth" class="btn outline-btn full">Back to Login</label>
-    </div>
-  </div>
+<div class="auth-tabs">
+    <button class="btn btn-dark" onclick="showAuth('register')">Register</button>
+    <button class="btn btn-dark" onclick="showAuth('login')">Login</button>
+</div>
 
-  <!-- HOME PAGE -->
-  <div id="page-home" class="page">
-    <div class="card">
-      <h2 style="margin-bottom:4px;">Home</h2>
-      <p class="muted">Welcome to <strong style="color:#d8b45a;">AK Capital Group</strong></p>
-    </div>
+<div id="registerPanel" class="auth-panel active">
+    <h2>Create Account</h2>
 
-    <div class="grid" style="margin-bottom:14px;">
-      <div class="stat">Balance<strong>Rs. 30</strong></div>
-      <div class="stat">Welcome Bonus<strong>Rs. 30</strong></div>
-      <div class="stat">Active Plan<strong>None</strong></div>
-      <div class="stat">24h Cycle<strong>24:00:00</strong></div>
-    </div>
+    <label>Email Address</label>
+    <input id="regEmail" type="email" placeholder="Enter your email">
 
-    <div class="card">
-      <h3 style="margin-bottom:6px;">Quick Actions</h3>
-      <label for="nav-plans" class="btn gold-btn full">View VIP Plans</label>
-      <label for="nav-deposit" class="btn outline-btn full">Go to Deposit &amp; TID</label>
-    </div>
-  </div>
+    <label>Password</label>
+    <input id="regPassword" type="password" placeholder="Create password">
 
-  <!-- PLANS PAGE -->
-  <div id="page-plans" class="page">
-    <div class="card">
-      <h2 style="margin-bottom:4px;">Buy Plans</h2>
-      <p class="muted">Tap any plan to go to Deposit &amp; TID.</p>
-    </div>
+    <label>Referral Code (Optional)</label>
+    <input id="regRef" type="text" placeholder="AK-XXXXXX">
 
-    <div class="grid">
-      <div class="card plan"><h3>Plan 1</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-      <div class="card plan"><h3>Plan 2</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 1,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-      <div class="card plan"><h3>Plan 3</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 2,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-      <div class="card plan"><h3>Plan 4</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 3,500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-      <div class="card plan"><h3>Plan 5</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 5,000</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-      <div class="card plan"><h3>Plan 6</h3><div style="font-size:20px;font-weight:bold;margin:6px 0;">Rs. 7,500</div><label for="nav-deposit" class="btn gold-btn full">Select Plan</label></div>
-    </div>
-  </div>
+    <button class="btn btn-red" onclick="register()">Register Now</button>
+</div>
 
-  <!-- DEPOSIT & TID PAGE -->
-  <div id="page-deposit" class="page">
-    <div class="card">
-      <h2 style="margin-bottom:6px;">Deposit &amp; TID</h2>
+<div id="loginPanel" class="auth-panel">
+    <h2>Login Account</h2>
 
-      <div class="stat" style="margin-bottom:12px;">
-        <div class="muted">EasyPaisa Payment Details</div>
-        <div style="margin-top:8px;font-size:14px;">Account Name: <strong>Waqas Nadeem</strong></div>
-        <div style="margin-top:4px;font-size:14px;">EasyPaisa Number: <strong>03192649784</strong></div>
-      </div>
+    <label>Email Address</label>
+    <input id="loginEmail" type="email" placeholder="Enter email">
 
-      <input type="number" placeholder="Deposit Amount (PKR)">
-      <input type="text" placeholder="Transaction ID (TID)">
-      <label for="nav-home" class="btn gold-btn full">Submit Deposit</label>
-    </div>
+    <label>Password</label>
+    <input id="loginPassword" type="password" placeholder="Enter password">
 
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Deposit History</h3>
-      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | Status: <strong>Pending</strong></div>
-    </div>
-  </div>
+    <button class="btn btn-red" onclick="login()">Login</button>
+</div>
 
-  <!-- WITHDRAWAL PAGE -->
-  <div id="page-withdraw" class="page">
-    <div class="card">
-      <h2 style="margin-bottom:6px;">Withdrawal</h2>
-      <p class="muted" style="margin-bottom:10px;">Example: Rs. 700 balance - Rs. 500 request = Rs. 200 remaining.</p>
+</div>
+</section>
 
-      <select>
-        <option value="JazzCash">JazzCash</option>
-        <option value="EasyPaisa">EasyPaisa</option>
-      </select>
-      <input type="number" placeholder="Amount (Minimum Rs. 500)">
-      <input type="text" placeholder="Wallet / Account Number">
-      <label for="nav-home" class="btn gold-btn full">Submit Withdrawal</label>
-    </div>
+<!-- HOME -->
+<section id="home" class="section">
 
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Withdrawal History</h3>
-      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | Status: <strong>Pending</strong></div>
-    </div>
-  </div>
+<h2>Dashboard</h2>
+<p class="subtitle">Welcome to AK Capital Group</p>
 
-  <!-- REFERRAL PAGE -->
-  <div id="page-referral" class="page">
-    <div class="card">
-      <span class="ref-badge">REFERRAL PROGRAM</span>
-      <h2 style="margin-bottom:6px;color:#d8b45a;">Invite &amp; Share Referral Link</h2>
-      <p class="muted">Enter your referral code, copy your link, and send it to friends so they open the website directly through your link.</p>
+<div class="hero">
+    <small>Account Balance</small>
+    <h1 id="homeBalance">Rs 30</h1>
+    <p>Demo balance only</p>
+</div>
 
-      <div class="ref-box">
-        <p class="muted" style="margin-bottom:4px;">Your Referral Code</p>
-        <input type="text" id="akRefCodeInput" value="AK-INVITE" placeholder="Enter Referral Code">
-
-        <p class="muted" style="margin-bottom:4px;">Your Referral Link</p>
-        <input type="text" id="akRefLinkInput" readonly>
-
-        <div class="ref-row">
-          <button type="button" id="akCopyRefBtn" class="btn gold-btn" style="flex:1;min-width:140px;">Copy Referral Link</button>
-          <a id="akOpenRefLink" href="https://ladlawaqas527-lgtm.github.io/PKR-earning-/" class="btn outline-btn" style="min-width:110px;">Open Link</a>
-        </div>
-
-        <div id="akRefStatus" class="ref-status"></div>
-      </div>
-
-      <div class="grid" style="margin-top:12px;">
-        <div class="stat">Total Referrals<strong>0</strong></div>
-        <div class="stat">Referral Status<strong>Active</strong></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PROFILE & WHATSAPP SUPPORT -->
-  <div id="page-profile" class="page">
-    <div class="card">
-      <h2 style="margin-bottom:10px;">Profile</h2>
-      <p class="muted">Email</p>
-      <strong style="display:block;margin-bottom:10px;">user@gmail.com</strong>
-
-      <p class="muted">Account Status</p>
-      <strong style="display:block;margin-bottom:10px;">Active</strong>
-
-      <h3 style="margin-bottom:6px;">WhatsApp Support</h3>
-      <p class="muted" style="margin-bottom:6px;">Support Number: 03192649784</p>
-      <a href="https://wa.me/923192649784" target="_blank" class="btn gold-btn full">
-        Open WhatsApp Support
-      </a>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Quick Help</h3>
-      <div class="log-item"><strong>Welcome Bonus:</strong> New accounts start with Rs. 30 balance.</div>
-      <div class="log-item"><strong>Withdrawal Rule:</strong> Deducted once on request; Admin approval does not deduct twice.</div>
-    </div>
-  </div>
-
-  <!-- ADMIN PAGE -->
-  <div id="page-admin" class="page">
-    <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+<div class="card">
+    <div class="row">
         <div>
-          <h2 style="color:#d8b45a;margin-bottom:2px;">Admin Panel</h2>
-          <p class="muted">Administrator management panel.</p>
+            <strong id="userEmail">Guest</strong>
+            <p class="muted" style="font-size:12px;margin-top:6px">Account Status</p>
         </div>
-        <label for="nav-home" class="btn outline-btn small-btn">Back</label>
-      </div>
+        <span id="statusPill" class="pill green">Active Member</span>
     </div>
-
-    <div class="grid" style="margin-bottom:14px;">
-      <div class="stat">Total Users<strong>1</strong></div>
-      <div class="stat">24h Earnings Timer<strong>24:00:00</strong></div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">User Balance Add / Deduct</h3>
-      <input type="text" placeholder="User Gmail">
-      <input type="number" placeholder="Amount (+ / -)">
-      <div class="btn gold-btn full">Update Balance</div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">Deposit &amp; Withdrawal Requests</h3>
-      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | <strong>Pending</strong></div>
-      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | <strong>Pending</strong></div>
-    </div>
-
-    <div class="card">
-      <h3 style="margin-bottom:8px;">User Activity Log</h3>
-      <div class="log-item">Account initialized with Rs. 30 welcome bonus.</div>
-    </div>
-  </div>
-
 </div>
 
-<!-- BOTTOM MENU -->
-<div class="bottom-nav">
-  <label for="nav-home" class="nav-tab">Home</label>
-  <label for="nav-plans" class="nav-tab">Plans</label>
-  <label for="nav-withdraw" class="nav-tab">Withdraw</label>
-  <label for="nav-referral" class="nav-tab">Referral</label>
-  <label for="nav-profile" class="nav-tab">Profile</label>
+<div class="grid">
+    <div class="stat">
+        <small>Deposit Balance</small>
+        <strong>Rs 0</strong>
+    </div>
+    <div class="stat">
+        <small>Earning Balance</small>
+        <strong class="green" id="earningBalance">Rs 30</strong>
+    </div>
+    <div class="stat">
+        <small>Active Plan</small>
+        <strong id="activePlan" style="font-size:15px">None</strong>
+    </div>
+    <div class="stat">
+        <small>Minimum Plan</small>
+        <strong>Rs 500</strong>
+    </div>
 </div>
 
-<footer>
-  AK CAPITAL GROUP
-</footer>
+<div class="card">
+    <h3>3-Level Team Promotion</h3>
+    <p class="muted" style="margin:12px 0;line-height:1.7;font-size:13px">
+        Level 1: 10%<br>
+        Level 2: 5%<br>
+        Level 3: 2%
+    </p>
+    <button class="btn btn-red" onclick="navigate('team')">My Team</button>
+</div>
+
+<div class="grid">
+    <button class="btn btn-dark" onclick="navigate('plans')">View Plans</button>
+    <button class="btn btn-red" onclick="navigate('deposit')">Deposit Now</button>
+</div>
+
+</section>
+
+<!-- PLANS -->
+<section id="plans" class="section">
+
+<h2>Investment Plans</h2>
+<p class="subtitle">Plan duration: 60 Days · Demo display</p>
+
+<div class="notice">
+    The figures below are illustrative examples only, not verified earnings or promises of profit.
+</div>
+
+<div class="plan">
+    <h3>Plan 1 — Starter</h3>
+    <div class="plan-price">Rs 500</div>
+    <div class="plan-details">
+        Daily Rs 45<br>
+        60 days<br>
+        Total Rs 2,700
+    </div>
+    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+</div>
+
+<div class="plan featured">
+    <h3>Plan 2 — Growth</h3>
+    <div class="plan-price">Rs 1,000</div>
+    <div class="plan-details">
+        Daily Rs 95<br>
+        60 days<br>
+        Total Rs 5,700
+    </div>
+    <button class="btn btn-red" onclick="demoMessage()">Select Plan</button>
+</div>
+
+<div class="plan">
+    <h3>Plan 3 — Pro</h3>
+    <div class="plan-price">Rs 2,000</div>
+    <div class="plan-details">
+        Daily Rs 200<br>
+        60 days<br>
+        Total Rs 12,000
+    </div>
+    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+</div>
+
+<div class="plan">
+    <h3>Plan 4 — Elite</h3>
+    <div class="plan-price">Rs 5,000</div>
+    <div class="plan-details">
+        Daily Rs 520<br>
+        60 days<br>
+        Total Rs 31,200
+    </div>
+    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+</div>
+
+</section>
+
+<!-- DEPOSIT -->
+<section id="deposit" class="section">
+
+<h2>Deposit</h2>
+<p class="subtitle">3 steps: Method → Amount → Pay</p>
+
+<div class="card">
+    <h3>Step 1. Method</h3>
+
+    <label>Payment Method</label>
+    <select id="depositMethod">
+        <option>EasyPaisa</option>
+        <option>JazzCash</option>
+    </select>
+
+    <h3 style="margin:15px 0">Step 2. Amount</h3>
+
+    <label>Amount (Min Rs 500)</label>
+    <input id="depositAmount" type="number" min="500" placeholder="Enter amount">
+
+    <label>Transaction ID (TID)</label>
+    <input id="depositTID" type="text" placeholder="Enter Transaction ID">
+
+    <h3 style="margin:10px 0">Step 3. Pay</h3>
+
+    <div class="notice">
+        Payment processing is disabled in this demo. Do not send funds.
+    </div>
+
+    <button class="btn btn-red" onclick="demoMessage()">Submit Deposit Request</button>
+</div>
+
+<div class="card">
+    <h3>My Deposit History</h3>
+    <div id="depositHistory">
+        <p class="muted" style="margin-top:12px">No deposit history available.</p>
+    </div>
+</div>
+
+</section>
+
+<!-- TEAM -->
+<section id="team" class="section">
+
+<h2>My Team</h2>
+<p class="subtitle">Referral dashboard</p>
+
+<div class="hero">
+    <small>Total Team Members</small>
+    <h1 id="teamCount">0</h1>
+</div>
+
+<div class="card">
+    <h3>Referral Code</h3>
+    <p id="myCode" style="margin:12px 0;color:var(--red)">AK-DEMO</p>
+    <button class="btn btn-dark" onclick="copyReferral()">Copy link</button>
+    <button class="btn btn-red" onclick="shareReferral()">Share</button>
+</div>
+
+<div class="grid">
+    <div class="stat">
+        <small>Level 1</small>
+        <strong>10%</strong>
+    </div>
+    <div class="stat">
+        <small>Level 2</small>
+        <strong>5%</strong>
+    </div>
+    <div class="stat">
+        <small>Level 3</small>
+        <strong>2%</strong>
+    </div>
+    <div class="stat">
+        <small>Team Count</small>
+        <strong id="teamStat">0</strong>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Bronze Leader</h3>
+    <p class="muted" style="margin-top:10px">
+        Team invests Rs 5,000 → Rs 300
+    </p>
+</div>
+
+<div class="card">
+    <h3>Referral Terms & Conditions</h3>
+    <p class="muted" style="font-size:12px;line-height:1.8;margin-top:10px">
+        Referral links are for demo purposes. Referral rewards are not issued or guaranteed.
+    </p>
+</div>
+
+</section>
+
+<!-- MORE -->
+<section id="more" class="section">
+
+<h2>More</h2>
+<p class="subtitle">Profile and account settings</p>
+
+<div class="card">
+    <h3>Profile</h3>
+    <p id="profileEmail" style="margin:12px 0">Guest</p>
+    <p class="muted">Referral Code</p>
+    <p id="profileCode" class="red" style="margin:8px 0">AK-DEMO</p>
+    <p class="muted">Active Plan</p>
+    <p id="profilePlan" style="margin:8px 0">None</p>
+    <p class="muted">Balance</p>
+    <p id="profileBalance" style="margin:8px 0">Rs 30</p>
+    <p class="muted">Withdrawal tax</p>
+    <p style="margin:8px 0">10%</p>
+</div>
+
+<div class="card">
+    <h3>Withdraw</h3>
+
+    <button class="btn btn-dark" onclick="toggleWithdraw()">Open Withdraw Box</button>
+
+    <div id="withdrawBox" style="display:none;margin-top:15px">
+        <label>Withdrawal Amount (Minimum Rs 500)</label>
+        <input id="withdrawAmount" type="number" min="500" placeholder="Enter amount" oninput="calculateWithdraw()">
+
+        <div class="stat" style="margin-bottom:10px">
+            <small>10% Tax</small>
+            <strong id="taxAmount">Rs 0</strong>
+            <br><br>
+            <small>Net Amount</small>
+            <strong id="netAmount">Rs 0</strong>
+        </div>
+
+        <div class="notice">Actual withdrawals are disabled in this demo.</div>
+        <button class="btn btn-red" onclick="demoMessage()">Submit Withdrawal</button>
+    </div>
+</div>
+
+<div class="card">
+    <h3>My Withdrawals</h3>
+    <div id="withdrawHistory">
+        <p class="muted" style="margin-top:12px">No withdrawal history available.</p>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Sound Effects</h3>
+    <div class="row">
+        <span>Sound toggle</span>
+        <input id="soundToggle" type="checkbox" style="width:auto" onchange="toggleSound()">
+    </div>
+</div>
+
+<div class="card">
+    <h3>WhatsApp Support</h3>
+    <a href="https://wa.me/923192649784" target="_blank" style="color:var(--green)">
+        Contact Support
+    </a>
+</div>
+
+<div class="card">
+    <button class="btn btn-dark" onclick="logout()">Logout</button>
+</div>
+
+<div id="adminArea"></div>
+
+</section>
+
+</main>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav" id="bottomNav" style="display:none">
+
+<button class="nav-btn active" onclick="navigate('home',this)">
+    <span>⌂</span>Home
+</button>
+
+<button class="nav-btn" onclick="navigate('plans',this)">
+    <span>▣</span>Plans
+</button>
+
+<button class="nav-btn" onclick="navigate('deposit',this)">
+    <span class="nav-deposit">+</span>Deposit
+</button>
+
+<button class="nav-btn" onclick="navigate('team',this)">
+    <span>♧</span>Team
+</button>
+
+<button class="nav-btn" onclick="navigate('more',this)">
+    <span>☰</span>More
+</button>
+
+</nav>
+
+<div class="toast" id="toast"></div>
+
+</div>
 
 <script>
-(function() {
-  var LIVE_SITE_URL = "https://ladlawaqas527-lgtm.github.io/PKR-earning-/";
-  var codeInput = document.getElementById("akRefCodeInput");
-  var linkInput = document.getElementById("akRefLinkInput");
-  var openLinkEl = document.getElementById("akOpenRefLink");
-  var copyBtn = document.getElementById("akCopyRefBtn");
-  var statusEl = document.getElementById("akRefStatus");
-  var regRefInput = document.getElementById("regRefInput");
 
-  function getBaseUrl() {
-    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
-      var base = window.location.origin + window.location.pathname;
-      return base.endsWith("/") ? base : (base + "/");
+/* Demo application logic */
+
+const ADMIN_EMAIL = "Ladlawaqas527@gmail.com";
+const WITHDRAW_TAX_RATE = 0.10;
+
+let currentUser = null;
+let soundEnabled = false;
+let users = [];
+let deposits = [];
+let withdrawals = [];
+
+function toast(message) {
+    const t = document.getElementById("toast");
+    t.innerText = message;
+    t.style.display = "block";
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(() => {
+        t.style.display = "none";
+    }, 2800);
+}
+
+function demoMessage() {
+    toast("This feature is disabled in demo mode.");
+}
+
+function showAuth(tab) {
+    document.getElementById("registerPanel").classList.remove("active");
+    document.getElementById("loginPanel").classList.remove("active");
+
+    document.getElementById(tab + "Panel").classList.add("active");
+}
+
+function register() {
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value;
+    const refCode = document.getElementById("regRef").value.trim();
+
+    if (!email || !password) {
+        toast("Enter email and password");
+        return;
     }
-    return LIVE_SITE_URL;
-  }
 
-  function buildRefUrl(rawCode) {
-    var clean = String(rawCode || "AK-INVITE").trim().replace(/\s+/g, "-");
-    if (!clean) {
-      clean = "AK-INVITE";
+    if (password.length < 6) {
+        toast("Password must be at least 6 characters");
+        return;
     }
-    return getBaseUrl() + "?ref=" + encodeURIComponent(clean);
-  }
 
-  function syncReferralLink() {
-    if (!codeInput || !linkInput) return;
-    var url = buildRefUrl(codeInput.value);
-    linkInput.value = url;
-    if (openLinkEl) {
-      openLinkEl.href = url;
+    const exists = users.find(u => u.email === email);
+
+    if (exists) {
+        toast("Account already exists. Please login.");
+        showAuth("login");
+        return;
     }
-  }
 
-  function fallbackCopy(text) {
-    try {
-      var ta = document.createElement("textarea");
-      ta.value = text;
-      ta.setAttribute("readonly", "");
-      ta.style.position = "fixed";
-      ta.style.top = "0";
-      ta.style.left = "0";
-      ta.style.opacity = "0";
-      document.body.appendChild(ta);
-      ta.focus();
-      ta.select();
-      ta.setSelectionRange(0, text.length);
-      var ok = document.execCommand("copy");
-      document.body.removeChild(ta);
-      return ok;
-    } catch (e) {
-      return false;
+    const uid = Math.random().toString(36).substring(2, 10);
+
+    const user = {
+        uid: uid,
+        email: email,
+        password: password,
+        balance: 30,
+        welcomeBonus: 30,
+        plan: "None",
+        blocked: false,
+        refCount: 0,
+        myCode: "AK-" + uid.slice(0, 6).toUpperCase(),
+        referredBy: refCode || null
+    };
+
+    users.push(user);
+    currentUser = user;
+
+    saveData();
+    startApp();
+
+    toast("Demo account created successfully");
+}
+
+function login() {
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (!user) {
+        toast("Account not found in demo");
+        return;
     }
-  }
 
-  function handleCopyClick() {
-    syncReferralLink();
-    var text = linkInput ? linkInput.value : "";
-    if (!text) return;
+    if (user.blocked) {
+        toast("Account is blocked");
+        return;
+    }
 
-    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
-      navigator.clipboard.writeText(text).then(function() {
-        if (statusEl) {
-          statusEl.textContent = "Referral link copied! Anyone opening this link will come to the website.";
-        }
-      }).catch(function() {
-        var ok = fallbackCopy(text);
-        if (linkInput) {
-          linkInput.focus();
-          linkInput.select();
-        }
-        if (statusEl) {
-          statusEl.textContent = ok
-            ? "Referral link copied! Anyone opening this link will come to the website."
-            : "Link ready below — copy it to share with others.";
-        }
-      });
+    currentUser = user;
+    startApp();
+    toast("Login successful");
+}
+
+function logout() {
+    currentUser = null;
+
+    document.querySelectorAll(".section").forEach(s => {
+        s.classList.remove("active");
+    });
+
+    document.getElementById("authSection").classList.add("active");
+    document.getElementById("bottomNav").style.display = "none";
+
+    toast("Logged out");
+}
+
+function startApp() {
+    document.getElementById("authSection").classList.remove("active");
+    document.getElementById("bottomNav").style.display = "flex";
+
+    navigate("home");
+
+    refreshUI();
+}
+
+function refreshUI() {
+    if (!currentUser) return;
+
+    document.getElementById("userEmail").innerText = currentUser.email;
+    document.getElementById("profileEmail").innerText = currentUser.email;
+
+    document.getElementById("homeBalance").innerText =
+        "Rs " + currentUser.balance;
+
+    document.getElementById("earningBalance").innerText =
+        "Rs " + currentUser.balance;
+
+    document.getElementById("profileBalance").innerText =
+        "Rs " + currentUser.balance;
+
+    document.getElementById("activePlan").innerText =
+        currentUser.plan || "None";
+
+    document.getElementById("profilePlan").innerText =
+        currentUser.plan || "None";
+
+    document.getElementById("myCode").innerText =
+        currentUser.myCode;
+
+    document.getElementById("profileCode").innerText =
+        currentUser.myCode;
+
+    document.getElementById("teamCount").innerText =
+        currentUser.refCount || 0;
+
+    document.getElementById("teamStat").innerText =
+        currentUser.refCount || 0;
+
+    const pill = document.getElementById("statusPill");
+
+    pill.innerText = currentUser.blocked ? "Blocked" : "Active Member";
+    pill.className = currentUser.blocked ? "pill" : "pill green";
+
+    renderAdmin();
+}
+
+function navigate(section, button) {
+    document.querySelectorAll(".section").forEach(s => {
+        s.classList.remove("active");
+    });
+
+    const target = document.getElementById(section);
+
+    if (target) {
+        target.classList.add("active");
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(b => {
+        b.classList.remove("active");
+    });
+
+    if (button) {
+        button.classList.add("active");
     } else {
-      var ok = fallbackCopy(text);
-      if (linkInput) {
-        linkInput.focus();
-        linkInput.select();
-      }
-      if (statusEl) {
-        statusEl.textContent = ok
-          ? "Referral link copied! Anyone opening this link will come to the website."
-          : "Link ready below — copy it to share with others.";
-      }
-    }
-  }
+        <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, query, where, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  if (codeInput) {
-    codeInput.addEventListener("input", syncReferralLink);
-  }
-  if (copyBtn) {
-    copyBtn.addEventListener("click", handleCopyClick);
-  }
+const ADMIN_EMAIL = "Ladlawaqas527@gmail.com";
+const WITHDRAW_TAX_RATE = 0.10;
+const app = initializeApp({
+  apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
+  authDomain: "pkr-earning-f15bd.firebaseapp.com",
+  projectId: "pkr-earning-f15bd",
+  storageBucket: "pkr-earning-f15bd.firebasestorage.app",
+  messagingSenderId: "1092045219657",
+  appId: "1:1092045219657:web:187ab8b4d5ed40f09e9c98",
+  measurementId: "G-98ZXWDD3RY"
+});
+const auth = getAuth(app), db = getFirestore(app);
+let curUser = null, curProf = null, unsubs = [], latestUsers = [], latestDeps = [], latestWds = [];
+const isAdmin = () => Boolean(curUser && curUser.email && curUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
+const clearSubs = () => { unsubs.forEach(f => { try { f(); } catch (e) {} }); unsubs = []; };
 
+window.toast = function(m) { const t = document.getElementById("toast"); if (!t) return; t.innerText = m; t.style.display = "block"; clearTimeout(window.toastTimer); window.toastTimer = setTimeout(() => { t.style.display = "none"; }, 2800); };
+window.showAuth = function(tab) { document.getElementById("registerPanel").classList.remove("active"); document.getElementById("loginPanel").classList.remove("active"); document.getElementById(tab + "Panel").classList.add("active"); };
+window.navigate = function(sec, btn) { if (!curUser && sec !== "authSection") sec = "authSection"; document.querySelectorAll(".section").forEach(s => s.classList.remove("active")); const t = document.getElementById(sec); if (t) t.classList.add("active"); document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active")); const el = btn || document.querySelector(`.nav-btn[onclick*="'${sec}'"]`); if (el) el.classList.add("active"); window.scrollTo({ top: 0, behavior: "smooth" }); };
+window.toggleWithdraw = function() { const b = document.getElementById("withdrawBox"); if (!b) return; b.style.display = b.style.display === "none" ? "block" : "none"; window.calculateWithdraw(); };
+window.calculateWithdraw = function() { const a = Number(document.getElementById("withdrawAmount").value) || 0, tax = Math.round(a * WITHDRAW_TAX_RATE); document.getElementById("taxAmount").innerText = "Rs " + tax; document.getElementById("netAmount").innerText = "Rs " + Math.max(0, a - tax); };
+window.toggleSound = function() { window.toast(document.getElementById("soundToggle").checked ? "Sound effects enabled" : "Sound effects disabled"); };
+window.copyReferral = function() { const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c); navigator.clipboard?.writeText ? navigator.clipboard.writeText(u).then(() => window.toast("Referral link copied")).catch(() => window.toast(c)) : window.toast(c); };
+window.shareReferral = function() { const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c); navigator.share ? navigator.share({ title: "AK Capital Group", text: "Join with code " + c, url: u }).catch(() => {}) : window.copyReferral(); };
+
+window.register = async function() {
+  const email = document.getElementById("regEmail").value.trim(), pass = document.getElementById("regPassword").value, refCode = document.getElementById("regRef").value.trim();
+  if (!email || pass.length < 6) return window.toast("Enter email and 6+ char password");
   try {
-    var params = new URLSearchParams(window.location.search);
-    var incomingRef = params.get("ref");
-    if (incomingRef) {
-      if (regRefInput) regRefInput.value = incomingRef;
-      if (codeInput) codeInput.value = incomingRef;
-    }
-  } catch (e) {}
+    const cred = await createUserWithEmailAndPassword(auth, email, pass), uid = cred.user.uid;
+    await setDoc(doc(db, "akcg_users", uid), { uid, email, balance: 30, welcomeBonus: 30, plan: "None", blocked: false, refCount: 0, myCode: "AK-" + uid.slice(0, 6).toUpperCase(), referredBy: refCode || null, createdAt: serverTimestamp() });
+    window.toast("Account created with Rs 30 bonus");
+  } catch (e) { window.toast(e.message); }
+};
 
-  syncReferralLink();
-})();
+window.login = async function() {
+  const email = document.getElementById("loginEmail").value.trim(), pass = document.getElementById("loginPassword").value;
+  if (!email || !pass) return window.toast("Enter email and password");
+  try { await signInWithEmailAndPassword(auth, email, pass); window.toast("Login successful"); } catch (e) { window.toast(e.message); }
+};
+
+window.logout = async function() { clearSubs(); await signOut(auth); window.toast("Logged out"); };
+
+window.submitDeposit = async function() {
+  if (!curUser || !curProf) return window.toast("Login first");
+  if (curProf.blocked) return window.toast("Account is blocked");
+  const method = document.getElementById("depositMethod").value, amount = Number(document.getElementById("depositAmount").value), tid = document.getElementById("depositTID").value.trim();
+  if (!amount || amount < 500 || !tid) return window.toast("Min Rs 500 and TID required");
+  try {
+    await addDoc(collection(db, "akcg_deposits"), { uid: curUser.uid, email: curUser.email, method, amount, tid, status: "Pending", createdAt: serverTimestamp() });
+    document.getElementById("depositAmount").value = ""; document.getElementById("depositTID").value = "";
+    window.toast("Deposit request submitted");
+  } catch (e) { window.toast(e.message); }
+};
+
+window.submitWithdraw = async function() {
+  if (!curUser || !curProf) return window.toast("Login first");
+  if (curProf.blocked) return window.toast("Account is blocked");
+  const amount = Number(document.getElementById("withdrawAmount").value);
+  if (!amount || amount < 500) return window.toast("Minimum withdrawal is Rs 500");
+  const tax = Math.round(amount * WITHDRAW_TAX_RATE), netAmount = Math.max(0, amount - tax);
+  try {
+    await runTransaction(db, async (tx) => {
+      const uRef = doc(db, "akcg_users", curUser.uid), snap = await tx.get(uRef);
+      if (!snap.exists()) throw new Error("User profile missing");
+      const d = snap.data(), bal = Number(d.balance || 0);
+      if (d.blocked) throw new Error("Account is blocked");
+      if (amount > bal) throw new Error("Insufficient balance");
+      tx.update(uRef, { balance: bal - amount });
+      tx.set(doc(collection(db, "akcg_withdrawals")), { uid: curUser.uid, email: curUser.email, amount, tax, netAmount, status: "Pending", createdAt: serverTimestamp() });
+    });
+    document.getElementById("withdrawAmount").value = ""; window.calculateWithdraw(); window.toast("Withdrawal request submitted");
+  } catch (e) { window.toast(e.message); }
+};
+
+window.adminApproveDep = async function(id) {
+  if (!isAdmin()) return window.toast("Admin only");
+  try {
+    await runTransaction(db, async (tx) => {
+      const dRef = doc(db, "akcg_deposits", id), dep = (await tx.get(dRef)).data();
+      if (!dep || dep.status !== "Pending") throw new Error("Already processed");
+      const uRef = doc(db, "akcg_users", dep.uid), uData = (await tx.get(uRef)).data() || {};
+      tx.update(dRef, { status: "Approved" });
+      tx.update(uRef, { balance: Number(uData.balance || 0) + Number(dep.amount || 0) });
+    });
+    window.toast("Deposit approved");
+  } catch (e) { window.toast(e.message); }
+};
+
+window.adminRejectDep = async function(id) {
+  if (!isAdmin()) return window.toast("Admin only");
+  try { await updateDoc(doc(db, "akcg_deposits", id), { status: "Rejected" }); window.toast("Deposit rejected"); } catch (e) { window.toast(e.message); }
+};
+
+window.adminApproveWd = async function(id) {
+  if (!isAdmin()) return window.toast("Admin only");
+  try { await updateDoc(doc(db, "akcg_withdrawals", id), { status: "Approved" }); window.toast("Withdrawal approved"); } catch (e) { window.toast(e.message); }
+};
+
+window.adminRejectWd = async function(id) {
+  if (!isAdmin()) return window.toast("Admin only");
+  try {
+    await runTransaction(db, async (tx) => {
+      const wRef = doc(db, "akcg_withdrawals", id), wd = (await tx.get(wRef)).data();
+      if (!wd || wd.status !== "Pending") throw new Error("Already processed");
+      const uRef = doc(db, "akcg_users", wd.uid), uSnap = await tx.get(uRef);
+      if (uSnap.exists()) tx.update(uRef, { balance: Number(uSnap.data().balance || 0) + Number(wd.amount || 0) });
+      tx.update(wRef, { status: "Rejected" });
+    });
+    window.toast("Withdrawal rejected & refunded");
+  } catch (e) { window.toast(e.message); }
+};
+
+function renderAdminLive() {
+  const area = document.getElementById("adminArea");
+  if (!area) return;
+  if (!isAdmin()) { area.innerHTML = ""; return; }
+  area.innerHTML = `
+    <div class="card admin-section">
+      <h3>Live Admin Panel (${ADMIN_EMAIL})</h3>
+      <p class="subtitle">Users: ${latestUsers.length}</p>
+      <strong>Deposits</strong>
+      ${latestDeps.map(d => `<div class="history-item"><strong>${d.email}</strong> · Rs ${d.amount} · TID: ${d.tid} · <strong>${d.status}</strong>${d.status==="Pending"?`<br><button class="btn btn-green btn-small" onclick="adminApproveDep('${d.id}')">Approve</button> <button class="btn btn-dark btn-small" onclick="adminRejectDep('${d.id}')">Reject</button>`:""}</div>`).join("") || `<p class="muted">None</p>`}
+      <strong style="display:block;margin-top:12px;">Withdrawals</strong>
+      ${latestWds.map(w => `<div class="history-item"><strong>${w.email}</strong> · Rs ${w.amount} (Net Rs ${w.netAmount}) · <strong>${w.status}</strong>${w.status==="Pending"?`<br><button class="btn btn-green btn-small" onclick="adminApproveWd('${w.id}')">Approve</button> <button class="btn btn-dark btn-small" onclick="adminRejectWd('${w.id}')">Reject</button>`:""}</div>`).join("") || `<p class="muted">None</p>`}
+    </div>`;
+}
+
+onAuthStateChanged(auth, async (u) => {
+  clearSubs(); curUser = u; curProf = null;
+  document.getElementById("authSection").classList.toggle("active", !u);
+  document.getElementById("bottomNav").style.display = u ? "flex" : "none";
+  if (!u) return;
+  const uRef = doc(db, "akcg_users", u.uid);
+  if (!(await getDoc(uRef)).exists()) {
+    await setDoc(uRef, { uid: u.uid, email: u.email, balance: 30, welcomeBonus: 30, plan: "None", blocked: false, refCount: 0, myCode: "AK-" + u.uid.slice(0, 6).toUpperCase(), referredBy: null, createdAt: serverTimestamp() });
+  }
+  unsubs.push(onSnapshot(uRef, (ds) => {
+    if (!ds.exists()) return; curProf = ds.data();
+    document.getElementById("userEmail").innerText = curProf.email;
+    document.getElementById("profileEmail").innerText = curProf.email;
+    document.getElementById("homeBalance").innerText = "Rs " + Number(curProf.balance || 0);
+    document.getElementById("earningBalance").innerText = "Rs " + Number(curProf.balance || 0);
+    document.getElementById("profileBalance").innerText = "Rs " + Number(curProf.balance || 0);
+    document.getElementById("activePlan").innerText = curProf.plan || "None";
+    document.getElementById("profilePlan").innerText = curProf.plan || "None";
+    document.getElementById("myCode").innerText = curProf.myCode;
+    document.getElementById("profileCode").innerText = curProf.myCode;
+    document.getElementById("teamCount").innerText = curProf.refCount || 0;
+    document.getElementById("teamStat").innerText = curProf.refCount || 0;
+    const pill = document.getElementById("statusPill");
+    pill.innerText = curProf.blocked ? "Blocked" : "Active Member";
+    pill.className = curProf.blocked ? "pill" : "pill green";
+  }));
+  unsubs.push(onSnapshot(query(collection(db, "akcg_deposits"), where("uid", "==", u.uid)), (qs) => {
+    document.getElementById("depositHistory").innerHTML = qs.docs.map(d => { const x = d.data(); return `<div class="history-item">${x.method} · Rs ${x.amount} · TID: ${x.tid} · <strong>${x.status}</strong></div>`; }).join("") || `<p class="muted" style="margin-top:12px">No deposit history available.</p>`;
+  }));
+  unsubs.push(onSnapshot(query(collection(db, "akcg_withdrawals"), where("uid", "==", u.uid)), (qs) => {
+    document.getElementById("withdrawHistory").innerHTML = qs.docs.map(d => { const x = d.data(); return `<div class="history-item">Rs ${x.amount} (Net Rs ${x.netAmount}) · <strong>${x.status}</strong></div>`; }).join("") || `<p class="muted" style="margin-top:12px">No withdrawal history available.</p>`;
+  }));
+  if (isAdmin()) {
+    unsubs.push(onSnapshot(collection(db, "akcg_users"), (s) => { latestUsers = s.docs.map(d => d.data()); renderAdminLive(); }));
+    unsubs.push(onSnapshot(collection(db, "akcg_deposits"), (s) => { latestDeps = s.docs.map(d => ({ id: d.id, ...d.data() })); renderAdminLive(); }));
+    unsubs.push(onSnapshot(collection(db, "akcg_withdrawals"), (s) => { latestWds = s.docs.map(d => ({ id: d.id, ...d.data() })); renderAdminLive(); }));
+  }
+  window.navigate("home");
+});
 </script>
-
 </body>
-  </html>
-  
+</html>
