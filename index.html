@@ -1154,3 +1154,425 @@ onAuthStateChanged(auth, async (u) => {
 
 </body>
 </html>
+<script type="module">
+import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  getDocs,
+  updateDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  runTransaction,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const ADMIN_EMAIL_ADDON = "Ladlawaqas527@gmail.com";
+const TAX_RATE_ADDON = 0.10;
+
+const firebaseCfgAddon = {
+  apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
+  authDomain: "pkr-earning-f15bd.firebaseapp.com",
+  projectId: "pkr-earning-f15bd",
+  storageBucket: "pkr-earning-f15bd.firebasestorage.app",
+  messagingSenderId: "1092045219657",
+  appId: "1:1092045219657:web:187ab8b4d5ed40f09e9c98",
+  measurementId: "G-98ZXWDD3RY"
+};
+
+const appAddon = getApps().length ? getApps()[0] : initializeApp(firebaseCfgAddon);
+const authAddon = getAuth(appAddon);
+const dbAddon = getFirestore(appAddon);
+
+let activeUidAddon = null;
+let activeProfileAddon = null;
+let addonUnsubs = [];
+let addonUsers = [];
+let addonDeps = [];
+let addonWds = [];
+
+const isAdminAddon = () =>
+  Boolean(authAddon.currentUser && authAddon.currentUser.email && authAddon.currentUser.email.toLowerCase() === ADMIN_EMAIL_ADDON.toLowerCase());
+
+const clearAddonSubs = () => {
+  addonUnsubs.forEach(fn => { try { fn(); } catch (e) {} });
+  addonUnsubs = [];
+};
+
+const notifyAddon = (msg) => {
+  if (typeof window.toast === "function") {
+    window.toast(msg);
+  } else {
+    alert(msg);
+  }
+};
+
+function enhanceWithdrawBox() {
+  const box = document.getElementById("withdrawBox");
+  if (!box) return;
+  box.style.display = "block";
+
+  if (!document.getElementById("addonWithdrawMethod")) {
+    const amountInput = document.getElementById("withdrawAmount");
+    const wrapper = document.createElement("div");
+    wrapper.id = "addonWithdrawExtra";
+    wrapper.innerHTML = `
+      <label>Payment Method</label>
+      <select id="addonWithdrawMethod">
+        <option value="EasyPaisa">EasyPaisa</option>
+        <option value="JazzCash">JazzCash</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+      </select>
+
+      <div id="addonBankWrap" style="display:none">
+        <label>Selected Bank</label>
+        <input id="addonWithdrawBank" type="text" placeholder="e.g. HBL, Meezan, Alfalah">
+      </div>
+
+      <label id="addonAccLabel">Account / Wallet Number</label>
+      <input id="addonWithdrawAccount" type="text" placeholder="03XXXXXXXXX or Account Number">
+
+      <label>Account Holder Name (Optional)</label>
+      <input id="addonWithdrawTitle" type="text" placeholder="Enter account name">
+    `;
+
+    if (amountInput && amountInput.parentNode) {
+      amountInput.parentNode.insertBefore(wrapper, amountInput.previousElementSibling || amountInput);
+    } else {
+      box.prepend(wrapper);
+    }
+
+    const methodSel = document.getElementById("addonWithdrawMethod");
+    methodSel.addEventListener("change", () => {
+      const val = methodSel.value;
+      const bankWrap = document.getElementById("addonBankWrap");
+      const accLabel = document.getElementById("addonAccLabel");
+      if (bankWrap) bankWrap.style.display = val === "Bank Transfer" ? "block" : "none";
+      if (accLabel) accLabel.innerText = val === "Bank Transfer" ? "Bank Account Number / IBAN" : `${val} Mobile Number`;
+    });
+  }
+
+  const submitBtn = box.querySelector("button[onclick*='submitWithdraw'], .btn-red");
+  if (submitBtn) {
+    submitBtn.removeAttribute("onclick");
+    submitBtn.onclick = async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!activeUidAddon || !activeProfileAddon) return notifyAddon("Login first");
+      if (activeProfileAddon.blocked) return notifyAddon("Account is blocked");
+
+      const method = document.getElementById("addonWithdrawMethod")?.value || "EasyPaisa";
+      const bankName = method === "Bank Transfer" ? (document.getElementById("addonWithdrawBank")?.value.trim() || "") : "";
+      const accountNumber = document.getElementById("addonWithdrawAccount")?.value.trim() || "";
+      const accountTitle = document.getElementById("addonWithdrawTitle")?.value.trim() || "";
+      const amount = Number(document.getElementById("withdrawAmount")?.value || 0);
+
+      if (method === "Bank Transfer" && !bankName) return notifyAddon("Enter bank name");
+      if (!accountNumber || accountNumber.length < 6) return notifyAddon("Enter valid account/wallet number");
+      if (!amount || amount < 500) return notifyAddon("Minimum withdrawal is Rs 500");
+
+      const tax = Math.round(amount * TAX_RATE_ADDON);
+      const netAmount = Math.max(0, amount - tax);
+
+      try {
+        await runTransaction(dbAddon, async (tx) => {
+          const uRef = doc(dbAddon, "akcg_users", activeUidAddon);
+          const snap = await tx.get(uRef);
+          if (!snap.exists()) throw new Error("User profile missing");
+          const d = snap.data();
+          if (d.blocked) throw new Error("Account is blocked");
+          const bal = Number(d.balance || 0);
+          if (amount > bal) throw new Error("Insufficient balance");
+
+          tx.update(uRef, { balance: bal - amount });
+          tx.set(doc(collection(dbAddon, "akcg_withdrawals")), {
+            uid: activeUidAddon,
+            email: authAddon.currentUser?.email || d.email || "",
+            method,
+            bankName,
+            accountNumber,
+            accountTitle,
+            amount,
+            tax,
+            netAmount,
+            status: "Pending",
+            createdAt: serverTimestamp()
+          });
+        });
+
+        if (document.getElementById("addonWithdrawBank")) document.getElementById("addonWithdrawBank").value = "";
+        if (document.getElementById("addonWithdrawAccount")) document.getElementById("addonWithdrawAccount").value = "";
+        if (document.getElementById("addonWithdrawTitle")) document.getElementById("addonWithdrawTitle").value = "";
+        if (document.getElementById("withdrawAmount")) document.getElementById("withdrawAmount").value = "";
+        if (typeof window.calculateWithdraw === "function") window.calculateWithdraw();
+        notifyAddon("Withdrawal request submitted");
+      } catch (err) {
+        notifyAddon(err.message);
+      }
+    };
+  }
+}
+
+function enhancePlanButtons() {
+  const planCards = document.querySelectorAll("#plans .plan");
+  planCards.forEach((card) => {
+    const btn = card.querySelector("button");
+    if (!btn || btn.dataset.addonBound === "1") return;
+    btn.dataset.addonBound = "1";
+
+    const titleText = card.querySelector("h3")?.innerText?.trim() || "Investment Plan";
+    const priceText = card.querySelector(".plan-price")?.innerText || "0";
+    const priceNum = Number(priceText.replace(/[^0-9]/g, "")) || 0;
+
+    btn.innerText = "Activate Plan";
+    btn.removeAttribute("onclick");
+    btn.onclick = async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!activeUidAddon || !activeProfileAddon) return notifyAddon("Login first");
+      if (activeProfileAddon.blocked) return notifyAddon("Account is blocked");
+      if (!priceNum) return notifyAddon("Invalid plan amount");
+
+      try {
+        await runTransaction(dbAddon, async (tx) => {
+          const uRef = doc(dbAddon, "akcg_users", activeUidAddon);
+          const snap = await tx.get(uRef);
+          if (!snap.exists()) throw new Error("User profile missing");
+          const d = snap.data();
+          if (d.blocked) throw new Error("Account is blocked");
+          const bal = Number(d.balance || 0);
+          if (bal < priceNum) {
+            throw new Error(`Insufficient balance. Need Rs ${priceNum}, available Rs ${bal}`);
+          }
+          tx.update(uRef, {
+            balance: bal - priceNum,
+            plan: titleText
+          });
+        });
+
+        notifyAddon(`${titleText} activated`);
+        if (typeof window.navigate === "function") window.navigate("home");
+      } catch (err) {
+        notifyAddon(err.message);
+      }
+    };
+  });
+}
+
+function enhanceReferralAndTeam() {
+  const refInput = document.getElementById("regRef");
+  const paramsRef = new URLSearchParams(window.location.search).get("ref");
+  if (refInput && paramsRef && !refInput.value) {
+    refInput.value = paramsRef.trim().toUpperCase();
+  }
+
+  const teamSec = document.getElementById("team");
+  if (teamSec && !document.getElementById("addonTeamMembersCard")) {
+    const card = document.createElement("div");
+    card.id = "addonTeamMembersCard";
+    card.className = "card";
+    card.innerHTML = `<h3>Referred Team</h3><div id="addonTeamMembersList"><p class="muted" style="margin-top:10px">No team members yet.</p></div>`;
+    const bronzeCard = Array.from(teamSec.querySelectorAll(".card")).find(c => c.innerText.includes("Bronze Leader"));
+    if (bronzeCard) {
+      teamSec.insertBefore(card, bronzeCard);
+    } else {
+      teamSec.appendChild(card);
+    }
+  }
+}
+
+async function syncReferralsForUser(profile) {
+  if (!profile) return;
+  const listEl = document.getElementById("addonTeamMembersList");
+  if (!profile.myCode) return;
+
+  try {
+    const qTeam = query(collection(dbAddon, "akcg_users"), where("referredBy", "==", profile.myCode));
+    const snap = await getDocs(qTeam);
+    const actualCount = snap.size;
+
+    const tc1 = document.getElementById("teamCount");
+    const tc2 = document.getElementById("teamStat");
+    if (tc1 && Number(tc1.innerText || 0) < actualCount) tc1.innerText = String(actualCount);
+    if (tc2 && Number(tc2.innerText || 0) < actualCount) tc2.innerText = String(actualCount);
+
+    if (listEl) {
+      if (snap.empty) {
+        listEl.innerHTML = `<p class="muted" style="margin-top:10px">No team members yet.</p>`;
+      } else {
+        listEl.innerHTML = snap.docs.map(d => {
+          const m = d.data();
+          return `<div class="history-item"><strong>${m.email || "Member"}</strong> · Plan: ${m.plan || "None"}</div>`;
+        }).join("");
+      }
+    }
+  } catch (e) {}
+}
+
+function enhanceAdminAddonControls() {
+  if (!isAdminAddon()) return;
+  const adminArea = document.getElementById("adminArea");
+  if (!adminArea) return;
+
+  if (!document.getElementById("addonAdminControls")) {
+    const box = document.createElement("div");
+    box.id = "addonAdminControls";
+    box.className = "card admin-section";
+    box.innerHTML = `
+      <h3>Quick Admin Balance & Controls</h3>
+      <label>Select User</label>
+      <select id="addonAdmUserSelect"></select>
+
+      <label>Amount (PKR)</label>
+      <input id="addonAdmAmount" type="number" min="0" placeholder="e.g. 50 or 500">
+
+      <div class="grid">
+        <button id="addonBtnAddBal" class="btn btn-green" type="button">+ Add Balance</button>
+        <button id="addonBtnDeductBal" class="btn btn-red" type="button">- Deduct Balance</button>
+      </div>
+      <button id="addonBtnSetBal" class="btn btn-dark" type="button">Set Exact Balance</button>
+
+      <div class="grid">
+        <button id="addonBtnBlock" class="btn btn-dark" type="button">Block User</button>
+        <button id="addonBtnUnblock" class="btn btn-green" type="button">Unblock User</button>
+      </div>
+
+      <div id="addonAdminWdDetails" style="margin-top:14px;"></div>
+    `;
+    adminArea.prepend(box);
+
+    const runBalanceOp = async (mode) => {
+      const uid = document.getElementById("addonAdmUserSelect")?.value;
+      const amt = Number(document.getElementById("addonAdmAmount")?.value);
+      if (!uid || isNaN(amt) || amt < 0) return notifyAddon("Select user and enter amount");
+      if (mode !== "set" && amt === 0) return notifyAddon("Enter amount greater than 0");
+
+      try {
+        await runTransaction(dbAddon, async (tx) => {
+          const uRef = doc(dbAddon, "akcg_users", uid);
+          const snap = await tx.get(uRef);
+          if (!snap.exists()) throw new Error("User not found");
+          const cur = Number(snap.data().balance || 0);
+          let next = cur;
+          if (mode === "add") next = cur + amt;
+          else if (mode === "deduct") next = Math.max(0, cur - amt);
+          else if (mode === "set") next = amt;
+          tx.update(uRef, { balance: next });
+        });
+        document.getElementById("addonAdmAmount").value = "";
+        notifyAddon(mode === "deduct" ? "Balance deducted" : mode === "set" ? "Balance set" : "Balance added");
+      } catch (err) {
+        notifyAddon(err.message);
+      }
+    };
+
+    document.getElementById("addonBtnAddBal").onclick = () => runBalanceOp("add");
+    document.getElementById("addonBtnDeductBal").onclick = () => runBalanceOp("deduct");
+    document.getElementById("addonBtnSetBal").onclick = () => runBalanceOp("set");
+
+    document.getElementById("addonBtnBlock").onclick = async () => {
+      const uid = document.getElementById("addonAdmUserSelect")?.value;
+      if (!uid) return notifyAddon("Select user first");
+      try {
+        await updateDoc(doc(dbAddon, "akcg_users", uid), { blocked: true });
+        notifyAddon("User blocked");
+      } catch (err) { notifyAddon(err.message); }
+    };
+
+    document.getElementById("addonBtnUnblock").onclick = async () => {
+      const uid = document.getElementById("addonAdmUserSelect")?.value;
+      if (!uid) return notifyAddon("Select user first");
+      try {
+        await updateDoc(doc(dbAddon, "akcg_users", uid), { blocked: false });
+        notifyAddon("User unblocked");
+      } catch (err) { notifyAddon(err.message); }
+    };
+  }
+
+  const sel = document.getElementById("addonAdmUserSelect");
+  if (sel) {
+    const prev = sel.value;
+    sel.innerHTML = addonUsers.map(u =>
+      `<option value="${u.uid}" ${u.uid === prev ? "selected" : ""}>${u.email} (Rs ${Number(u.balance || 0)})${u.blocked ? " [Blocked]" : ""}</option>`
+    ).join("") || `<option value="">No users</option>`;
+  }
+
+  const wdDet = document.getElementById("addonAdminWdDetails");
+  if (wdDet) {
+    wdDet.innerHTML = `<strong>Withdrawal Payment Info</strong>` + (addonWds.map(w => {
+      const info = [w.method || "Wallet", w.bankName || "", w.accountNumber || "N/A", w.accountTitle ? `(${w.accountTitle})` : ""].filter(Boolean).join(" · ");
+      return `<div class="history-item"><strong>${w.email}</strong> · ${info} · Rs ${w.amount} (Net Rs ${w.netAmount}) · <strong>${w.status}</strong></div>`;
+    }).join("") || `<p class="muted" style="margin-top:8px;">No withdrawals yet.</p>`);
+  }
+}
+
+enhanceWithdrawBox();
+enhancePlanButtons();
+enhanceReferralAndTeam();
+
+onAuthStateChanged(authAddon, async (u) => {
+  clearAddonSubs();
+  activeUidAddon = u ? u.uid : null;
+  activeProfileAddon = null;
+  enhanceWithdrawBox();
+  enhancePlanButtons();
+  enhanceReferralAndTeam();
+
+  if (!u) {
+    const extraAdmin = document.getElementById("addonAdminControls");
+    if (extraAdmin) extraAdmin.remove();
+    return;
+  }
+
+  const uRef = doc(dbAddon, "akcg_users", u.uid);
+  const snap = await getDoc(uRef);
+  if (snap.exists()) {
+    activeProfileAddon = snap.data();
+    syncReferralsForUser(activeProfileAddon);
+  }
+
+  addonUnsubs.push(onSnapshot(uRef, (ds) => {
+    if (!ds.exists()) return;
+    activeProfileAddon = ds.data();
+    if (activeProfileAddon.plan) {
+      const ap = document.getElementById("activePlan");
+      const pp = document.getElementById("profilePlan");
+      if (ap) ap.innerText = activeProfileAddon.plan;
+      if (pp) pp.innerText = activeProfileAddon.plan;
+    }
+    syncReferralsForUser(activeProfileAddon);
+  }));
+
+  addonUnsubs.push(onSnapshot(query(collection(dbAddon, "akcg_withdrawals"), where("uid", "==", u.uid)), (qs) => {
+    const wh = document.getElementById("withdrawHistory");
+    if (!wh) return;
+    wh.innerHTML = qs.docs.map(d => {
+      const x = d.data();
+      const dest = x.accountNumber ? ` · ${x.method || ""} (${x.bankName ? x.bankName + " - " : ""}${x.accountNumber})` : "";
+      return `<div class="history-item">Rs ${x.amount} (Net Rs ${x.netAmount})${dest} · <strong>${x.status}</strong></div>`;
+    }).join("") || `<p class="muted" style="margin-top:12px">No withdrawal history available.</p>`;
+  }));
+
+  if (isAdminAddon()) {
+    enhanceAdminAddonControls();
+    addonUnsubs.push(onSnapshot(collection(dbAddon, "akcg_users"), (s) => {
+      addonUsers = s.docs.map(d => d.data());
+      enhanceAdminAddonControls();
+    }));
+    addonUnsubs.push(onSnapshot(collection(dbAddon, "akcg_deposits"), (s) => {
+      addonDeps = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      enhanceAdminAddonControls();
+    }));
+    addonUnsubs.push(onSnapshot(collection(dbAddon, "akcg_withdrawals"), (s) => {
+      addonWds = s.docs.map(d => ({ id: d.id, ...d.data() }));
+      enhanceAdminAddonControls();
+    }));
+  }
+});
+    </script>
+    
