@@ -57,6 +57,7 @@ header {
   font-size: 13px;
   text-decoration: none;
   user-select: none;
+  border: none;
 }
 
 .gold-btn {
@@ -168,6 +169,40 @@ select {
   line-height: 1.5;
 }
 
+.ref-box {
+  background: #0a1727;
+  border: 1px solid rgba(216, 180, 90, 0.45);
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 10px;
+}
+
+.ref-badge {
+  display: inline-block;
+  background: rgba(216, 180, 90, 0.16);
+  color: #d8b45a;
+  border: 1px solid rgba(216, 180, 90, 0.4);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.ref-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.ref-status {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #d8b45a;
+  min-height: 18px;
+}
+
 /* Pages controlled purely by CSS */
 .page {
   display: none;
@@ -247,7 +282,7 @@ footer {
     <small>CAPITAL • TRUST • GROWTH</small>
   </div>
   <div style="display:flex;gap:6px;">
-    <label for="nav-admin" class="btn soft-btn small-btn">Admin Demo</label>
+    <label for="nav-admin" class="btn soft-btn small-btn">Admin</label>
     <label for="nav-auth" class="btn outline-btn small-btn">Logout</label>
   </div>
 </header>
@@ -257,8 +292,8 @@ footer {
   <!-- LOGIN PAGE -->
   <div id="page-auth" class="page">
     <div class="card">
-      <h2 style="color:#d8b45a;margin-bottom:6px;">AK Capital Group — Demo</h2>
-      <p class="muted" style="margin-bottom:12px;">Pure HTML/CSS Demo UI. New demo accounts include Rs. 30 welcome bonus display. No real funds or payouts.</p>
+      <h2 style="color:#d8b45a;margin-bottom:6px;">AK Capital Group</h2>
+      <p class="muted" style="margin-bottom:12px;">New accounts include Rs. 30 welcome bonus display.</p>
 
       <h3 style="margin-bottom:8px;">Login (Gmail)</h3>
       <input type="email" placeholder="Gmail Address">
@@ -271,12 +306,12 @@ footer {
   <!-- REGISTER PAGE -->
   <div id="page-reg" class="page">
     <div class="card">
-      <h2 style="color:#d8b45a;margin-bottom:6px;">Create Demo Account</h2>
-      <p class="muted" style="margin-bottom:12px;">Includes Rs. 30 demo welcome bonus.</p>
+      <h2 style="color:#d8b45a;margin-bottom:6px;">Create Account</h2>
+      <p class="muted" style="margin-bottom:12px;">Includes Rs. 30 welcome bonus.</p>
 
       <input type="email" placeholder="Gmail Address">
       <input type="password" placeholder="Create Password">
-      <input type="text" placeholder="Referral Code (Optional)">
+      <input type="text" id="regRefInput" placeholder="Referral Code (Optional)">
       <label for="nav-home" class="btn gold-btn full">Register &amp; Open Home</label>
       <label for="nav-auth" class="btn outline-btn full">Back to Login</label>
     </div>
@@ -286,14 +321,14 @@ footer {
   <div id="page-home" class="page">
     <div class="card">
       <h2 style="margin-bottom:4px;">Home</h2>
-      <p class="muted">Welcome to <strong style="color:#d8b45a;">AK Capital Group</strong> (Demo UI)</p>
+      <p class="muted">Welcome to <strong style="color:#d8b45a;">AK Capital Group</strong></p>
     </div>
 
     <div class="grid" style="margin-bottom:14px;">
-      <div class="stat">Demo Balance<strong>Rs. 30</strong></div>
-      <div class="stat">Welcome Bonus<strong>Rs. 30 (Demo)</strong></div>
+      <div class="stat">Balance<strong>Rs. 30</strong></div>
+      <div class="stat">Welcome Bonus<strong>Rs. 30</strong></div>
       <div class="stat">Active Plan<strong>None</strong></div>
-      <div class="stat">24h Cycle<strong>24:00:00 (Demo)</strong></div>
+      <div class="stat">24h Cycle<strong>24:00:00</strong></div>
     </div>
 
     <div class="card">
@@ -306,7 +341,7 @@ footer {
   <!-- PLANS PAGE -->
   <div id="page-plans" class="page">
     <div class="card">
-      <h2 style="margin-bottom:4px;">Buy Plans (Demo)</h2>
+      <h2 style="margin-bottom:4px;">Buy Plans</h2>
       <p class="muted">Tap any plan to go to Deposit &amp; TID.</p>
     </div>
 
@@ -323,29 +358,29 @@ footer {
   <!-- DEPOSIT & TID PAGE -->
   <div id="page-deposit" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Deposit &amp; TID (Demo)</h2>
+      <h2 style="margin-bottom:6px;">Deposit &amp; TID</h2>
 
       <div class="stat" style="margin-bottom:12px;">
-        <div class="muted">EasyPaisa Payment Details (Demo Display)</div>
+        <div class="muted">EasyPaisa Payment Details</div>
         <div style="margin-top:8px;font-size:14px;">Account Name: <strong>Waqas Nadeem</strong></div>
         <div style="margin-top:4px;font-size:14px;">EasyPaisa Number: <strong>03192649784</strong></div>
       </div>
 
       <input type="number" placeholder="Deposit Amount (PKR)">
       <input type="text" placeholder="Transaction ID (TID)">
-      <label for="nav-home" class="btn gold-btn full">Submit Demo Deposit</label>
+      <label for="nav-home" class="btn gold-btn full">Submit Deposit</label>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Demo Deposit History</h3>
-      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | Status: <strong>Pending (Demo)</strong></div>
+      <h3 style="margin-bottom:8px;">Deposit History</h3>
+      <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | Status: <strong>Pending</strong></div>
     </div>
   </div>
 
   <!-- WITHDRAWAL PAGE -->
   <div id="page-withdraw" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Withdrawal (Demo)</h2>
+      <h2 style="margin-bottom:6px;">Withdrawal</h2>
       <p class="muted" style="margin-bottom:10px;">Example: Rs. 700 balance - Rs. 500 request = Rs. 200 remaining.</p>
 
       <select>
@@ -354,23 +389,41 @@ footer {
       </select>
       <input type="number" placeholder="Amount (Minimum Rs. 500)">
       <input type="text" placeholder="Wallet / Account Number">
-      <label for="nav-home" class="btn gold-btn full">Submit Demo Withdrawal</label>
+      <label for="nav-home" class="btn gold-btn full">Submit Withdrawal</label>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Demo Withdrawal History</h3>
-      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | Status: <strong>Pending (Demo)</strong></div>
+      <h3 style="margin-bottom:8px;">Withdrawal History</h3>
+      <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | Status: <strong>Pending</strong></div>
     </div>
   </div>
 
   <!-- REFERRAL PAGE -->
   <div id="page-referral" class="page">
     <div class="card">
-      <h2 style="margin-bottom:6px;">Referral Link (Demo)</h2>
-      <p class="muted">Your demo referral link:</p>
-      <input type="text" value="https://akcapital.demo/?ref=AK-DEMO1" readonly>
-      <div class="log-item" style="margin-top:8px;">Demo Referrals: <strong>0</strong></div>
-      <p class="muted">Demo display only. No real commissions or payouts.</p>
+      <span class="ref-badge">REFERRAL PROGRAM</span>
+      <h2 style="margin-bottom:6px;color:#d8b45a;">Invite &amp; Share Referral Link</h2>
+      <p class="muted">Enter your referral code, copy your link, and send it to friends so they open the website directly through your link.</p>
+
+      <div class="ref-box">
+        <p class="muted" style="margin-bottom:4px;">Your Referral Code</p>
+        <input type="text" id="akRefCodeInput" value="AK-INVITE" placeholder="Enter Referral Code">
+
+        <p class="muted" style="margin-bottom:4px;">Your Referral Link</p>
+        <input type="text" id="akRefLinkInput" readonly>
+
+        <div class="ref-row">
+          <button type="button" id="akCopyRefBtn" class="btn gold-btn" style="flex:1;min-width:140px;">Copy Referral Link</button>
+          <a id="akOpenRefLink" href="https://ladlawaqas527-lgtm.github.io/PKR-earning-/" class="btn outline-btn" style="min-width:110px;">Open Link</a>
+        </div>
+
+        <div id="akRefStatus" class="ref-status"></div>
+      </div>
+
+      <div class="grid" style="margin-top:12px;">
+        <div class="stat">Total Referrals<strong>0</strong></div>
+        <div class="stat">Referral Status<strong>Active</strong></div>
+      </div>
     </div>
   </div>
 
@@ -379,10 +432,10 @@ footer {
     <div class="card">
       <h2 style="margin-bottom:10px;">Profile</h2>
       <p class="muted">Email</p>
-      <strong style="display:block;margin-bottom:10px;">demo.user@gmail.com</strong>
+      <strong style="display:block;margin-bottom:10px;">user@gmail.com</strong>
 
       <p class="muted">Account Status</p>
-      <strong style="display:block;margin-bottom:10px;">Active (Demo)</strong>
+      <strong style="display:block;margin-bottom:10px;">Active</strong>
 
       <h3 style="margin-bottom:6px;">WhatsApp Support</h3>
       <p class="muted" style="margin-bottom:6px;">Support Number: 03192649784</p>
@@ -392,45 +445,45 @@ footer {
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Quick Help (Demo)</h3>
-      <div class="log-item"><strong>Welcome Bonus:</strong> New demo accounts start with Rs. 30 demo balance.</div>
+      <h3 style="margin-bottom:8px;">Quick Help</h3>
+      <div class="log-item"><strong>Welcome Bonus:</strong> New accounts start with Rs. 30 balance.</div>
       <div class="log-item"><strong>Withdrawal Rule:</strong> Deducted once on request; Admin approval does not deduct twice.</div>
     </div>
   </div>
 
-  <!-- ADMIN DEMO PAGE -->
+  <!-- ADMIN PAGE -->
   <div id="page-admin" class="page">
     <div class="card">
       <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
         <div>
-          <h2 style="color:#d8b45a;margin-bottom:2px;">Admin Panel — Demo</h2>
-          <p class="muted">Static UI preview only. Real admin security &amp; live balances require a backend &amp; database.</p>
+          <h2 style="color:#d8b45a;margin-bottom:2px;">Admin Panel</h2>
+          <p class="muted">Administrator management panel.</p>
         </div>
         <label for="nav-home" class="btn outline-btn small-btn">Back</label>
       </div>
     </div>
 
     <div class="grid" style="margin-bottom:14px;">
-      <div class="stat">Total Demo Users<strong>1</strong></div>
-      <div class="stat">24h Earnings Timer<strong>24:00:00 (Demo)</strong></div>
+      <div class="stat">Total Users<strong>1</strong></div>
+      <div class="stat">24h Earnings Timer<strong>24:00:00</strong></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">User Balance Add / Deduct (Demo Preview)</h3>
+      <h3 style="margin-bottom:8px;">User Balance Add / Deduct</h3>
       <input type="text" placeholder="User Gmail">
       <input type="number" placeholder="Amount (+ / -)">
-      <div class="btn gold-btn full">Update Demo Balance</div>
+      <div class="btn gold-btn full">Update Balance</div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">Deposit &amp; Withdrawal Requests (Demo Preview)</h3>
+      <h3 style="margin-bottom:8px;">Deposit &amp; Withdrawal Requests</h3>
       <div class="log-item"><strong>DEP-101</strong> — Rs. 500 | TID: 98451230 | <strong>Pending</strong></div>
       <div class="log-item"><strong>WD-201</strong> — Rs. 500 (EasyPaisa) | <strong>Pending</strong></div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:8px;">User Activity Log (Demo Preview)</h3>
-      <div class="log-item">Demo initialized with Rs. 30 welcome bonus.</div>
+      <h3 style="margin-bottom:8px;">User Activity Log</h3>
+      <div class="log-item">Account initialized with Rs. 30 welcome bonus.</div>
     </div>
   </div>
 
@@ -446,8 +499,120 @@ footer {
 </div>
 
 <footer>
-  AK CAPITAL GROUP — Pure HTML/CSS Demo UI
+  AK CAPITAL GROUP
 </footer>
+
+<script>
+(function() {
+  var LIVE_SITE_URL = "https://ladlawaqas527-lgtm.github.io/PKR-earning-/";
+  var codeInput = document.getElementById("akRefCodeInput");
+  var linkInput = document.getElementById("akRefLinkInput");
+  var openLinkEl = document.getElementById("akOpenRefLink");
+  var copyBtn = document.getElementById("akCopyRefBtn");
+  var statusEl = document.getElementById("akRefStatus");
+  var regRefInput = document.getElementById("regRefInput");
+
+  function getBaseUrl() {
+    if (window.location.protocol === "http:" || window.location.protocol === "https:") {
+      var base = window.location.origin + window.location.pathname;
+      return base.endsWith("/") ? base : (base + "/");
+    }
+    return LIVE_SITE_URL;
+  }
+
+  function buildRefUrl(rawCode) {
+    var clean = String(rawCode || "AK-INVITE").trim().replace(/\s+/g, "-");
+    if (!clean) {
+      clean = "AK-INVITE";
+    }
+    return getBaseUrl() + "?ref=" + encodeURIComponent(clean);
+  }
+
+  function syncReferralLink() {
+    if (!codeInput || !linkInput) return;
+    var url = buildRefUrl(codeInput.value);
+    linkInput.value = url;
+    if (openLinkEl) {
+      openLinkEl.href = url;
+    }
+  }
+
+  function fallbackCopy(text) {
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "0";
+      ta.style.left = "0";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, text.length);
+      var ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function handleCopyClick() {
+    syncReferralLink();
+    var text = linkInput ? linkInput.value : "";
+    if (!text) return;
+
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      navigator.clipboard.writeText(text).then(function() {
+        if (statusEl) {
+          statusEl.textContent = "Referral link copied! Anyone opening this link will come to the website.";
+        }
+      }).catch(function() {
+        var ok = fallbackCopy(text);
+        if (linkInput) {
+          linkInput.focus();
+          linkInput.select();
+        }
+        if (statusEl) {
+          statusEl.textContent = ok
+            ? "Referral link copied! Anyone opening this link will come to the website."
+            : "Link ready below — copy it to share with others.";
+        }
+      });
+    } else {
+      var ok = fallbackCopy(text);
+      if (linkInput) {
+        linkInput.focus();
+        linkInput.select();
+      }
+      if (statusEl) {
+        statusEl.textContent = ok
+          ? "Referral link copied! Anyone opening this link will come to the website."
+          : "Link ready below — copy it to share with others.";
+      }
+    }
+  }
+
+  if (codeInput) {
+    codeInput.addEventListener("input", syncReferralLink);
+  }
+  if (copyBtn) {
+    copyBtn.addEventListener("click", handleCopyClick);
+  }
+
+  try {
+    var params = new URLSearchParams(window.location.search);
+    var incomingRef = params.get("ref");
+    if (incomingRef) {
+      if (regRefInput) regRefInput.value = incomingRef;
+      if (codeInput) codeInput.value = incomingRef;
+    }
+  } catch (e) {}
+
+  syncReferralLink();
+})();
+</script>
 
 </body>
   </html>
