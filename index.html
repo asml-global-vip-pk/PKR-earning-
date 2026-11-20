@@ -69,11 +69,12 @@ button {
 }
 
 .badge {
-    background: #301818;
-    color: #ff7777;
+    background: #142b1d;
+    color: #4ade80;
     padding: 7px 12px;
     border-radius: 20px;
     font-size: 11px;
+    font-weight: 700;
 }
 
 /* Content */
@@ -201,7 +202,7 @@ h2 {
 .btn-small {
     width: auto;
     padding: 8px 13px;
-    margin: 0;
+    margin: 6px 4px 0 0;
     font-size: 12px;
 }
 
@@ -266,11 +267,12 @@ label {
 .notice {
     padding: 12px;
     border-radius: 10px;
-    background: #281919;
-    color: #ffaaaa;
+    background: #1e1518;
+    color: #f3c4c4;
     font-size: 12px;
     margin-bottom: 13px;
     line-height: 1.6;
+    border: 1px solid #3c2024;
 }
 
 .auth {
@@ -389,7 +391,7 @@ label {
 
 <header class="header">
     <div class="logo">AK <span>CAPITAL</span></div>
-    <div class="badge">DEMO PLATFORM</div>
+    <div class="badge">LIVE PLATFORM</div>
 </header>
 
 <main class="page">
@@ -401,10 +403,6 @@ label {
 <div style="text-align:center;margin:20px 0 25px">
     <h1 style="font-size:32px">AK <span class="red">CAPITAL GROUP</span></h1>
     <p class="subtitle">Welcome to AK Capital Group</p>
-</div>
-
-<div class="notice">
-    Demo mode: Registration and login are simulated. No real funds or investment transactions are processed.
 </div>
 
 <div class="auth-tabs">
@@ -451,13 +449,13 @@ label {
 <div class="hero">
     <small>Account Balance</small>
     <h1 id="homeBalance">Rs 30</h1>
-    <p>Demo balance only</p>
+    <p>Includes Rs 30 welcome bonus</p>
 </div>
 
 <div class="card">
     <div class="row">
         <div>
-            <strong id="userEmail">Guest</strong>
+            <strong id="userEmail">Member</strong>
             <p class="muted" style="font-size:12px;margin-top:6px">Account Status</p>
         </div>
         <span id="statusPill" class="pill green">Active Member</span>
@@ -504,11 +502,7 @@ label {
 <section id="plans" class="section">
 
 <h2>Investment Plans</h2>
-<p class="subtitle">Plan duration: 60 Days · Demo display</p>
-
-<div class="notice">
-    The figures below are illustrative examples only, not verified earnings or promises of profit.
-</div>
+<p class="subtitle">Plan duration: 60 Days · Minimum Plan Rs 500</p>
 
 <div class="plan">
     <h3>Plan 1 — Starter</h3>
@@ -518,7 +512,7 @@ label {
         60 days<br>
         Total Rs 2,700
     </div>
-    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+    <button class="btn btn-dark" onclick="navigate('deposit')">Select Plan</button>
 </div>
 
 <div class="plan featured">
@@ -529,7 +523,7 @@ label {
         60 days<br>
         Total Rs 5,700
     </div>
-    <button class="btn btn-red" onclick="demoMessage()">Select Plan</button>
+    <button class="btn btn-red" onclick="navigate('deposit')">Select Plan</button>
 </div>
 
 <div class="plan">
@@ -540,7 +534,7 @@ label {
         60 days<br>
         Total Rs 12,000
     </div>
-    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+    <button class="btn btn-dark" onclick="navigate('deposit')">Select Plan</button>
 </div>
 
 <div class="plan">
@@ -551,7 +545,7 @@ label {
         60 days<br>
         Total Rs 31,200
     </div>
-    <button class="btn btn-dark" onclick="demoMessage()">Select Plan</button>
+    <button class="btn btn-dark" onclick="navigate('deposit')">Select Plan</button>
 </div>
 
 </section>
@@ -571,6 +565,11 @@ label {
         <option>JazzCash</option>
     </select>
 
+    <div class="notice">
+        EasyPaisa Account: <strong>Waqas Nadeem</strong><br>
+        Number: <strong>03192649784</strong>
+    </div>
+
     <h3 style="margin:15px 0">Step 2. Amount</h3>
 
     <label>Amount (Min Rs 500)</label>
@@ -581,11 +580,7 @@ label {
 
     <h3 style="margin:10px 0">Step 3. Pay</h3>
 
-    <div class="notice">
-        Payment processing is disabled in this demo. Do not send funds.
-    </div>
-
-    <button class="btn btn-red" onclick="demoMessage()">Submit Deposit Request</button>
+    <button class="btn btn-red" onclick="submitDeposit()">Submit Deposit Request</button>
 </div>
 
 <div class="card">
@@ -610,7 +605,7 @@ label {
 
 <div class="card">
     <h3>Referral Code</h3>
-    <p id="myCode" style="margin:12px 0;color:var(--red)">AK-DEMO</p>
+    <p id="myCode" style="margin:12px 0;color:var(--red)">AK-000000</p>
     <button class="btn btn-dark" onclick="copyReferral()">Copy link</button>
     <button class="btn btn-red" onclick="shareReferral()">Share</button>
 </div>
@@ -644,7 +639,7 @@ label {
 <div class="card">
     <h3>Referral Terms & Conditions</h3>
     <p class="muted" style="font-size:12px;line-height:1.8;margin-top:10px">
-        Referral links are for demo purposes. Referral rewards are not issued or guaranteed.
+        Share your referral link to build your 3-level team network.
     </p>
 </div>
 
@@ -658,9 +653,9 @@ label {
 
 <div class="card">
     <h3>Profile</h3>
-    <p id="profileEmail" style="margin:12px 0">Guest</p>
+    <p id="profileEmail" style="margin:12px 0">Member</p>
     <p class="muted">Referral Code</p>
-    <p id="profileCode" class="red" style="margin:8px 0">AK-DEMO</p>
+    <p id="profileCode" class="red" style="margin:8px 0">AK-000000</p>
     <p class="muted">Active Plan</p>
     <p id="profilePlan" style="margin:8px 0">None</p>
     <p class="muted">Balance</p>
@@ -686,8 +681,7 @@ label {
             <strong id="netAmount">Rs 0</strong>
         </div>
 
-        <div class="notice">Actual withdrawals are disabled in this demo.</div>
-        <button class="btn btn-red" onclick="demoMessage()">Submit Withdrawal</button>
+        <button class="btn btn-red" onclick="submitWithdraw()">Submit Withdrawal</button>
     </div>
 </div>
 
@@ -752,198 +746,33 @@ label {
 
 </div>
 
-<script>
-
-/* Demo application logic */
-
-const ADMIN_EMAIL = "Ladlawaqas527@gmail.com";
-const WITHDRAW_TAX_RATE = 0.10;
-
-let currentUser = null;
-let soundEnabled = false;
-let users = [];
-let deposits = [];
-let withdrawals = [];
-
-function toast(message) {
-    const t = document.getElementById("toast");
-    t.innerText = message;
-    t.style.display = "block";
-
-    clearTimeout(window.toastTimer);
-
-    window.toastTimer = setTimeout(() => {
-        t.style.display = "none";
-    }, 2800);
-}
-
-function demoMessage() {
-    toast("This feature is disabled in demo mode.");
-}
-
-function showAuth(tab) {
-    document.getElementById("registerPanel").classList.remove("active");
-    document.getElementById("loginPanel").classList.remove("active");
-
-    document.getElementById(tab + "Panel").classList.add("active");
-}
-
-function register() {
-    const email = document.getElementById("regEmail").value.trim();
-    const password = document.getElementById("regPassword").value;
-    const refCode = document.getElementById("regRef").value.trim();
-
-    if (!email || !password) {
-        toast("Enter email and password");
-        return;
-    }
-
-    if (password.length < 6) {
-        toast("Password must be at least 6 characters");
-        return;
-    }
-
-    const exists = users.find(u => u.email === email);
-
-    if (exists) {
-        toast("Account already exists. Please login.");
-        showAuth("login");
-        return;
-    }
-
-    const uid = Math.random().toString(36).substring(2, 10);
-
-    const user = {
-        uid: uid,
-        email: email,
-        password: password,
-        balance: 30,
-        welcomeBonus: 30,
-        plan: "None",
-        blocked: false,
-        refCount: 0,
-        myCode: "AK-" + uid.slice(0, 6).toUpperCase(),
-        referredBy: refCode || null
-    };
-
-    users.push(user);
-    currentUser = user;
-
-    saveData();
-    startApp();
-
-    toast("Demo account created successfully");
-}
-
-function login() {
-    const email = document.getElementById("loginEmail").value.trim();
-    const password = document.getElementById("loginPassword").value;
-
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (!user) {
-        toast("Account not found in demo");
-        return;
-    }
-
-    if (user.blocked) {
-        toast("Account is blocked");
-        return;
-    }
-
-    currentUser = user;
-    startApp();
-    toast("Login successful");
-}
-
-function logout() {
-    currentUser = null;
-
-    document.querySelectorAll(".section").forEach(s => {
-        s.classList.remove("active");
-    });
-
-    document.getElementById("authSection").classList.add("active");
-    document.getElementById("bottomNav").style.display = "none";
-
-    toast("Logged out");
-}
-
-function startApp() {
-    document.getElementById("authSection").classList.remove("active");
-    document.getElementById("bottomNav").style.display = "flex";
-
-    navigate("home");
-
-    refreshUI();
-}
-
-function refreshUI() {
-    if (!currentUser) return;
-
-    document.getElementById("userEmail").innerText = currentUser.email;
-    document.getElementById("profileEmail").innerText = currentUser.email;
-
-    document.getElementById("homeBalance").innerText =
-        "Rs " + currentUser.balance;
-
-    document.getElementById("earningBalance").innerText =
-        "Rs " + currentUser.balance;
-
-    document.getElementById("profileBalance").innerText =
-        "Rs " + currentUser.balance;
-
-    document.getElementById("activePlan").innerText =
-        currentUser.plan || "None";
-
-    document.getElementById("profilePlan").innerText =
-        currentUser.plan || "None";
-
-    document.getElementById("myCode").innerText =
-        currentUser.myCode;
-
-    document.getElementById("profileCode").innerText =
-        currentUser.myCode;
-
-    document.getElementById("teamCount").innerText =
-        currentUser.refCount || 0;
-
-    document.getElementById("teamStat").innerText =
-        currentUser.refCount || 0;
-
-    const pill = document.getElementById("statusPill");
-
-    pill.innerText = currentUser.blocked ? "Blocked" : "Active Member";
-    pill.className = currentUser.blocked ? "pill" : "pill green";
-
-    renderAdmin();
-}
-
-function navigate(section, button) {
-    document.querySelectorAll(".section").forEach(s => {
-        s.classList.remove("active");
-    });
-
-    const target = document.getElementById(section);
-
-    if (target) {
-        target.classList.add("active");
-    }
-
-    document.querySelectorAll(".nav-btn").forEach(b => {
-        b.classList.remove("active");
-    });
-
-    if (button) {
-        button.classList.add("active");
-    } else {
-        <script type="module">
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, updateDoc, addDoc, collection, query, where, onSnapshot, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc,
+  addDoc,
+  collection,
+  query,
+  where,
+  onSnapshot,
+  runTransaction,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const ADMIN_EMAIL = "Ladlawaqas527@gmail.com";
 const WITHDRAW_TAX_RATE = 0.10;
+
 const app = initializeApp({
   apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
   authDomain: "pkr-earning-f15bd.firebaseapp.com",
@@ -953,8 +782,17 @@ const app = initializeApp({
   appId: "1:1092045219657:web:187ab8b4d5ed40f09e9c98",
   measurementId: "G-98ZXWDD3RY"
 });
-const auth = getAuth(app), db = getFirestore(app);
-let curUser = null, curProf = null, unsubs = [], latestUsers = [], latestDeps = [], latestWds = [];
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let curUser = null;
+let curProf = null;
+let unsubs = [];
+let latestUsers = [];
+let latestDeps = [];
+let latestWds = [];
+
 const isAdmin = () => Boolean(curUser && curUser.email && curUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase());
 const clearSubs = () => { unsubs.forEach(f => { try { f(); } catch (e) {} }); unsubs = []; };
 
@@ -966,12 +804,13 @@ window.toast = function(m) {
   clearTimeout(window.toastTimer);
   window.toastTimer = setTimeout(() => { t.style.display = "none"; }, 2800);
 };
-window.demoMessage = function() { window.toast("Select a plan or use Deposit / Withdraw."); };
+
 window.showAuth = function(tab) {
   document.getElementById("registerPanel").classList.remove("active");
   document.getElementById("loginPanel").classList.remove("active");
   document.getElementById(tab + "Panel").classList.add("active");
 };
+
 window.navigate = function(sec, btn) {
   if (!curUser && sec !== "authSection") sec = "authSection";
   document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
@@ -982,55 +821,112 @@ window.navigate = function(sec, btn) {
   if (el) el.classList.add("active");
   window.scrollTo({ top: 0, behavior: "smooth" });
 };
+
 window.toggleWithdraw = function() {
   const b = document.getElementById("withdrawBox");
   if (!b) return;
   b.style.display = b.style.display === "none" ? "block" : "none";
   window.calculateWithdraw();
 };
+
 window.calculateWithdraw = function() {
-  const a = Number(document.getElementById("withdrawAmount").value) || 0, tax = Math.round(a * WITHDRAW_TAX_RATE);
+  const a = Number(document.getElementById("withdrawAmount").value) || 0;
+  const tax = Math.round(a * WITHDRAW_TAX_RATE);
   document.getElementById("taxAmount").innerText = "Rs " + tax;
   document.getElementById("netAmount").innerText = "Rs " + Math.max(0, a - tax);
 };
-window.toggleSound = function() { window.toast(document.getElementById("soundToggle").checked ? "Sound effects enabled" : "Sound effects disabled"); };
-window.copyReferral = function() {
-  const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
-  navigator.clipboard?.writeText ? navigator.clipboard.writeText(u).then(() => window.toast("Referral link copied")).catch(() => window.toast(c)) : window.toast(c);
+
+window.toggleSound = function() {
+  window.toast(document.getElementById("soundToggle").checked ? "Sound effects enabled" : "Sound effects disabled");
 };
+
+window.copyReferral = function() {
+  const c = curProf?.myCode || "AK-000000";
+  const u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(u).then(() => window.toast("Referral link copied")).catch(() => window.toast(c));
+  } else {
+    window.toast(c);
+  }
+};
+
 window.shareReferral = function() {
-  const c = curProf?.myCode || "AK-DEMO", u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
-  navigator.share ? navigator.share({ title: "AK Capital Group", text: "Join with code " + c, url: u }).catch(() => {}) : window.copyReferral();
+  const c = curProf?.myCode || "AK-000000";
+  const u = location.origin + location.pathname + "?ref=" + encodeURIComponent(c);
+  if (navigator.share) {
+    navigator.share({ title: "AK Capital Group", text: "Join with code " + c, url: u }).catch(() => {});
+  } else {
+    window.copyReferral();
+  }
 };
 
 window.register = async function() {
-  const email = document.getElementById("regEmail").value.trim(), pass = document.getElementById("regPassword").value, refCode = document.getElementById("regRef").value.trim();
+  const email = document.getElementById("regEmail").value.trim();
+  const pass = document.getElementById("regPassword").value;
+  const refCode = document.getElementById("regRef").value.trim();
   if (!email || pass.length < 6) return window.toast("Enter email and 6+ char password");
   try {
-    const cred = await createUserWithEmailAndPassword(auth, email, pass), uid = cred.user.uid;
-    await setDoc(doc(db, "akcg_users", uid), { uid, email, balance: 30, welcomeBonus: 30, plan: "None", blocked: false, refCount: 0, myCode: "AK-" + uid.slice(0, 6).toUpperCase(), referredBy: refCode || null, createdAt: serverTimestamp() });
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    const uid = cred.user.uid;
+    await setDoc(doc(db, "akcg_users", uid), {
+      uid,
+      email,
+      balance: 30,
+      welcomeBonus: 30,
+      plan: "None",
+      blocked: false,
+      refCount: 0,
+      myCode: "AK-" + uid.slice(0, 6).toUpperCase(),
+      referredBy: refCode || null,
+      createdAt: serverTimestamp()
+    });
     window.toast("Account created with Rs 30 bonus");
-  } catch (e) { window.toast(e.message); }
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.login = async function() {
-  const email = document.getElementById("loginEmail").value.trim(), pass = document.getElementById("loginPassword").value;
+  const email = document.getElementById("loginEmail").value.trim();
+  const pass = document.getElementById("loginPassword").value;
   if (!email || !pass) return window.toast("Enter email and password");
-  try { await signInWithEmailAndPassword(auth, email, pass); window.toast("Login successful"); } catch (e) { window.toast(e.message); }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    window.toast("Login successful");
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
-window.logout = async function() { clearSubs(); await signOut(auth); window.toast("Logged out"); };
+window.logout = async function() {
+  clearSubs();
+  await signOut(auth);
+  window.toast("Logged out");
+};
 
 window.submitDeposit = async function() {
   if (!curUser || !curProf) return window.toast("Login first");
   if (curProf.blocked) return window.toast("Account is blocked");
-  const method = document.getElementById("depositMethod").value, amount = Number(document.getElementById("depositAmount").value), tid = document.getElementById("depositTID").value.trim();
+  const method = document.getElementById("depositMethod").value;
+  const amount = Number(document.getElementById("depositAmount").value);
+  const tid = document.getElementById("depositTID").value.trim();
   if (!amount || amount < 500 || !tid) return window.toast("Min Rs 500 and TID required");
   try {
-    await addDoc(collection(db, "akcg_deposits"), { uid: curUser.uid, email: curUser.email, method, amount, tid, status: "Pending", createdAt: serverTimestamp() });
-    document.getElementById("depositAmount").value = ""; document.getElementById("depositTID").value = "";
+    await addDoc(collection(db, "akcg_deposits"), {
+      uid: curUser.uid,
+      email: curUser.email,
+      method,
+      amount,
+      tid,
+      status: "Pending",
+      createdAt: serverTimestamp()
+    });
+    document.getElementById("depositAmount").value = "";
+    document.getElementById("depositTID").value = "";
     window.toast("Deposit request submitted");
-  } catch (e) { window.toast(e.message); }
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.submitWithdraw = async function() {
@@ -1038,85 +934,184 @@ window.submitWithdraw = async function() {
   if (curProf.blocked) return window.toast("Account is blocked");
   const amount = Number(document.getElementById("withdrawAmount").value);
   if (!amount || amount < 500) return window.toast("Minimum withdrawal is Rs 500");
-  const tax = Math.round(amount * WITHDRAW_TAX_RATE), netAmount = Math.max(0, amount - tax);
+  const tax = Math.round(amount * WITHDRAW_TAX_RATE);
+  const netAmount = Math.max(0, amount - tax);
   try {
     await runTransaction(db, async (tx) => {
-      const uRef = doc(db, "akcg_users", curUser.uid), snap = await tx.get(uRef);
+      const uRef = doc(db, "akcg_users", curUser.uid);
+      const snap = await tx.get(uRef);
       if (!snap.exists()) throw new Error("User profile missing");
-      const d = snap.data(), bal = Number(d.balance || 0);
+      const d = snap.data();
+      const bal = Number(d.balance || 0);
       if (d.blocked) throw new Error("Account is blocked");
       if (amount > bal) throw new Error("Insufficient balance");
       tx.update(uRef, { balance: bal - amount });
-      tx.set(doc(collection(db, "akcg_withdrawals")), { uid: curUser.uid, email: curUser.email, amount, tax, netAmount, status: "Pending", createdAt: serverTimestamp() });
+      tx.set(doc(collection(db, "akcg_withdrawals")), {
+        uid: curUser.uid,
+        email: curUser.email,
+        amount,
+        tax,
+        netAmount,
+        status: "Pending",
+        createdAt: serverTimestamp()
+      });
     });
-    document.getElementById("withdrawAmount").value = ""; window.calculateWithdraw(); window.toast("Withdrawal request submitted");
-  } catch (e) { window.toast(e.message); }
+    document.getElementById("withdrawAmount").value = "";
+    window.calculateWithdraw();
+    window.toast("Withdrawal request submitted");
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.adminApproveDep = async function(id) {
   if (!isAdmin()) return window.toast("Admin only");
   try {
     await runTransaction(db, async (tx) => {
-      const dRef = doc(db, "akcg_deposits", id), dep = (await tx.get(dRef)).data();
+      const dRef = doc(db, "akcg_deposits", id);
+      const dep = (await tx.get(dRef)).data();
       if (!dep || dep.status !== "Pending") throw new Error("Already processed");
-      const uRef = doc(db, "akcg_users", dep.uid), uData = (await tx.get(uRef)).data() || {};
+      const uRef = doc(db, "akcg_users", dep.uid);
+      const uData = (await tx.get(uRef)).data() || {};
       tx.update(dRef, { status: "Approved" });
       tx.update(uRef, { balance: Number(uData.balance || 0) + Number(dep.amount || 0) });
     });
     window.toast("Deposit approved");
-  } catch (e) { window.toast(e.message); }
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.adminRejectDep = async function(id) {
   if (!isAdmin()) return window.toast("Admin only");
-  try { await updateDoc(doc(db, "akcg_deposits", id), { status: "Rejected" }); window.toast("Deposit rejected"); } catch (e) { window.toast(e.message); }
+  try {
+    await updateDoc(doc(db, "akcg_deposits", id), { status: "Rejected" });
+    window.toast("Deposit rejected");
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.adminApproveWd = async function(id) {
   if (!isAdmin()) return window.toast("Admin only");
-  try { await updateDoc(doc(db, "akcg_withdrawals", id), { status: "Approved" }); window.toast("Withdrawal approved"); } catch (e) { window.toast(e.message); }
+  try {
+    await updateDoc(doc(db, "akcg_withdrawals", id), { status: "Approved" });
+    window.toast("Withdrawal approved");
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 window.adminRejectWd = async function(id) {
   if (!isAdmin()) return window.toast("Admin only");
   try {
     await runTransaction(db, async (tx) => {
-      const wRef = doc(db, "akcg_withdrawals", id), wd = (await tx.get(wRef)).data();
+      const wRef = doc(db, "akcg_withdrawals", id);
+      const wd = (await tx.get(wRef)).data();
       if (!wd || wd.status !== "Pending") throw new Error("Already processed");
-      const uRef = doc(db, "akcg_users", wd.uid), uSnap = await tx.get(uRef);
+      const uRef = doc(db, "akcg_users", wd.uid);
+      const uSnap = await tx.get(uRef);
       if (uSnap.exists()) tx.update(uRef, { balance: Number(uSnap.data().balance || 0) + Number(wd.amount || 0) });
       tx.update(wRef, { status: "Rejected" });
     });
     window.toast("Withdrawal rejected & refunded");
-  } catch (e) { window.toast(e.message); }
+  } catch (e) {
+    window.toast(e.message);
+  }
+};
+
+window.adminUpdateBalance = async function() {
+  if (!isAdmin()) return window.toast("Admin only");
+  const uid = document.getElementById("admUserSelect")?.value;
+  const delta = Number(document.getElementById("admBalanceDelta")?.value);
+  if (!uid || !delta) return window.toast("Select user and enter amount");
+  try {
+    await runTransaction(db, async (tx) => {
+      const uRef = doc(db, "akcg_users", uid);
+      const snap = await tx.get(uRef);
+      if (!snap.exists()) throw new Error("User not found");
+      tx.update(uRef, { balance: Number(snap.data().balance || 0) + delta });
+    });
+    document.getElementById("admBalanceDelta").value = "";
+    window.toast("Balance updated");
+  } catch (e) {
+    window.toast(e.message);
+  }
+};
+
+window.adminToggleBlock = async function(blocked) {
+  if (!isAdmin()) return window.toast("Admin only");
+  const uid = document.getElementById("admUserSelect")?.value;
+  if (!uid) return window.toast("Select user first");
+  try {
+    await updateDoc(doc(db, "akcg_users", uid), { blocked: Boolean(blocked) });
+    window.toast(blocked ? "User blocked" : "User unblocked");
+  } catch (e) {
+    window.toast(e.message);
+  }
 };
 
 function renderAdminLive() {
   const area = document.getElementById("adminArea");
   if (!area) return;
   if (!isAdmin()) { area.innerHTML = ""; return; }
+
+  const opts = latestUsers.map(u =>
+    `<option value="${u.uid}">${u.email} (Rs ${Number(u.balance || 0)})${u.blocked ? " [Blocked]" : ""}</option>`
+  ).join("");
+
   area.innerHTML = `
     <div class="card admin-section">
       <h3>Live Admin Panel (${ADMIN_EMAIL})</h3>
       <p class="subtitle">Users: ${latestUsers.length}</p>
-      <strong>Deposits</strong>
-      ${latestDeps.map(d => `<div class="history-item"><strong>${d.email}</strong> · Rs ${d.amount} · TID: ${d.tid} · <strong>${d.status}</strong>${d.status==="Pending"?`<br><button class="btn btn-green btn-small" onclick="adminApproveDep('${d.id}')">Approve</button> <button class="btn btn-dark btn-small" onclick="adminRejectDep('${d.id}')">Reject</button>`:""}</div>`).join("") || `<p class="muted">None</p>`}
-      <strong style="display:block;margin-top:12px;">Withdrawals</strong>
-      ${latestWds.map(w => `<div class="history-item"><strong>${w.email}</strong> · Rs ${w.amount} (Net Rs ${w.netAmount}) · <strong>${w.status}</strong>${w.status==="Pending"?`<br><button class="btn btn-green btn-small" onclick="adminApproveWd('${w.id}')">Approve</button> <button class="btn btn-dark btn-small" onclick="adminRejectWd('${w.id}')">Reject</button>`:""}</div>`).join("") || `<p class="muted">None</p>`}
+
+      <label>Select User</label>
+      <select id="admUserSelect">${opts || `<option value="">No users</option>`}</select>
+
+      <label>Adjust Balance (+ add, - deduct)</label>
+      <input id="admBalanceDelta" type="number" placeholder="e.g. 500 or -200">
+
+      <button class="btn btn-red" onclick="adminUpdateBalance()">Update Balance</button>
+      <div class="grid">
+        <button class="btn btn-dark" onclick="adminToggleBlock(true)">Block User</button>
+        <button class="btn btn-green" onclick="adminToggleBlock(false)">Unblock User</button>
+      </div>
+
+      <strong style="display:block;margin-top:16px;">Deposits</strong>
+      ${latestDeps.map(d => `<div class="history-item"><strong>${d.email}</strong> · Rs ${d.amount} · TID: ${d.tid} · <strong>${d.status}</strong>${d.status === "Pending" ? `<br><button class="btn btn-green btn-small" onclick="adminApproveDep('${d.id}')">Approve</button><button class="btn btn-dark btn-small" onclick="adminRejectDep('${d.id}')">Reject</button>` : ""}</div>`).join("") || `<p class="muted" style="margin-top:8px;">None</p>`}
+
+      <strong style="display:block;margin-top:16px;">Withdrawals</strong>
+      ${latestWds.map(w => `<div class="history-item"><strong>${w.email}</strong> · Rs ${w.amount} (Net Rs ${w.netAmount}) · <strong>${w.status}</strong>${w.status === "Pending" ? `<br><button class="btn btn-green btn-small" onclick="adminApproveWd('${w.id}')">Approve</button><button class="btn btn-dark btn-small" onclick="adminRejectWd('${w.id}')">Reject</button>` : ""}</div>`).join("") || `<p class="muted" style="margin-top:8px;">None</p>`}
     </div>`;
 }
 
 onAuthStateChanged(auth, async (u) => {
-  clearSubs(); curUser = u; curProf = null;
+  clearSubs();
+  curUser = u;
+  curProf = null;
   document.getElementById("authSection").classList.toggle("active", !u);
   document.getElementById("bottomNav").style.display = u ? "flex" : "none";
   if (!u) return;
+
   const uRef = doc(db, "akcg_users", u.uid);
   if (!(await getDoc(uRef)).exists()) {
-    await setDoc(uRef, { uid: u.uid, email: u.email, balance: 30, welcomeBonus: 30, plan: "None", blocked: false, refCount: 0, myCode: "AK-" + u.uid.slice(0, 6).toUpperCase(), referredBy: null, createdAt: serverTimestamp() });
+    await setDoc(uRef, {
+      uid: u.uid,
+      email: u.email,
+      balance: 30,
+      welcomeBonus: 30,
+      plan: "None",
+      blocked: false,
+      refCount: 0,
+      myCode: "AK-" + u.uid.slice(0, 6).toUpperCase(),
+      referredBy: null,
+      createdAt: serverTimestamp()
+    });
   }
+
   unsubs.push(onSnapshot(uRef, (ds) => {
-    if (!ds.exists()) return; curProf = ds.data();
+    if (!ds.exists()) return;
+    curProf = ds.data();
     document.getElementById("userEmail").innerText = curProf.email;
     document.getElementById("profileEmail").innerText = curProf.email;
     document.getElementById("homeBalance").innerText = "Rs " + Number(curProf.balance || 0);
@@ -1132,19 +1127,30 @@ onAuthStateChanged(auth, async (u) => {
     pill.innerText = curProf.blocked ? "Blocked" : "Active Member";
     pill.className = curProf.blocked ? "pill" : "pill green";
   }));
+
   unsubs.push(onSnapshot(query(collection(db, "akcg_deposits"), where("uid", "==", u.uid)), (qs) => {
-    document.getElementById("depositHistory").innerHTML = qs.docs.map(d => { const x = d.data(); return `<div class="history-item">${x.method} · Rs ${x.amount} · TID: ${x.tid} · <strong>${x.status}</strong></div>`; }).join("") || `<p class="muted" style="margin-top:12px">No deposit history available.</p>`;
+    document.getElementById("depositHistory").innerHTML = qs.docs.map(d => {
+      const x = d.data();
+      return `<div class="history-item">${x.method} · Rs ${x.amount} · TID: ${x.tid} · <strong>${x.status}</strong></div>`;
+    }).join("") || `<p class="muted" style="margin-top:12px">No deposit history available.</p>`;
   }));
+
   unsubs.push(onSnapshot(query(collection(db, "akcg_withdrawals"), where("uid", "==", u.uid)), (qs) => {
-    document.getElementById("withdrawHistory").innerHTML = qs.docs.map(d => { const x = d.data(); return `<div class="history-item">Rs ${x.amount} (Net Rs ${x.netAmount}) · <strong>${x.status}</strong></div>`; }).join("") || `<p class="muted" style="margin-top:12px">No withdrawal history available.</p>`;
+    document.getElementById("withdrawHistory").innerHTML = qs.docs.map(d => {
+      const x = d.data();
+      return `<div class="history-item">Rs ${x.amount} (Net Rs ${x.netAmount}) · <strong>${x.status}</strong></div>`;
+    }).join("") || `<p class="muted" style="margin-top:12px">No withdrawal history available.</p>`;
   }));
+
   if (isAdmin()) {
     unsubs.push(onSnapshot(collection(db, "akcg_users"), (s) => { latestUsers = s.docs.map(d => d.data()); renderAdminLive(); }));
     unsubs.push(onSnapshot(collection(db, "akcg_deposits"), (s) => { latestDeps = s.docs.map(d => ({ id: d.id, ...d.data() })); renderAdminLive(); }));
     unsubs.push(onSnapshot(collection(db, "akcg_withdrawals"), (s) => { latestWds = s.docs.map(d => ({ id: d.id, ...d.data() })); renderAdminLive(); }));
   }
+
   window.navigate("home");
 });
 </script>
+
 </body>
 </html>
