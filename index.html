@@ -1234,4 +1234,237 @@ renderAll();
   };
 })();
 </script>
- 
+ <script>
+(function() {
+  const ADMIN_MAIL = "ladlawaqas527@gmail.com";
+  const STORAGE_KEY = "ASML_PLAN_BOOST_FINAL_V1";
+  const $id = id => document.getElementById(id);
+
+  function cleanLeakedCodeText() {
+    const containers = [document.querySelector("main.container"), document.body].filter(Boolean);
+    containers.forEach(root => {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const toRemove = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        const txt = (node.nodeValue || "").trim();
+        if (
+          txt.includes("injectProfitEditorBox") ||
+          txt.includes("ASML_PLAN_PROFIT_BOOST") ||
+          txt.includes("applyBoostToPlans") ||
+          txt.includes("syncSelectedPlanProfitInput")
+        ) {
+          toRemove.push(node);
+        }
+      }
+      toRemove.forEach(n => {
+        if (n.parentNode) n.parentNode.removeChild(n);
+      });
+    });
+  } 
+ function currentAccountEmail() {
+    try {
+      const activeEmail = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
+      if (activeEmail) return activeEmail;
+    } catch (e) {}
+    const lbl = ($id("mineUserLabel")?.innerText || $id("activeUserLabel")?.innerText || "").toLowerCase();
+    const match = lbl.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
+    return match ? match[0].toLowerCase() : "";
+  }
+
+  function isCurrentUserAdmin() {
+    return currentAccountEmail() === ADMIN_MAIL;
+  }
+
+  function loadCfg() {
+    try {
+      const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (d && typeof d === "object") return d;
+    } catch (e) {}
+    return { multiplier: 2.5, customDaily: {} };
+  }
+
+  function saveCfg(cfg) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+    } catch (e) {}
+  }
+
+  let cfg = loadCfg();
+
+  function boostPlansNow() {
+    if (!Array.isArray(window.planData)) return;
+    window.planData.forEach((p, idx) => {
+      if (typeof p._origDaily !== "number") p._origDaily = Number(p.daily || 0);
+      const custom = cfg.customDaily[idx];
+      const dailyVal = (typeof custom === "number" && !isNaN(custom) && custom > 0)
+        ? custom
+        : Math.round(p._origDaily * Number(cfg.multiplier || 1));
+      p.daily = dailyVal;
+      p.hourly = Number((dailyVal / 24).toFixed(2));
+      p.cycle = p.cycle || 120;
+      p.total = dailyVal * p.cycle;
+    });
+  if (typeof window.renderPlans === "function") {
+      window.renderPlans();
+    }
+  }
+
+  function syncAdminVisibility() {
+    const adminAllowed = isCurrentUserAdmin();
+    const adminBtn = $id("adminMenuBtn");
+    const adminPage = $id("adminPage");
+    const adminDash = $id("adminDashboard");
+    const adminLoginCard = $id("adminLoginCard");
+    const profitBox = $id("customPlanProfitBox");
+
+    if (adminBtn) {
+      adminBtn.classList.toggle("hidden", !adminAllowed);
+    }
+
+    if (!adminAllowed) {
+      if (profitBox) profitBox.remove();
+      if (adminDash) adminDash.classList.add("hidden");
+      if (adminPage && !adminPage.classList.contains("hidden")) {
+        alert("Admin Panel is restricted to authorized admin only.");
+        if (typeof window.openPage === "function") window.openPage("minePage");
+      }
+      return;
+    }
+
+    if (adminLoginCard) adminLoginCard.classList.add("hidden");
+    if (adminDash) adminDash.classList.remove("hidden");
+
+    const parent = adminDash || adminPage;
+    if (parent && Array.isArray(window.planData) && !$id("customPlanProfitBox")) {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.id = "customPlanProfitBox";
+      const optionsHtml = window.planData
+        .map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`)
+        .join("");
+  card.innerHTML = `
+        <h3>Admin Only: VIP Plan Profit Settings</h3>
+        <p class="muted">Set daily profit or multiplier for VIP plans.</p>
+        <label>Select VIP Plan</label>
+        <select class="input" id="adminProfitPlanSelect" onchange="window.adminSyncProfitInput()">
+          ${optionsHtml}
+        </select>
+        <label>Daily Profit (Rs)</label>
+        <input class="input" id="adminProfitDailyInput" type="number" min="1" placeholder="Enter daily profit">
+        <button class="btn" onclick="window.adminSavePlanProfit()">Save Plan Profit</button>
+        <hr style="margin:12px 0">
+        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
+        <input class="input" id="adminProfitMultInput" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
+        <button class="btn secondary" onclick="window.adminApplyMultiplier()">Apply to All Plans</button>
+      `;
+      parent.appendChild(card);
+      window.adminSyncProfitInput();
+    }
+  }
+
+  window.adminSyncProfitInput = function() {
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($id("adminProfitPlanSelect")?.value || 0);
+    const pl = window.planData[idx];
+    if (pl && $id("adminProfitDailyInput")) {
+      $id("adminProfitDailyInput").value = pl.daily;
+    }
+  };
+
+  window.adminSavePlanProfit = function() {
+    if (!isCurrentUserAdmin()) return alert("Unauthorized.");
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($id("adminProfitPlanSelect")?.value || 0);
+    const val = Number($id("adminProfitDailyInput")?.value || 0);
+    if (!val || val <= 0) return alert("Enter valid daily profit.");
+    cfg.customDaily[idx] = val;
+    saveCfg(cfg);
+    boostPlansNow();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
+  };
+ window.adminApplyMultiplier = function() {
+    if (!isCurrentUserAdmin()) return alert("Unauthorized.");
+    const mult = Number($id("adminProfitMultInput")?.value || 1);
+    if (!mult || mult <= 0) return alert("Enter valid multiplier.");
+    cfg.multiplier = mult;
+    cfg.customDaily = {};
+    saveCfg(cfg);
+    boostPlansNow();
+    window.adminSyncProfitInput();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("All VIP plans updated with " + mult + "x profit.");
+  };
+
+  function ensureChangePasswordSection() {
+    const authSec = $id("authPage");
+    if (!authSec || $id("changePassCardFinal")) return;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.id = "changePassCardFinal";
+    card.innerHTML = `
+      <h3>Change Password</h3>
+      <label>Account Email or Phone</label>
+      <input class="input" id="finalCpUser" placeholder="Enter account email or phone">
+      <label>Old Password</label>
+      <input class="input" id="finalCpOld" type="password" placeholder="Enter current password">
+      <label>New Password</label>
+      <input class="input" id="finalCpNew" type="password" placeholder="Enter new password (min 4 chars)">
+      <button class="btn" onclick="window.finalDoChangePassword()">Change Password</button>
+    `;
+    const backBtn = authSec.querySelector("button.btn.secondary");
+    if (backBtn) authSec.insertBefore(card, backBtn);
+    else authSec.appendChild(card);
+  }
+
+  window.finalDoChangePassword = function() {
+    const userVal = ($id("finalCpUser")?.value || "").trim().toLowerCase();
+    const oldVal = $id("finalCpOld")?.value || "";
+    const newVal = $id("finalCpNew")?.value || "";
+    if (!userVal || !oldVal || newVal.length < 4) {
+      return alert("Please enter account, old password, and new password (min 4 chars).");
+    }
+    try {
+      const store = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (!Array.isArray(store.users)) return alert("No users database found.");
+      const idx = store.users.findIndex(u => String(u.contact || "").toLowerCase() === userVal && u.password === oldVal);
+      if (idx === -1) return alert("Account or old password is wrong.");
+      store.users[idx].password = newVal;
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(store));
+      $id("finalCpOld").value = "";
+      $id("finalCpNew").value = "";
+      alert("Password changed successfully!");
+    } catch (e) {
+      alert("Error updating password.");
+    }
+  };
+
+  function runAllCleanups() {
+    cleanLeakedCodeText();
+    boostPlansNow();
+    ensureChangePasswordSection();
+    syncAdminVisibility();
+  }
+
+  runAllCleanups();
+
+  const prevRenderAll = window.renderAll;
+  window.renderAll = function() {
+    if (typeof prevRenderAll === "function") prevRenderAll();
+    runAllCleanups();
+  };
+
+  const prevOpenPage = window.openPage;
+  window.openPage = function(id) {
+    if (typeof prevOpenPage === "function") prevOpenPage(id);
+    runAllCleanups();
+  };
+
+  const prevNav = window.navigate;
+  window.navigate = function(id, btn) {
+    if (typeof prevNav === "function") prevNav(id, btn);
+    runAllCleanups();
+  };
+})();
+</scrip
