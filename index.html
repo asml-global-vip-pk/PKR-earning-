@@ -1337,3 +1337,470 @@ renderAll();
 })();
 </script>
  
+<script>
+(function() {
+  const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
+  const OWNER_NAME = "Waqas Nadeem";
+  const OWNER_PHONE = "03192649784";
+  const CFG_KEY = "ASML_MASTER_PROFIT_CFG_V6";
+  const $ = id => document.getElementById(id);
+
+  function loadCfg() {
+    try {
+      const data = JSON.parse(localStorage.getItem(CFG_KEY) || "null");
+      if (data && typeof data === "object") return data;
+    } catch (e) {}
+    return { multiplier: 2.5, customDaily: {} };
+  }
+
+  function saveCfg(cfg) {
+    try {
+      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+    } catch (e) {}
+  }
+
+  let cfg = loadCfg();
+
+  function cleanStrayText() {
+    const tokens = [
+      "injectProfitEditorBox",
+      "ASML_PLAN_PROFIT_BOOST",
+      "applyBoostToPlans",
+      "syncSelectedPlanProfitInput",
+      "saveSinglePlanProfit",
+      "applyAllPlansMultiplier",
+      "cleanLeakedCodeText"
+    ];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const removeList = [];
+    let n;
+    while ((n = walker.nextNode())) {
+      const parentTag = n.parentElement ? n.parentElement.tagName : "";
+      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
+      const txt = (n.nodeValue || "").trim();
+      if (txt && tokens.some(t => txt.includes(t))) {
+        removeList.push(n);
+      }
+    }
+    removeList.forEach(item => {
+      if (item.parentNode) item.parentNode.removeChild(item);
+    });
+  }
+ function getActiveEmail() {
+    try {
+      const savedUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
+      if (savedUser && savedUser.includes("@")) return savedUser;
+    } catch (e) {}
+    const m = ($("mineUserLabel")?.textContent || "").toLowerCase();
+    const h = ($("activeUserLabel")?.textContent || "").toLowerCase();
+    const match = (m + " " + h).match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
+    return match ? match[0].toLowerCase() : "";
+  }
+
+  function isAdminUser() {
+    return getActiveEmail() === ADMIN_EMAIL;
+  }
+
+  function getDailyForPlanIndex(idx, baseDaily) {
+    const custom = cfg.customDaily[idx];
+    if (typeof custom === "number" && !isNaN(custom) && custom > 0) {
+      return custom;
+    }
+    return Math.round(Number(baseDaily || 0) * Number(cfg.multiplier || 1));
+  }
+
+  function applyProfitsToPlansAndOrders() {
+    if (Array.isArray(window.planData)) {
+      window.planData.forEach((plan, idx) => {
+        if (typeof plan._baseDaily !== "number") {
+          plan._baseDaily = Number(plan.daily || 0);
+        }
+        const newDaily = getDailyForPlanIndex(idx, plan._baseDaily);
+        plan.daily = newDaily;
+        plan.hourly = Number((newDaily / 24).toFixed(2));
+        plan.cycle = plan.cycle || 120;
+        plan.total = newDaily * plan.cycle;
+      });
+    }
+   try {
+      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
+      if (dbRaw) {
+        const db = JSON.parse(dbRaw);
+        const orderArrays = [db.orders, db.userOrders, db.activeOrders, db.investments].filter(Array.isArray);
+        orderArrays.forEach(arr => {
+          arr.forEach((ord, idx) => {
+            const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
+            const base = typeof ord._baseDaily === "number"
+              ? ord._baseDaily
+              : Number(ord.daily || ord.dailyProfit || 0);
+            if (base > 0) {
+              ord._baseDaily = base;
+              const updatedDaily = getDailyForPlanIndex(pIdx, base);
+              if ("daily" in ord) ord.daily = updatedDaily;
+              if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
+              if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
+              const cycle = Number(ord.cycle || 120);
+              if ("total" in ord) ord.total = updatedDaily * cycle;
+            }
+          });
+        });
+        localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
+      }
+    } catch (e) {}
+
+    if (Array.isArray(window.userOrders)) {
+      window.userOrders.forEach((ord, idx) => {
+        const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
+        const base = typeof ord._baseDaily === "number"
+          ? ord._baseDaily
+          : Number(ord.daily || ord.dailyProfit || 0);
+        if (base > 0) {
+          ord._baseDaily = base;
+          const updatedDaily = getDailyForPlanIndex(pIdx, base);
+          if ("daily" in ord) ord.daily = updatedDaily;
+          if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
+          if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
+        }
+      });
+    }
+
+    if (typeof window.renderPlans === "function") {
+      window.renderPlans();
+    }
+    if (typeof window.renderOrders === "function") {
+      window.renderOrders();
+    }
+  } 
+ function syncFriendshipBanner() {
+    const homeSec = $("homePage");
+    if (!homeSec || $("asmlFriendshipBanner")) return;
+
+    const banner = document.createElement("div");
+    banner.id = "asmlFriendshipBanner";
+    banner.style.cssText = "margin:12px 0;padding:14px;border-radius:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 18px rgba(221,36,118,.18)";
+    banner.innerHTML = `
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">ASML VIP Community</div>
+        <div style="font-size:15px;font-weight:800;margin-top:2px">Friendship & Team Hub</div>
+        <div style="font-size:12px;opacity:.95;margin-top:3px">Connect with friends, invite partners & grow together.</div>
+      </div>
+      <div style="width:74px;height:74px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+        <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="20" r="7" fill="#FFE0B2"/>
+          <path d="M11 46C11 37.5 16 32 22 32C28 32 33 37.5 33 46H11Z" fill="#FFFFFF"/>
+          <circle cx="42" cy="20" r="7" fill="#FFCCBC"/>
+          <path d="M31 46C31 37.5 36 32 42 32C48 32 53 37.5 53 46H31Z" fill="#FFF3E0"/>
+          <path d="M32 55C32 55 21 48.5 21 41.5C21 38.2 23.6 36 26.5 36C28.8 36 30.8 37.3 32 39.2C33.2 37.3 35.2 36 37.5 36C40.4 36 43 38.2 43 41.5C43 48.5 32 55 32 55Z" fill="#FFEB3B"/>
+        </svg>
+      </div>
+    `;
+  const featuredTitle = Array.from(homeSec.querySelectorAll(".section-title"))
+      .find(el => (el.textContent || "").includes("Featured Products"));
+    if (featuredTitle && featuredTitle.parentNode) {
+      featuredTitle.parentNode.insertBefore(banner, featuredTitle);
+    } else {
+      homeSec.appendChild(banner);
+    }
+  }
+
+  function getReferralLink() {
+    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
+    return window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(code);
+  }
+
+  window.asmlCopyReferral = function() {
+    const link = getReferralLink();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).catch(() => {});
+    }
+    alert("Referral Link Copied:\n" + link);
+  };
+
+  function syncTeamPage() {
+    const teamSec = $("teamPage");
+    if (!teamSec) return;
+    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
+    const link = getReferralLink();
+
+    let members = [];
+    try {
+      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (Array.isArray(db.members)) members = db.members;
+    } catch (e) {}
+
+    teamSec.innerHTML = `
+      <div class="section-title">Team</div>
+      <div class="hero">
+        <div class="balance">Rs 0</div>
+        <p>Total Team Earnings</p>
+        <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
+        <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
+          <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
+        </div>
+        <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong>${code}</strong></p>
+      </div>
+      <div class="card">
+        <h3>Team Overview</h3>
+        <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
+        <div class="list-item"><span>Team Level 1 (18%)</span><span>${members.length} · Rs 0.00</span></div>
+        <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
+        <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
+      </div>
+      <div class="card">
+        <h3>Referred Members</h3>
+        ${
+          members.length
+            ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (18%)</span></div>`).join("")
+            : `<div class="empty">No referred members yet. Share your referral link to invite friends.</div>`
+        }
+      </div>
+      <div class="card">
+        <h3>Referral Rebate Rules!</h3>
+        <p class="muted" style="line-height:1.65;margin:0">
+          Users you invite directly are considered your "Level 1" users; you will receive a rebate equal to 18% of their top-up (deposit) amount. Users invited by your Level 1 users are considered your "Level 2" users; you will receive a rebate equal to 2% of their top-up (deposit) amount. Users invited by your Level 2 users are considered your "Level 3" users; you will receive a rebate equal to 1% of their top-up (deposit) amount.
+        </p>
+      </div>
+    `;
+   function syncTaskPage() {
+    const taskSec = $("taskPage");
+    if (!taskSec) return;
+    const milestones = [
+      { task: "Task 1", target: "3,000", reward: "Rs300" },
+      { task: "Task 2", target: "9,000", reward: "Rs900" },
+      { task: "Task 3", target: "27,000", reward: "Rs2,700" },
+      { task: "Task 4", target: "77,000", reward: "Rs7,700" },
+      { task: "Task 5", target: "177,000", reward: "Rs17,700" },
+      { task: "Task 6", target: "377,000", reward: "Rs37,700" },
+      { task: "Task 7", target: "770,000", reward: "Rs77,000" },
+      { task: "Task 8", target: "1,770,000", reward: "Rs177,000" }
+    ];
+
+    taskSec.innerHTML = `
+      <div class="section-title">Task Center</div>
+      <div class="hero">
+        <p>Cumulative Team Invitation</p>
+        <div class="balance">Rs 0</div>
+        <p>Team investment milestones</p>
+      </div>
+      ${milestones.map(m => `
+        <div class="card">
+          <div class="plan-top">
+            <p style="margin:0;font-size:13px;line-height:1.6;max-width:74%">
+              Level 1 downline members who reach a total investment of <strong>Rs ${m.target}</strong> active investors , will receive a reward of Rs <strong>${m.reward}</strong>
+            </p>
+            <span class="badge">${m.task}</span>
+          </div>
+          <div class="progress"><div style="width:0%"></div></div>
+          <div class="row" style="text-align:center;font-size:12px">
+            <div><strong style="color:#d92b2b">0/${m.target}</strong><div class="muted">Invitation</div></div>
+            <div><strong style="color:#d92b2b">${m.reward}</strong><div class="muted">Earnings</div></div>
+            <div><span class="badge">Milestone</span></div>
+          </div>
+        </div>
+      `).join("")}
+    `;
+}
+   function syncAuthChangePassword() {
+    const authSec = $("authPage");
+    if (!authSec || $("asmlAuthPassBox")) return;
+    const card = document.createElement("div");
+    card.className = "card";
+    card.id = "asmlAuthPassBox";
+    card.innerHTML = `
+      <h3>Change Password</h3>
+      <label>Account Email or Phone</label>
+      <input class="input" id="asmlCpUser" placeholder="Enter account email or phone">
+      <label>Old Password</label>
+      <input class="input" id="asmlCpOld" type="password" placeholder="Enter current password">
+      <label>New Password</label>
+      <input class="input" id="asmlCpNew" type="password" placeholder="Enter new password (min 4 chars)">
+      <button class="btn" onclick="window.asmlChangePassSubmit()">Change Password</button>
+    `;
+    const backBtn = authSec.querySelector("button.btn.secondary");
+    if (backBtn) authSec.insertBefore(card, backBtn);
+    else authSec.appendChild(card);
+  }
+
+  window.asmlChangePassSubmit = function() {
+    const contact = ($("asmlCpUser")?.value || "").trim().toLowerCase();
+    const oldPass = $("asmlCpOld")?.value || "";
+    const newPass = $("asmlCpNew")?.value || "";
+    if (!contact || !oldPass || newPass.length < 4) {
+      return alert("Please enter account, old password, and new password (min 4 chars).");
+    }
+   try {
+      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (!Array.isArray(db.users)) return alert("No users found.");
+      const idx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
+      if (idx === -1) return alert("Account or old password is incorrect.");
+      db.users[idx].password = newPass;
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
+      $("asmlCpOld").value = "";
+      $("asmlCpNew").value = "";
+      alert("Password changed successfully!");
+    } catch (e) {
+      alert("Failed to update password.");
+    }
+  };
+
+  window.asmlDirectAdminLogin = function() {
+    try {
+      localStorage.setItem("ASML_CURRENT_USER_V2", ADMIN_EMAIL);
+      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
+      const db = dbRaw ? JSON.parse(dbRaw) : {};
+      if (!Array.isArray(db.users)) db.users = [];
+      const existingIdx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === ADMIN_EMAIL);
+      if (existingIdx >= 0) {
+        db.users[existingIdx].password = db.users[existingIdx].password || "admin123";
+      } else {
+        db.users.push({ contact: ADMIN_EMAIL, password: "admin123", balance: 0 });
+      }
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
+    } catch (e) {}
+
+    if ($("mineUserLabel")) $("mineUserLabel").textContent = ADMIN_EMAIL;
+    if ($("activeUserLabel")) $("activeUserLabel").textContent = ADMIN_EMAIL;
+
+    const adminLoginCard = $("adminLoginCard");
+    const adminDash = $("adminDashboard");
+    const adminPage = $("adminPage");
+    if (adminLoginCard) adminLoginCard.classList.add("hidden");
+    if (adminDash) adminDash.classList.remove("hidden");
+    if (adminPage) adminPage.classList.remove("hidden");
+
+    syncPrivateAdminAndProfitControl();
+    if (typeof window.openPage === "function") window.openPage("adminPage");
+  };
+   function syncPrivateAdminAndProfitControl() {
+    const adminOk = isAdminUser();
+    const adminBtn = $("adminMenuBtn");
+    const adminPage = $("adminPage");
+    const adminDash = $("adminDashboard");
+    const adminLoginCard = $("adminLoginCard");
+    let profitCtrl = $("asmlPrivateProfitCtrl");
+
+    if (adminBtn) {
+      adminBtn.style.setProperty("display", adminOk ? "" : "none", "important");
+    }
+
+    if (!adminOk) {
+      if (profitCtrl) profitCtrl.style.setProperty("display", "none", "important");
+      if (adminDash) adminDash.classList.add("hidden");
+      if (adminPage && !adminPage.classList.contains("hidden")) {
+        adminPage.classList.add("hidden");
+        const minePage = $("minePage");
+        if (minePage) minePage.classList.remove("hidden");
+      }
+      return;
+    }
+
+    if (adminLoginCard) adminLoginCard.classList.add("hidden");
+    if (adminDash) adminDash.classList.remove("hidden");
+
+    const host = adminDash || adminPage;
+    if (host && !$("asmlAdminRecoveryCard")) {
+      const recovery = document.createElement("div");
+      recovery.className = "card";
+      recovery.id = "asmlAdminRecoveryCard";
+      recovery.innerHTML = `
+        <h3>Admin Session Active (${ADMIN_EMAIL})</h3>
+        <p class="muted">Exclusive password-free owner recovery enabled for ${ADMIN_EMAIL} only.</p>
+        <button class="btn small" onclick="window.asmlDirectAdminLogin()">Refresh Admin Session</button>
+      `;
+      host.prepend(recovery);
+    }
+
+    if (host && Array.isArray(window.planData) && !profitCtrl) {
+      profitCtrl = document.createElement("div");
+      profitCtrl.className = "card";
+      profitCtrl.id = "asmlPrivateProfitCtrl";
+      profitCtrl.innerHTML = `
+        <h3>Private Admin: Daily Profit & Order Rate Control</h3>
+        <p class="muted">Changes apply to VIP plans and daily orders immediately.</p>
+        <label>Select VIP Plan</label>
+        <select class="input" id="asmlAdminPlanSel" onchange="window.asmlSyncAdminPlanRate()">
+          ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
+        </select>
+        <label>Daily Profit (Rs)</label>
+        <input class="input" id="asmlAdminDailyVal" type="number" min="1" placeholder="Enter daily profit">
+        <button class="btn" onclick="window.asmlSavePlanRate()">Save Plan Daily Profit</button>
+        <hr style="margin:12px 0">
+        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
+        <input class="input" id="asmlAdminMultVal" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
+        <button class="btn secondary" onclick="window.asmlApplyAllRates()">Apply to All Plans & Orders</button>
+      `;      
+     host.appendChild(profitCtrl);
+      window.asmlSyncAdminPlanRate();
+    }
+
+    if (profitCtrl) {
+      profitCtrl.style.setProperty("display", "", "important");
+    }
+  }
+
+  window.asmlSyncAdminPlanRate = function() {
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($("asmlAdminPlanSel")?.value || 0);
+    const plan = window.planData[idx];
+    if (plan && $("asmlAdminDailyVal")) {
+      $("asmlAdminDailyVal").value = plan.daily;
+    }
+  };
+
+  window.asmlSavePlanRate = function() {
+    if (!isAdminUser()) return alert("Unauthorized access.");
+    const idx = Number($("asmlAdminPlanSel")?.value || 0);
+    const val = Number($("asmlAdminDailyVal")?.value || 0);
+    if (!val || val <= 0) return alert("Please enter a valid daily profit.");
+    cfg.customDaily[idx] = val;
+    saveCfg(cfg);
+    applyProfitsToPlansAndOrders();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
+  };
+
+  window.asmlApplyAllRates = function() {
+    if (!isAdminUser()) return alert("Unauthorized access.");
+    const mult = Number($("asmlAdminMultVal")?.value || 1);
+    if (!mult || mult <= 0) return alert("Please enter a valid multiplier.");
+    cfg.multiplier = mult;
+    cfg.customDaily = {};
+    saveCfg(cfg);
+    applyProfitsToPlansAndOrders();
+    window.asmlSyncAdminPlanRate();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("All VIP plans & orders updated with " + mult + "x profit.");
+  };
+   function syncOwnerFooter() {
+    if ($("asmlProfessionalFooter")) return;
+    const footer = document.createElement("footer");
+    footer.id = "asmlProfessionalFooter";
+    footer.style.cssText = "margin:18px auto 84px;max-width:480px;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.08);text-align:center;font-size:12px;color:#333;box-shadow:0 4px 14px rgba(0,0,0,.04)";
+    footer.innerHTML = `
+      <div style="font-weight:700;font-size:13px;color:#d92b2b;margin-bottom:4px">ASML GLOBAL VIP — Official Platform</div>
+      <div style="margin:2px 0">Website Owner: <strong>${OWNER_NAME}</strong></div>
+      <div style="margin:2px 0">Contact / WhatsApp: <strong>${OWNER_PHONE}</strong></div>
+    `;
+    const mainEl = document.querySelector("main.container") || document.body;
+    mainEl.appendChild(footer);
+  }
+
+  function runEverything() {
+    cleanStrayText();
+    applyProfitsToPlansAndOrders();
+    syncFriendshipBanner();
+    syncTeamPage();
+    syncTaskPage();
+    syncAuthChangePassword();
+    syncPrivateAdminAndProfitControl();
+    syncOwnerFooter();
+  }
+
+  runEverything();
+  const observer = new MutationObserver(runEverything);
+  observer.observe(document.body, { childList: true, subtree: true });
+  setInterval(runEverything, 500);
+})();
+</script>
+   
