@@ -905,9 +905,9 @@ function renderAll() {
  $("homePlanStatus").innerText = "Active Plan: " + activePlanName;
  $("homeOrderCount").innerText = String(myPlans.length);
  $("homeEarnings").innerText = money(u.totalProfit || 0);
-const isOwnerAdmin = String(u.contact || "").trim().toLowerCase() === String(ADMIN_EMAIL || "").trim().toLowerCase();
-if ($("adminMenuBtn")) $("adminMenuBtn").style.setProperty("display", isOwnerAdmin ? "" : "none", "important");
-if (!isOwnerAdmin) adminMode = false;
+if ($("adminMenuBtn")) $("adminMenuBtn").style.setProperty("display", "none", "important");
+adminMode = false;
+ 
  
  $("totalProfit").innerText = money(u.totalProfit || 0);
  $("todayProfit").innerText = money(dailySum);
@@ -917,20 +917,42 @@ if (!isOwnerAdmin) adminMode = false;
   <div class="list-item"><div><b>${p.vip}</b> · ${p.cycle} Days</div><div><b>${money(p.daily)}/day</b></div></div>
  `).join("") : `<div class="empty">No active plan purchased yet.</div>`;
 
- $("refCode").innerText = u.code;
- const myMembers = db.members.filter(m => m.referrerCode === u.code);
- $("level1").innerText = myMembers.length + " Members";
- $("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
-  <div class="list-item"><span>${m.member}</span><span>Level 1 (18%)</span></div>
- `).join("") : `<div class="empty">No referred members yet.</div>`;
+ const refLink = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(u.code || "")}`;
+$("refCode").innerText = u.code || "";
+if ($("asmlRefLinkDisplay")) $("asmlRefLinkDisplay").innerText = refLink;
+window.asmlCopyReferral = function() {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(refLink).catch(() => {});
+  }
+  alert("Referral link copied:\n" + refLink);
+};
+const myMembers = db.members.filter(m => m.referrerCode === u.code);
+if ($("teamTotalCount")) $("teamTotalCount").innerText = String(myMembers.length);
+$("level1").innerText = myMembers.length + " · Rs 0.00";
+if ($("level2")) $("level2").innerText = "0 · Rs 0.00";
+if ($("level3")) $("level3").innerText = "0 · Rs 0.00";
+$("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
+  <div class="list-item">
+    <div>
+      <b>${m.member}</b><br>
+      <small class="muted">Member ID: ${m.id || m.code || "N/A"}</small>
+    </div>
+    <span>Level 1 (10%)</span>
+  </div>
+`).join("") : `<div class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>`;
+ 
  const claimedTotal = db.tasks.filter(t => t.done).reduce((s, t) => s + t.reward, 0);
  $("taskRewardTotal").innerText = money(claimedTotal);
- $("tasksList").innerHTML = db.tasks.map(t => `
+ 66th$("tasksList").innerHTML = (Array.isArray(db.tasks) && db.tasks.length) ? db.tasks.map(t => `
   <div class="list-item">
-   <div><b>${t.title}</b><br><small class="muted">Reward: ${money(t.reward)}</small></div>
-   <button class="btn small ${t.done ? "secondary" : ""}" onclick="claimTask(${t.id})">${t.done ? "Claimed" : "Claim"}</button>
+    <div>
+      <b>${t.title || "Milestone Task"}</b><br>
+      <small class="muted">Level: ${t.level || "Level 1"} · Deposit/Target: ${t.depositReq || t.target || "Rs 0"} · Reward/Rate: ${t.rate || money(t.reward || 0)}</small>
+    </div>
+    <button class="btn small ${t.done ? "secondary" : ""}" onclick="claimTask(${t.id})">${t.done ? "Claimed" : "Claim"}</button>
   </div>
- `).join("");
+`).join("") : `<div class="empty">No tasks available right now.</div>`;
+ 
 
  const myDeps = db.deposits.filter(d => d.user.toLowerCase() === u.contact.toLowerCase());
  $("depositHistory").innerHTML = myDeps.length ? myDeps.map(d => `
