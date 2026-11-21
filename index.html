@@ -94,10 +94,17 @@ h3{margin:0 0 10px;font-size:16px}
 
 <!-- HOME PAGE -->
 <section id="homePage">
- <div class="card" style="text-align:center;background:#fff7ef">
-  <span class="badge">ASML GLOBAL</span>
-  <h3 style="margin:8px 0 4px;color:#c43a24">New user bonus: Rs 30</h3>
-  <div class="muted" id="homePlanStatus">Active Plan: None</div>
+ <div id="homeBannerCard" style="margin:12px 0">
+  <div style="padding:14px;border-radius:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;margin-bottom:10px">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Brothers &amp; Friends Circle</div>
+    <div style="font-size:15px;font-weight:800;margin-top:2px">Boys Friendship &amp; Team Circle</div>
+    <div style="font-size:12px;opacity:.95;margin-top:3px">Real friends, strong bonding &amp; growing together daily.</div>
+  </div>
+  <div style="padding:14px;border-radius:16px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#292525">
+    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.85;text-transform:uppercase">Chai Patti &amp; Chicken Hub</div>
+    <div style="font-size:15px;font-weight:800;margin-top:2px">Fresh Chai Patti &amp; Chicken Hub</div>
+    <div style="font-size:12px;opacity:.9;margin-top:3px">Rich tea aroma, fresh poultry &amp; daily rewards together.</div>
+  </div>
  </div>
 
  <div class="grid-4">
@@ -155,26 +162,40 @@ h3{margin:0 0 10px;font-size:16px}
  </div>
 </section>
 
-<!-- TEAM PAGE -->
 <section id="teamPage" class="hidden">
- <div class="section-title">My Team</div>
- <div class="hero">
-  <h2>3-Level Referral Program</h2>
-  <p>Level 1 · 18% &nbsp;|&nbsp; Level 2 · 2% &nbsp;|&nbsp; Level 3 · 1%</p>
-  <div class="codebox" id="refCode">ASML-XXXXXX</div>
-  <button class="btn" style="background:#fff;color:#d92b2b" onclick="copyReferral()">Copy Referral Code</button>
- </div>
- <div class="grid">
-  <div class="stat"><small>Level 1 (18%)</small><strong id="level1">0 Members</strong></div>
-  <div class="stat"><small>Level 2 (2%)</small><strong id="level2">0 Members</strong></div>
-  <div class="stat"><small>Level 3 (1%)</small><strong id="level3">0 Members</strong></div>
-  <div class="stat"><small>Team Bonus</small><strong id="teamBonus">Rs 0</strong></div>
- </div>
- <div class="card" style="margin-top:12px">
-  <h3>Referred Members</h3>
-  <div id="membersList" class="empty">No referred members yet.</div>
- </div>
-</section>
+  <div class="section-title">Team</div>
+  <div class="hero">
+    <div class="balance">Rs 0</div>
+    <p>Total Team Earnings</p>
+    <p style="margin-top:4px">Total Team Members: <strong id="teamTotalCount">0</strong></p>
+    <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+      <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
+    </div>
+    <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong id="refCode">ASML-XXXXXX</strong></p>
+  </div>
+  <div class="card">
+    <h3>Team Overview</h3>
+    <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
+    <div class="list-item"><span>Team Level 1 (10%)</span><span id="level1">0 · Rs 0.00</span></div>
+    <div class="list-item"><span>Team Level 2 (5%)</span><span id="level2">0 · Rs 0.00</span></div>
+    <div class="list-item"><span>Team Level 3 (1%)</span><span id="level3">0 · Rs 0.00</span></div>
+  </div>
+  <div class="card">
+    <h3>Referred Members</h3>
+    <div id="membersList" class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>
+  </div>
+  <div class="card">
+    <h3>Referral Commission &amp; Team Details</h3>
+    <p class="muted" style="line-height:1.65;margin:0 0 8px">
+      Share your personal referral link or referral code with friends and team partners. When your invited members join and activate plans, your team commissions are tracked across 3 levels.
+    </p>
+    <p class="muted" style="line-height:1.65;margin:0">
+      <strong>Level 1: 10%</strong> commission on direct referrals · <strong>Level 2: 5%</strong> commission on second-level referrals · <strong>Level 3: 1%</strong> commission on third-level referrals.
+    </p>
+  </div>
+     </section>
+ 
 
 <!-- TASK PAGE -->
 <section id="taskPage" class="hidden">
@@ -1723,10 +1744,10 @@ function syncTeamPage() {
       if (!Array.isArray(db.users)) db.users = [];
       const existingIdx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === ADMIN_EMAIL);
       if (existingIdx >= 0) {
-        db.users[existingIdx].password = db.users[existingIdx].password || "admin8845";
-      } else {
-        db.users.push({ contact: ADMIN_EMAIL, password: "admin8845", balance: 0 });
-      }
+        db.users[existingIdx].password = db.users[existingIdx].password || "8845";
+        
+        db.users.push({ contact: ADMIN_EMAIL, password: "8845", balance: 0 });
+        
       localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
     } catch (e) {}
 
