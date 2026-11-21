@@ -1550,7 +1550,7 @@ renderAll();
     `;
     const featuredTitle = Array.from(homeSec.querySelectorAll(".section-title"))
       .find(el => (el.textContent || "").toLowerCase().includes("featured"));
-    if (featuredTitle && featuredTitle.parentNode) {
+     && featuredTitle.parentNode) {
       featuredTitle.parentNode.insertBefore(banner, featuredTitle);
     } else {
       homeSec.prepend(banner);
@@ -1596,14 +1596,32 @@ renderAll();
 function syncTeamPage() {
   const teamSec = $("teamPage");
   if (!teamSec) return;
-  const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
-  const link = getReferralLink();
-
-  let members = [];
+  let dbObj = {};
   try {
-    const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-    if (Array.isArray(db.members)) members = db.members;
+    dbObj = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}") || {};
   } catch (e) {}
+  const activeUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
+  const usersArr = Array.isArray(dbObj.users) ? dbObj.users : [];
+  const uObj = usersArr.find(x => String(x.contact || "").toLowerCase() === activeUser) || usersArr[0];
+  const code = ($("refCode")?.textContent || uObj?.code || "ASML-ADMIN1").trim();
+  const link = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(code)}`;
+  const members = Array.isArray(dbObj.members) ? dbObj.members : [];
+
+  const membersHtml = members.length ? members.map(m => {
+    const mName = typeof m === "string" ? m : (m.member || m.user || "Member");
+    const mId = typeof m === "string" ? "N/A" : (m.id || m.code || "N/A");
+    const refTeam = typeof m === "string" ? code : (m.referrerCode || code);
+    const teamCount = members.filter(x => (typeof x === "string" ? code : (x.referrerCode || code)) === refTeam).length;
+    return `
+      <div class="list-item">
+        <div>
+          <b>${mName}</b><br>
+          <small class="muted">ID: ${mId} · Referrer Team: ${refTeam} · Team Joined: ${teamCount}</small>
+        </div>
+        <span>Level 1 (10%)</span>
+      </div>
+    `;
+  }).join("") : `<div class="empty">Total Joined: 0 · No referred members yet. Copy and share your referral link to invite friends.</div>`;
 
   teamSec.innerHTML = `
     <div class="section-title">Team</div>
@@ -1611,11 +1629,11 @@ function syncTeamPage() {
       <div class="balance">Rs 0</div>
       <p>Total Team Earnings</p>
       <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
-      <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-        <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
+      <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;gap:8px">
+        <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left">${link}</span>
         <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
       </div>
-      <p style="font-size:11px;margin-top:8px;opacity:.95">Referral Code: <strong>${code}</strong></p>
+      <p style="font-size:11px;margin-top:8px;opacity:.95">Referral Code: <strong id="refCode">${code}</strong></p>
     </div>
     <div class="card">
       <h3>Team Overview</h3>
@@ -1625,24 +1643,11 @@ function syncTeamPage() {
       <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
     </div>
     <div class="card">
-      <h3>Referred Members</h3>
-      ${
-        members.length
-          ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (10%)</span></div>`).join("")
-          : `<div class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>`
-      }
-    </div>
-    <div class="card">
-      <h3>Referral Commission & Team Details</h3>
-      <p class="muted" style="line-height:1.65;margin:0 0 8px">
-        Share your personal referral link or referral code with friends and team partners. When your invited members join and activate plans, your team stats update automatically.
-      </p>
-      <p class="muted" style="line-height:1.65;margin:0">
-        <strong>Level 1: 10%</strong> commission on direct referrals · <strong>Level 2: 5%</strong> commission on second-level referrals · <strong>Level 3: 1%</strong> commission on third-level referrals. Build an active team to grow your daily and milestone rewards smoothly.
-      </p>
+      <h3>Referred Members (${members.length})</h3>
+      ${membersHtml}
     </div>
   `;
-}
+       }
 
 (function captureReferralJoin() {
   try {
