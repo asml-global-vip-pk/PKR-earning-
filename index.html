@@ -557,10 +557,10 @@
         bank: { bankName: "", holderName: "", accountNumber: "" }
       };
 
-      const demoMembers = [
-        { id: "ID-20411", phone: "+923011111111", referrerCode: "ASML-ADMIN1", deposited: 500, level: 1 },
-        { id: "ID-20412", phone: "+923022222222", referrerCode: "ASML-ADMIN1", deposited: 0, level: 1 }
-      ];
+       const realMembers = [];
+    
+  
+      
 
       return {
         adminPin: DEFAULT_ADMIN_PIN,
@@ -568,7 +568,8 @@
         currentUserId: adminUser.id,
         plans: DEFAULT_PLANS,
         users: [adminUser],
-        members: demoMembers,
+        members: realMembers,
+        
         orders: [],
         transactions: [
           { id: "TX-INIT1", userId: adminUser.id, type: "Welcome Bonus", amount: 100, status: "Approved", note: "New user bonus", time: new Date().toLocaleString() }
@@ -576,9 +577,10 @@
         profitMode: "normal", // normal | boost | loss
         profitMultiplier: 1.0,
         paymentChannels: [
-          { method: "EasyPaisa", title: "ASML Global Official", account: "03XX-XXXXXXX" },
-          { method: "JazzCash", title: "ASML Global Official", account: "03XX-XXXXXXX" },
-          { method: "UPaisa", title: "ASML Global Official", account: "03XX-XXXXXXX" },
+          { method: "EasyPaisa", title: "Waqas Nadeem", account: "0319-2649748" },
+          { method: "EasyPaisa", title: "Qutab Shar", account: "0301-0901786" },
+          { method: "UPaisa", title:  "Tasleem Khatoon", account: "0332-4232482" },
+          { method: "Jazzcash",title: "Shaheen Akhtar", account : "03037939388"}
           { method: "Bank Transfer (Meezan / HBL / UBL)", title: "ASML Global Official", account: "PK00-XXXX-0000000000" }
         ]
       };
