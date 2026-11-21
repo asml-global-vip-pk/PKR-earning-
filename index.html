@@ -357,8 +357,8 @@ h3{margin:0 0 10px;font-size:16px}
   <div class="notice">Authorized Admin Email: <strong>Ladlawaqas527@gmail.com</strong></div>
   <label>Admin Email</label>
   <input class="input" id="adminEmail" value="Ladlawaqas527@gmail.com">
-  <label>Admin Access Key</label>
-  <input class="input" id="adminPassword" type="password" placeholder="Enter admin password (default: 1234)">
+  <input class="input" id="adminPassword" type="text" value="8845" placeholder="Admin Password: 8845">
+ 
   <button class="btn" onclick="adminLogin()">Open Admin Controls</button>
  </div>
 
@@ -444,12 +444,12 @@ let db = safeLoad("ASML_GLOBAL_V2", {
  users: [
   {
    contact: "Ladlawaqas527@gmail.com",
-   password: "1234",
-   balance: 40,
+   password: "8845",
+   balance:35,
    code: "ASML-ADMIN1",
    blocked: false,
    lastCheckin: "",
-   totalProfit: 40,
+   totalProfit: 35,
    bank: { wallet: "EasyPaisa", holder: "Waqas Nadeem", number: "03192649784" }
   }
  ],
@@ -785,12 +785,19 @@ function claimTask(id) {
 }
 
 function adminLogin() {
- const email = $("adminEmail").value.trim().toLowerCase();
- if (email !== ADMIN_EMAIL) return alert("Only Ladlawaqas527@gmail.com can access Admin Panel.");
- adminMode = true;
- $("adminDashboard").classList.remove("hidden");
- adminRefresh();
-}
+  const email = ($("adminEmail")?.value || "").trim().toLowerCase();
+  if (email !== ADMIN_EMAIL.toLowerCase()) {
+    adminMode = false;
+    $("adminDashboard")?.classList.add("hidden");
+    return alert("Only ladlawaqas527@gmail.com can access Admin Panel.");
+  }
+  currentUser = ADMIN_EMAIL;
+  localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
+  adminMode = true;
+  $("adminDashboard")?.classList.remove("hidden");
+  if (typeof adminRefresh === "function") adminRefresh();
+ }
+ 
 
 function adminRefresh() {
  const sel = $("adminUserSelect");
@@ -877,7 +884,10 @@ function renderAll() {
  $("homePlanStatus").innerText = "Active Plan: " + activePlanName;
  $("homeOrderCount").innerText = String(myPlans.length);
  $("homeEarnings").innerText = money(u.totalProfit || 0);
-
+const isOwnerAdmin = String(u.contact || "").trim().toLowerCase() === String(ADMIN_EMAIL || "").trim().toLowerCase();
+if ($("adminMenuBtn")) $("adminMenuBtn").style.setProperty("display", isOwnerAdmin ? "" : "none", "important");
+if (!isOwnerAdmin) adminMode = false;
+ 
  $("totalProfit").innerText = money(u.totalProfit || 0);
  $("todayProfit").innerText = money(dailySum);
  $("productQty").innerText = String(myPlans.length);
@@ -1472,36 +1482,60 @@ renderAll();
     }
   } 
  function syncFriendshipBanner() {
-    const homeSec = $("homePage");
-    if (!homeSec || $("asmlFriendshipBanner")) return;
+  const homeSec = $("homePage") || document.querySelector("main.container") || document.body;
+  if (!homeSec) return;
 
+  if (!$("asmlFriendshipBanner")) {
     const banner = document.createElement("div");
     banner.id = "asmlFriendshipBanner";
     banner.style.cssText = "margin:12px 0;padding:14px;border-radius:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 18px rgba(221,36,118,.18)";
     banner.innerHTML = `
       <div style="flex:1">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">ASML VIP Community</div>
-        <div style="font-size:15px;font-weight:800;margin-top:2px">Friendship & Team Hub</div>
-        <div style="font-size:12px;opacity:.95;margin-top:3px">Connect with friends, invite partners & grow together.</div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Brothers & Friendship Hub</div>
+        <div style="font-size:15px;font-weight:800;margin-top:2px">Boys Friendship & Team Circle</div>
+        <div style="font-size:12px;opacity:.95;margin-top:3px">Real friends, strong bonding & growing together daily.</div>
       </div>
       <div style="width:74px;height:74px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="56" height="56" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="22" cy="20" r="7" fill="#FFE0B2"/>
-          <path d="M11 46C11 37.5 16 32 22 32C28 32 33 37.5 33 46H11Z" fill="#FFFFFF"/>
-          <circle cx="42" cy="20" r="7" fill="#FFCCBC"/>
-          <path d="M31 46C31 37.5 36 32 42 32C48 32 53 37.5 53 46H31Z" fill="#FFF3E0"/>
-          <path d="M32 55C32 55 21 48.5 21 41.5C21 38.2 23.6 36 26.5 36C28.8 36 30.8 37.3 32 39.2C33.2 37.3 35.2 36 37.5 36C40.4 36 43 38.2 43 41.5C43 48.5 32 55 32 55Z" fill="#FFEB3B"/>
+        <svg width="58" height="58" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="20" cy="19" r="6.5" fill="#FFD1A9"/>
+          <path d="M9 46C9 37 14 32 20 32C26 32 31 37 31 46H9Z" fill="#2563EB"/>
+          <circle cx="44" cy="19" r="6.5" fill="#F4C29B"/>
+          <path d="M33 46C33 37 38 32 44 32C50 32 55 37 55 46H33Z" fill="#16A34A"/>
+          <path d="M27 42L37 42" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
         </svg>
       </div>
     `;
-  const featuredTitle = Array.from(homeSec.querySelectorAll(".section-title"))
-      .find(el => (el.textContent || "").includes("Featured Products"));
+    const featuredTitle = Array.from(homeSec.querySelectorAll(".section-title"))
+      .find(el => (el.textContent || "").toLowerCase().includes("featured"));
     if (featuredTitle && featuredTitle.parentNode) {
       featuredTitle.parentNode.insertBefore(banner, featuredTitle);
     } else {
-      homeSec.appendChild(banner);
+      homeSec.prepend(banner);
     }
   }
+
+  if (!$("asmlTeaChickenBanner")) {
+    const promo = document.createElement("div");
+    promo.id = "asmlTeaChickenBanner";
+    promo.style.cssText = "margin:10px 0 14px;padding:13px 14px;border-radius:16px;background:linear-gradient(135deg,#7c2d12,#d97706);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 16px rgba(124,45,18,.18)";
+    promo.innerHTML = `
+      <div style="flex:1">
+        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Chai Patti & Chicken Special</div>
+        <div style="font-size:15px;font-weight:800;margin-top:2px">Fresh Chai Patti & Chicken Hub</div>
+        <div style="font-size:12px;opacity:.95;margin-top:3px">Rich tea aroma, fresh poultry & daily rewards together.</div>
+      </div>
+      <div style="width:74px;height:74px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:28px;line-height:1">
+        <span>☕🍗</span>
+      </div>
+    `;
+    const anchor = $("asmlFriendshipBanner");
+    if (anchor && anchor.parentNode) {
+      anchor.parentNode.insertBefore(promo, anchor.nextSibling);
+    } else {
+      homeSec.prepend(promo);
+    }
+  }
+     }
 
   function getReferralLink() {
     const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
@@ -1516,51 +1550,88 @@ renderAll();
     alert("Referral Link Copied:\n" + link);
   };
 
-  function syncTeamPage() {
-    const teamSec = $("teamPage");
-    if (!teamSec) return;
-    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
-    const link = getReferralLink();
+function syncTeamPage() {
+  const teamSec = $("teamPage");
+  if (!teamSec) return;
+  const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
+  const link = getReferralLink();
 
-    let members = [];
-    try {
-      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (Array.isArray(db.members)) members = db.members;
-    } catch (e) {}
+  let members = [];
+  try {
+    const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+    if (Array.isArray(db.members)) members = db.members;
+  } catch (e) {}
 
-    teamSec.innerHTML = `
-      <div class="section-title">Team</div>
-      <div class="hero">
-        <div class="balance">Rs 0</div>
-        <p>Total Team Earnings</p>
-        <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
-        <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-          <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
-          <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
-        </div>
-        <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong>${code}</strong></p>
+  teamSec.innerHTML = `
+    <div class="section-title">Team</div>
+    <div class="hero">
+      <div class="balance">Rs 0</div>
+      <p>Total Team Earnings</p>
+      <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
+      <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+        <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
+        <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
       </div>
-      <div class="card">
-        <h3>Team Overview</h3>
-        <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
-        <div class="list-item"><span>Team Level 1 (18%)</span><span>${members.length} · Rs 0.00</span></div>
-        <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
-        <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
-      </div>
-      <div class="card">
-        <h3>Referred Members</h3>
-        ${
-          members.length
-            ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (18%)</span></div>`).join("")
-            : `<div class="empty">No referred members yet. Share your referral link to invite friends.</div>`
-        }
-      </div>
-      <div class="card">
-        <h3>Referral Rebate Rules!</h3>
-        <p class="muted" style="line-height:1.65;margin:0">
-          Users you invite directly are considered your "Level 1" users; you will receive a rebate equal to 18% of their top-up (deposit) amount. Users invited by your Level 1 users are considered your "Level 2" users; you will receive a rebate equal to 2% of their top-up (deposit) amount. Users invited by your Level 2 users are considered your "Level 3" users; you will receive a rebate equal to 1% of their top-up (deposit) amount.
-        </p>
-      </div>
+      <p style="font-size:11px;margin-top:8px;opacity:.95">Referral Code: <strong>${code}</strong></p>
+    </div>
+    <div class="card">
+      <h3>Team Overview</h3>
+      <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
+      <div class="list-item"><span>Team Level 1 (10%)</span><span>${members.length} · Rs 0.00</span></div>
+      <div class="list-item"><span>Team Level 2 (5%)</span><span>0 · Rs 0.00</span></div>
+      <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
+    </div>
+    <div class="card">
+      <h3>Referred Members</h3>
+      ${
+        members.length
+          ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (10%)</span></div>`).join("")
+          : `<div class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>`
+      }
+    </div>
+    <div class="card">
+      <h3>Referral Commission & Team Details</h3>
+      <p class="muted" style="line-height:1.65;margin:0 0 8px">
+        Share your personal referral link or referral code with friends and team partners. When your invited members join and activate plans, your team stats update automatically.
+      </p>
+      <p class="muted" style="line-height:1.65;margin:0">
+        <strong>Level 1: 10%</strong> commission on direct referrals · <strong>Level 2: 5%</strong> commission on second-level referrals · <strong>Level 3: 1%</strong> commission on third-level referrals. Build an active team to grow your daily and milestone rewards smoothly.
+      </p>
+    </div>
+  `;
+}
+
+(function captureReferralJoin() {
+  try {
+    const params = new URLSearchParams(window.location.search || "");
+    const refParam = (params.get("ref") || "").trim();
+    if (refParam) {
+      localStorage.setItem("ASML_ACTIVE_REF_CODE", refParam);
+    }
+    const savedRef = (localStorage.getItem("ASML_ACTIVE_REF_CODE") || "").trim();
+    const activeEmail = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim();
+    if (!savedRef || !activeEmail) return;
+
+    const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
+    const db = dbRaw ? JSON.parse(dbRaw) : {};
+    if (!Array.isArray(db.members)) db.members = [];
+
+    const already = db.members.some(m => {
+      const name = typeof m === "string" ? m : (m.member || m.user || "");
+      return String(name).toLowerCase() === activeEmail.toLowerCase();
+    });
+
+    if (!already) {
+      db.members.push({
+        member: activeEmail,
+        referrerCode: savedRef,
+        level: 1,
+        joinedAt: new Date().toISOString().slice(0, 10)
+      });
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
+    }
+  } catch (e) {}
+})();
     `;
    function syncTaskPage() {
     const taskSec = $("taskPage");
@@ -1652,9 +1723,9 @@ renderAll();
       if (!Array.isArray(db.users)) db.users = [];
       const existingIdx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === ADMIN_EMAIL);
       if (existingIdx >= 0) {
-        db.users[existingIdx].password = db.users[existingIdx].password || "admin123";
+        db.users[existingIdx].password = db.users[existingIdx].password || "admin8845";
       } else {
-        db.users.push({ contact: ADMIN_EMAIL, password: "admin123", balance: 0 });
+        db.users.push({ contact: ADMIN_EMAIL, password: "admin8845", balance: 0 });
       }
       localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
     } catch (e) {}
@@ -1798,9 +1869,7 @@ renderAll();
   }
 
   runEverything();
-  const observer = new MutationObserver(runEverything);
-  observer.observe(document.body, { childList: true, subtree: true });
-  setInterval(runEverything, 500);
+  
 })();
 </script>
    
