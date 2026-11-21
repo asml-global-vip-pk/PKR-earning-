@@ -1,1928 +1,1665 @@
-2<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ASML Global VIP</title>
-<style>
-:root{
- --bg:#fdf6ee;
- --card:#ffffff;
- --red:#d92b2b;
- --orange:#ff7a18;
- --ink:#292525;
- --muted:#7c726d;
- --border:#f0e4da;
- --grad:linear-gradient(135deg,#d92b2b,#ff7a18);
-}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:88px}
-button,input,select{font-family:inherit}
-button{cursor:pointer;border:none}
-.header{position:sticky;top:0;z-index:50;background:var(--grad);color:#fff;padding:14px 16px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
-.header-row{display:flex;align-items:center;justify-content:space-between}
-.brand{font-size:20px;font-weight:900;letter-spacing:.6px;display:flex;align-items:center;gap:6px}
-.vip-tag{background:#fff;color:#d92b2b;font-size:11px;padding:2px 7px;border-radius:6px;font-weight:900}
-.official{font-size:10px;background:rgba(255,255,255,.22);padding:5px 10px;border-radius:20px;letter-spacing:.8px;font-weight:700} 
- .ticker{background:#fff1e4;color:#bb3c1c;padding:9px 12px;font-size:12px;white-space:nowrap;overflow:hidden;border-bottom:1px solid #f7dec8}
-.ticker span{display:inline-block;animation:scroll 18s linear infinite}
-@keyframes scroll{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-.container{max-width:680px;margin:auto;padding:14px}
-.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(110,62,23,.06);border:1px solid #f4ece4}
-.hero{background:var(--grad);color:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 6px 18px rgba(217,43,43,.22)}
-.hero h2{margin:0 0 6px;font-size:20px}
-.hero p{margin:0;font-size:12px;opacity:.92}
-.balance{font-size:32px;font-weight:900;margin:10px 0 4px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
-.quick-btn{background:#fff;border:1px solid #f2e6dc;border-radius:14px;padding:12px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--ink)}
-.quick-icon{width:36px;height:36px;border-radius:10px;background:#fff1e6;color:#d93a2a;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-weight:900;font-size:14px}
-.stat{background:#fff8f2;padding:13px;border-radius:13px;border:1px solid #f6e7da}
-.stat small{color:var(--muted);font-size:11px}
-.stat strong{display:block;font-size:18px;margin-top:5px}
-.section-title{font-size:17px;font-weight:800;margin:16px 2px 10px;display:flex;align-items:center;gap:8px}
-.section-title::before{content:"";width:4px;height:18px;background:var(--grad);border-radius:4px}
-.btn{padding:12px 14px;border-radius:11px;font-weight:700;width:100%;background:var(--grad);color:#fff;margin-top:8px;font-size:14px}
-.btn.secondary{background:#fff0e5;color:#c43a24;border:1px solid #f8d8c2}
-.btn.dark{background:#292525;color:#fff}
-.btn.small{padding:7px 12px;font-size:12px;width:auto;margin-top:0}
-.plan{border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.03)}
-.plan-top{display:flex;justify-content:space-between;align-items:center}
-.badge{background:#fff0e4;color:#d94b21;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700}
-.price{font-size:24px;font-weight:900;margin:10px 0;color:#d93a2a}
-.plan-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px} .plan-details div{background:#fff8f2;padding:9px;border-radius:9px}
-.plan-details b{display:block;margin-top:4px;font-size:13px}
-.progress{height:7px;background:#eee;border-radius:20px;overflow:hidden;margin:10px 0}
-.progress div{height:100%;background:var(--grad)}
-.input{width:100%;border:1px solid #eadfd5;background:#fffaf6;padding:12px;border-radius:11px;outline:none;margin:6px 0 10px;font-size:14px}
-.input:focus{border-color:#ff7a18}
-label{font-size:12px;color:#666;font-weight:700;display:block;margin-top:4px}
-.row{display:flex;gap:10px;align-items:center}
-.row>*{flex:1}
-.hidden{display:none!important}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;display:grid;grid-template-columns:repeat(5,1fr);box-shadow:0 -4px 15px rgba(0,0,0,.06);padding:8px 4px calc(8px + env(safe-area-inset-bottom));border-top:1px solid #f2e8df}
-.nav-item{text-align:center;color:#999;font-size:11px;padding:4px 0;background:none}
-.nav-item .icon{font-size:19px;display:block;margin-bottom:2px}
-.nav-item.active{color:#df3d27;font-weight:700}
-.floating-support{position:fixed;right:15px;bottom:92px;z-index:60;background:var(--grad);color:#fff;border-radius:50%;width:52px;height:52px;font-size:21px;box-shadow:0 4px 15px rgba(217,43,43,.35)}
-.list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f1e9e1;font-size:13px}
-.list-item:last-child{border-bottom:none}
-.muted{color:var(--muted);font-size:12px}
-.notice{background:#fff5e9;border:1px solid #f8dec2;border-radius:10px;padding:11px;font-size:12px;line-height:1.6;color:#8e491b;margin-bottom:10px}
-.tabs{display:flex;background:#fff5ed;border-radius:10px;padding:4px;gap:4px;margin-bottom:12px}
-.tabs button{flex:1;padding:10px 5px;border-radius:8px;background:none;font-size:13px;font-weight:700;color:#666}
-.tabs button.active{background:var(--grad);color:#fff}
-.codebox{font-size:19px;font-weight:900;letter-spacing:3px;text-align:center;padding:11px;background:#fff3e9;border-radius:10px;color:#292525;margin:8px 0}
-h3{margin:0 0 10px;font-size:16px}
-.empty{text-align:center;color:#999;padding:18px;font-size:13px} support-link{display:block;padding:13px;background:#fff7ef;border:1px solid #f5e2cf;border-radius:12px;margin:8px 0;text-decoration:none;color:#292525;font-weight:700;font-size:13px}
-.menu-btn{width:100%;background:#fff;border:1px solid #f1e6dc;border-radius:12px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;color:var(--ink)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ASML Global (VIP) — Official Platform</title>
+  <style>
+    :root {
+      --red: #c81d1d;
+      --red-dark: #9e1212;
+      --orange: #ff6a00;
+      --amber: #ffb703;
+      --bg: #fff8f2;
+      --card: #ffffff;
+      --text: #241915;
+      --muted: #6e5d56;
+      --border: #f0dfd4;
+      --grad-main: linear-gradient(135deg, #c81d1d 0%, #ff6a00 100%);
+      --grad-gold: linear-gradient(135deg, #ff7b00 0%, #ffb703 100%);
+      --shadow: 0 8px 24px rgba(200, 29, 29, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 84px; }
+
+    /* Top Header */
+    .topbar {
+      background: var(--grad-main);
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      box-shadow: 0 4px 16px rgba(200, 29, 29, 0.2);
+    }
+   brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: 0.3px; }
+    .vip-badge { background: var(--amber); color: #241915; font-size: 11px; font-weight: 900; padding: 2px 8px; border-radius: 999px; }
+    .top-actions { display: flex; gap: 8px; }
+    .pill-btn {
+      background: rgba(255,255,255,0.18);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.35);
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Container & Pages */
+    .container { max-width: 540px; margin: 0 auto; padding: 14px; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* Ticker */
+    .ticker {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--red-dark);
+      font-weight: 600;
+      margin-bottom: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Hero Balance Card */
+    .hero-card {
+      background: var(--grad-main);
+      color: #fff;
+      border-radius: 20px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+    .bonus-tag {
+      display: inline-block;
+      background: var(--amber);
+      color: #241915;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+    }
+    .bal-big { font-size: 32px; font-weight: 900; line-height: 1.1; }
+    .bal-sub { font-size: 12px; opacity: 0.92; margin-top: 4px; }
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .stat-box {
+      background: rgba(255,255,255,0.16);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .stat-val { font-size: 17px; font-weight: 800; }
+    .stat-lbl { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+
+    /* Quick Grid */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+     gap: 8px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px 8px;
+      margin-bottom: 14px;
+      box-shadow: var(--shadow);
+    }
+    .q-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .q-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      color: #fff;
+    }
+
+    /* Banners */
+    .banner {
+      border-radius: 18px;
+      padding: 14px 16px;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow);
+    }
+    .banner-friend { background: linear-gradient(135deg, #b91c1c 0%, #ea580c 100%); }
+    .banner-chai { background: linear-gradient(135deg, #9a3412 0%, #d97706 100%); }
+    .banner-title { font-size: 15px; font-weight: 800; margin-top: 2px; }
+    .banner-sub { font-size: 12px; opacity: 0.95; margin-top: 3px; }
+    .banner-chip {
+      background: rgba(255,255,255,0.2);
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-weight: 800;
+      font-size: 12px;
+      text-align: center;
+      min-width: 72px;
+    }
+
+    /* Cards & Section Titles */
+    .sec-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 14px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sec-title::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      border-radius: 4px;
+      background: var(--grad-main);
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+    }
+    .plan-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 15px;
+      margin-bottom: 12px;
+      box-shadow: var(--shadow);
+               } 
+   plan-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .plan-name { font-size: 17px; font-weight: 900; color: var(--red-dark); }
+    .plan-price { font-size: 15px; font-weight: 800; color: var(--orange); }
+    .plan-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 12px; }
+    .pill {
+      background: #fff4ea;
+      border: 1px solid #ffd8b5;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .btn-primary { background: var(--grad-main); color: #fff; }
+    .btn-gold { background: var(--grad-gold); color: #241915; }
+    .btn-soft { background: #fff2e8; color: var(--red-dark); border: 1px solid #ffd4b0; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-success { background: #16a34a; color: #fff; }
+    .btn-disabled { background: #b8aba4; color: #fff; cursor: not-allowed; }
+    .btn-sm { padding: 7px 11px; font-size: 12px; border-radius: 10px; }
+
+    /* Inputs & Modals */
+    .input, .select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid #e3cbb9;
+      background: #fffdfb;
+      font-size: 13px;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .label { font-size: 12px; font-weight: 700; margin-bottom: 4px; display: block; color: var(--muted); }
+
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #f6ebe3;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .list-item:last-child { border-bottom: none; }
+    .muted { color: var(--muted); font-size: 12px; }
+    .tag-ok { background: #dcfce7; color: #166534; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; }
+    .tag-no { background: #fee2e2; color: #991b1b; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 999px; } 
+     .notice-box {
+      background: #fff3cd;
+      border: 1px solid #ffc107;
+      color: #5c4200;
+      border-radius: 14px;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.55;
+      margin-top: 12px;
+    }
+
+    /* Bottom Nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 4px;
+      z-index: 45;
+    }
+    .nav-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      padding: 4px;
+    }
+    .nav-btn.active { color: var(--red); font-weight: 900; }
+
+    /* Opening Ad Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 90;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: #fff;
+      border-radius: 22px;
+      max-width: 420px;
+      width: 100%;
+      padding: 18px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.3);
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; text-align: center; }
+    .mini-stat { background: #fff7f0; border: 1px solid var(--border); border-radius: 12px; padding: 10px 6px; }
+  </style>
 </head>
-<body> 
- <header class="header">
- <div class="header-row">
-  <div class="brand">ASML GLOBAL <span class="vip-tag">VIP</span></div>
-  <div class="official">OFFICIAL PLATFORM</div>
- </div>
-</header>
-
-<div class="ticker">
- <span>📢 Welcome to ASML Global VIP — New User Bonus Rs 30 · Daily Check-in Rs 10 · VIP Plans 500 to 50,000 · Fast Support</span>
-</div>
-
-<main class="container">
-
-<!-- HOME PAGE -->
-<section id="homePage">
- <div id="homeBannerCard" style="margin:12px 0">
-  <div style="padding:14px;border-radius:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;margin-bottom:10px">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Brothers &amp; Friends Circle</div>
-    <div style="font-size:15px;font-weight:800;margin-top:2px">Boys Friendship &amp; Team Circle</div>
-    <div style="font-size:12px;opacity:.95;margin-top:3px">Real friends, strong bonding &amp; growing together daily.</div>
-  </div>
-  <div style="padding:14px;border-radius:16px;background:linear-gradient(135deg,#f7971e,#ffd200);color:#292525">
-    <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.85;text-transform:uppercase">Chai Patti &amp; Chicken Hub</div>
-    <div style="font-size:15px;font-weight:800;margin-top:2px">Fresh Chai Patti &amp; Chicken Hub</div>
-    <div style="font-size:12px;opacity:.9;margin-top:3px">Rich tea aroma, fresh poultry &amp; daily rewards together.</div>
-  </div>
- </div>
-
- <div class="grid-4">
-  <button class="quick-btn" onclick="openPage('depositPage')"><div class="quick-icon">Rs</div>Recharge</button>
-  <button class="quick-btn" onclick="openPage('withdrawPage')"><div class="quick-icon">Rs</div>Withdraw</button>
-  <button class="quick-btn" onclick="navigate('taskPage',document.querySelector('[data-page=taskPage]'))"><div class="quick-icon">✓</div>Task</button>
-  <button class="quick-btn" onclick="checkin()"><div class="quick-icon">17</div>Check-in</button>
- </div>
- <div class="hero">
-  <p>Account Balance (Rs)</p>
-  <div class="balance" id="homeBalance">Rs 30.00</div>
-  <p id="activeUserLabel">Guest · Active</p>
-  <div class="grid" style="margin-top:14px">
-   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px">
-    <small style="opacity:.9">Number of Orders</small>
-    <strong id="homeOrderCount" style="display:block;font-size:18px;margin-top:4px">0</strong>
-   </div>
-   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px">
-    <small style="opacity:.9">Total Earnings</small>
-    <strong id="homeEarnings" style="display:block;font-size:18px;margin-top:4px">Rs 30</strong>
-   </div>
-  </div>
- </div>
-
- <div class="section-title">Featured Products (VIP Plans)</div>
- <div id="homePlans"></div>
-
- <div class="card">
-  <h3>About ASML Global</h3>
-  <p class="muted">Explore membership plans, daily check-in rewards, 3-level team referrals and 24/7 WhatsApp & Telegram support.</p>
-  <button class="btn secondary" onclick="openPage('supportPage')">Customer Support</button>
- </div>
-</section>
-
-<!-- ORDERS PAGE -->
-<section id="ordersPage" class="hidden">
- <div class="hero">
-  <div class="row">
-   <h2 style="margin:0">Orders</h2>
-   <div style="text-align:right"><span class="official">ACTIVE</span></div>
-  </div>
-  <div class="grid" style="margin-top:14px">
-   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px"><small>Total Profit</small><strong id="totalProfit" style="display:block;font-size:17px;margin-top:4px">Rs 0</strong></div>
-   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px"><small>Today's Profit</small><strong id="todayProfit" style="display:block;font-size:17px;margin-top:4px">Rs 0</strong></div>
-  </div>
-  <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px;margin-top:10px">
-   <small>Product Qty: <strong id="productQty">0</strong></small>
-  </div>
-  <button class="btn" style="background:#fff;color:#d92b2b;margin-top:12px" onclick="collectDailyProfit()">Running · Collect Profit</button>
-  </div>
-  <div class="card">
-  <h3>Active Plan & Orders</h3>
-  <p class="muted" id="ordersCurrentPlan" style="margin-bottom:10px">Current Plan: None</p>
-  <div id="ordersList"></div>
- </div>
-</section>
-
-<section id="teamPage" class="hidden">
-  <div class="section-title">Team</div>
-  <div class="hero">
-    <div class="balance">Rs 0</div>
-    <p>Total Team Earnings</p>
-    <p style="margin-top:4px">Total Team Members: <strong id="teamTotalCount">0</strong></p>
-    <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-      <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
-      <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
-    </div>
-    <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong id="refCode">ASML-XXXXXX</strong></p>
-  </div>
-  <div class="card">
-    <h3>Team Overview</h3>
-    <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
-    <div class="list-item"><span>Team Level 1 (10%)</span><span id="level1">0 · Rs 0.00</span></div>
-    <div class="list-item"><span>Team Level 2 (5%)</span><span id="level2">0 · Rs 0.00</span></div>
-    <div class="list-item"><span>Team Level 3 (1%)</span><span id="level3">0 · Rs 0.00</span></div>
-  </div>
-  <div class="card">
-    <h3>Referred Members</h3>
-    <div id="membersList" class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>
-  </div>
-  <div class="card">
-    <h3>Referral Commission &amp; Team Details</h3>
-    <p class="muted" style="line-height:1.65;margin:0 0 8px">
-      Share your personal referral link or referral code with friends and team partners. When your invited members join and activate plans, your team commissions are tracked across 3 levels.
-    </p>
-    <p class="muted" style="line-height:1.65;margin:0">
-      <strong>Level 1: 10%</strong> commission on direct referrals · <strong>Level 2: 5%</strong> commission on second-level referrals · <strong>Level 3: 1%</strong> commission on third-level referrals.
-    </p>
-  </div>
-     </section>
- 
-
-<!-- TASK PAGE -->
-<section id="taskPage" class="hidden">
- <div class="section-title">Task Center</div>
- <div class="hero">
-  <p>Cumulative Team & Activity Tasks</p>
-  <div class="balance" id="taskRewardTotal">Rs 0</div>
-  <p>Complete milestones below to claim instant rewards</p>
- </div>
- <div class="card">
-  <h3>Available Milestones</h3>
-  <div id="tasksList"></div>
- </div>
-</section>
-
-<!-- MINE PAGE -->
-<section id="minePage" class="hidden">
- <div class="hero">
-  <div class="row">
-   <div>
-    <p>Account ID</p>
-    <h2 id="mineCode" style="margin:4px 0">ASML-XXXXXX</h2>
-    <p id="mineUserLabel">Member</p>
-   </div>
-   <div style="text-align:right"><span class="official" id="mineStatusTag">Active</span></div>
-  </div>
-  <div class="balance" id="mineBalance">Rs 30.00</div>
- </div>
- <div class="grid" style="margin-bottom:12px">
-  <button class="btn" style="margin:0" onclick="openPage('depositPage')">Recharge / Deposit</button>
-  <button class="btn secondary" style="margin:0" onclick="openPage('withdrawPage')">Withdraw</button>
- </div> 
- <button class="menu-btn" onclick="openPage('bankPage')"><span>🏦 Bank / Wallet Account Binding</span><span>›</span></button>
- <button class="menu-btn" onclick="openPage('supportPage')"><span>🎧 Customer Support (WhatsApp & Telegram)</span><span>›</span></button>
- <button class="menu-btn" onclick="openPage('authPage')"><span>🔐 Sign In / Create Account</span><span>›</span></button>
- <button class="menu-btn" id="adminMenuBtn" onclick="openPage('adminPage')"><span>⚙️ Admin Panel (Ladlawaqas527@gmail.com)</span><span>›</span></button>
- <button class="menu-btn" onclick="logout()"><span>🚪 Log Out</span><span>›</span></button>
-</section>
-
-<!-- AUTH PAGE -->
-<section id="authPage" class="hidden">
- <div class="section-title">Account Access</div>
- <div class="card">
-  <div class="tabs">
-   <button class="active" id="signupTab" onclick="authTab('signup')">Create Account</button>
-   <button id="signinTab" onclick="authTab('signin')">Sign In</button>
-  </div>
-  <div id="signupForm">
-   <label>Email or Phone (+92)</label>
-   <input class="input" id="suContact" placeholder="Enter email or +923XXXXXXXXX">
-   <label>Create Password</label>
-   <input class="input" id="suPassword" type="password" placeholder="Create password">
-   <label>Re-enter Password</label>
-   <input class="input" id="suConfirm" type="password" placeholder="Confirm password">
-   <label>4-Digit Verification Code</label>
-   <div class="row">
-    <div class="codebox" id="verifyCode">0000</div>
-    <button class="btn secondary" style="margin:0" onclick="refreshCode()">↻ Refresh</button>
-   </div>
-   <input class="input" id="suVerify" placeholder="Enter 4-digit code above">
-   <label>Referral Code (Optional)</label>
-   <input class="input" id="suReferral" placeholder="ASML-XXXXXX">
-   <button class="btn" onclick="signup()">Create Account (+Rs 30 Bonus)</button>
-  </div>
-  <div id="signinForm" class="hidden">
-   <label>Email or Phone</label>
-   <input class="input" id="siContact" placeholder="Enter email or phone">
-   <label>Password</label>
-   <input class="input" id="siPassword" type="password" placeholder="Enter password">
-   <button class="btn" onclick="signin()">Sign In</button>
-  </div>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section>
-
-<!-- DEPOSIT PAGE -->
-<section id="depositPage" class="hidden">
- <div class="section-title">Deposit / Recharge</div>
- <div class="card">
-  <div class="notice" id="autoAssignNotice">An account has been automatically selected for your transaction. You can also switch payment methods below.</div>
-  <label>Select / Switch Payment Account</label>
-  <select class="input" id="depositMethod" onchange="updateDepositAccount()">
-   <option value="EasyPaisa_1">EasyPaisa — Waqas Nadeem (03192649784)</option>
-   <option value="EasyPaisa_2">EasyPaisa — Qutab sher (03010901786)</option>
-   <option value="UPaisa">UPaisa — Tasleem Khatoon (033324232482)</option>
-   <option value="JazzCash">JazzCash — Shaheen Akhtar (03037939388)</option>
-  </select>
-  <div class="stat">
-   <small>Send Payment To This Account</small>
-   <strong id="depositAccount">03192649784</strong>
-   <p id="depositHolder" class="muted" style="margin:4px 0 0">Waqas Nadeem · EasyPaisa</p>
-   <button class="btn small secondary" style="margin-top:8px" onclick="copyDepositNumber()">Copy Account Number</button>
-  </div>
-  <label>Deposit Amount (Minimum Rs 500)</label>
-  <input class="input" id="depositAmount" type="number" placeholder="Enter amount (min 500)">
-  <label>Transaction ID (TID)</label>
-  <input class="input" id="depositTID" placeholder="Enter 11-12 digit TID">
-  <button class="btn" onclick="submitDeposit()">Submit Deposit Request</button>
- </div>
- <div class="card">
-  <h3>Deposit History</h3>
-  <div id="depositHistory"></div>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section> 
- <!-- WITHDRAW PAGE -->
-<section id="withdrawPage" class="hidden">
- <div class="section-title">Withdraw Funds</div>
- <div class="card">
-  <div class="notice" id="withdrawAutoNotice">Withdrawal method is auto-selected from your profile/rotation. You can switch method anytime.</div>
-  <label>Withdrawal Method</label>
-  <select class="input" id="withdrawMethod" onchange="updateWithdrawMethod()">
-   <option value="EasyPaisa">EasyPaisa</option>
-   <option value="JazzCash">JazzCash</option>
-   <option value="UPaisa">UPaisa</option>
-   <option value="Bank Transfer">Bank Transfer</option>
-  </select>
-  <div id="bankNameField" class="hidden">
-   <label>Bank Name</label>
-   <input class="input" id="withdrawBankName" placeholder="e.g. Meezan Bank, HBL, UBL">
-  </div>
-  <label>Account Holder Name</label>
-  <input class="input" id="withdrawHolder" placeholder="Enter account title">
-  <label>Account / Wallet Number</label>
-  <input class="input" id="withdrawAccount" placeholder="03XXXXXXXXX">
-  <label>Withdrawal Amount (Minimum Rs 500)</label>
-  <input class="input" id="withdrawAmount" type="number" placeholder="Enter amount" oninput="calculateWithdraw()">
-  <div class="grid">
-   <div class="stat"><small>10% Fee / Tax</small><strong id="taxAmount">Rs 0</strong></div>
-   <div class="stat"><small>Net Payout</small><strong id="netAmount">Rs 0</strong></div>
-  </div>
-  <button class="btn" onclick="submitWithdraw()">Submit Withdrawal Request</button>
- </div>
- <div class="card">
-  <h3>Withdrawal History</h3>
-  <div id="withdrawHistory"></div>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section>
-
-<!-- BANK PAGE -->
-<section id="bankPage" class="hidden">
- <div class="section-title">Bank / Wallet Binding</div>
- <div class="card">
-  <label>Select Bank or Mobile Wallet</label>
-  <select class="input" id="bankWallet">
-   <option value="EasyPaisa">EasyPaisa</option>
-   <option value="JazzCash">JazzCash</option>
-   <option value="UPaisa">UPaisa</option>
-   <option value="Bank Transfer">Bank Transfer</option>
-  </select>
-  <label>Account Holder Name</label>
-  <input class="input" id="bankHolder" placeholder="Enter full name">
-  <label>Account / Wallet Number</label>
-  <input class="input" id="bankNumber" placeholder="Enter account number">
-  <button class="btn" onclick="saveBank()">Save Account</button>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section> 
- <!-- SUPPORT PAGE -->
-<section id="supportPage" class="hidden">
- <div class="section-title">Customer Support</div>
- <div class="card">
-  <h3>WhatsApp Support</h3>
-  <a class="support-link" href="https://wa.me/923192649784" target="_blank">📱 WhatsApp Support 1: +923192649784</a>
-  <a class="support-link" href="https://wa.me/923295412047" target="_blank">📱 WhatsApp Support 2: +923295412047</a>
- </div>
- <div class="card">
-  <h3>Telegram Help Centre</h3>
-  <a class="support-link" href="https://t.me/HelpcentrePKRwebsite_13" target="_blank">✈️ Telegram Help Centre: HelpcentrePKRwebsite_13</a>
-  <a class="support-link" href="https://t.me/Top_Promotion1" target="_blank">✈️ Telegram Promotion: @Top_Promotion1</a>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section>
-
-<!-- ADMIN PAGE -->
-<section id="adminPage" class="hidden">
- <div class="section-title">ASML Global Admin Panel</div>
- <div class="card" id="adminLoginCard">
-  <div class="notice">Authorized Admin Email: <strong>Ladlawaqas527@gmail.com</strong></div>
-  <label>Admin Email</label>
-  <input class="input" id="adminEmail" value="Ladlawaqas527@gmail.com">
-  <input class="input" id="adminPassword" type="text" value="8845" placeholder="Admin Password: 8845">
- 
-  <button class="btn" onclick="adminLogin()">Open Admin Controls</button>
- </div>
-
- <div id="adminDashboard" class="hidden">
-  <div class="card">
-   <h3>Manage User Balance & Status</h3>
-   <label>Select User</label>
-   <select class="input" id="adminUserSelect" onchange="adminRefresh()"></select>
-   <div class="stat">
-    <small>Current User Balance</small>
-    <strong id="adminBalance">Rs 0</strong>
-   </div>
-   <label>Amount (Rs)</label>
-   <input class="input" id="adminAmount" type="number" placeholder="Enter amount">
-   <div class="row">
-    <button class="btn" onclick="adminAdjust('add')">+ Add Balance</button>
-    <button class="btn secondary" onclick="adminAdjust('subtract')">- Deduct Balance</button>
-   </div>
-   <button class="btn dark" onclick="adminAdjust('set')">Set Exact Balance</button>
-   <div class="row">
-    <button class="btn secondary" onclick="adminBlock(true)">Block User</button>
-    <button class="btn" onclick="adminBlock(false)">Unblock User</button>
-   </div>
- </div> 
-  <div class="card">
-   <h3>Deposit Requests (Approve / Reject)</h3>
-   <div id="adminDeposits"></div>
-  </div>
-
-  <div class="card">
-   <h3>Withdrawal Requests (Approve / Reject)</h3>
-   <div id="adminWithdrawals"></div>
-  </div>
- </div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section>
-
-<!-- PLAN DETAIL PAGE -->
-<section id="planDetailPage" class="hidden">
- <div class="section-title">VIP Plan Details</div>
- <div class="card" id="planDetailContent"></div>
- <button class="btn secondary" onclick="goBack()">← Back</button>
-</section>
-
-</main>
-
-<button class="floating-support" onclick="openPage('supportPage')">💬</button>
-
-<nav class="bottom-nav">
- <button class="nav-item active" data-page="homePage" onclick="navigate('homePage',this)"><span class="icon">🏠</span>Home</button>
- <button class="nav-item" data-page="ordersPage" onclick="navigate('ordersPage',this)"><span class="icon">📋</span>Orders</button>
- <button class="nav-item" data-page="teamPage" onclick="navigate('teamPage',this)"><span class="icon">👥</span>Team</button>
- <button class="nav-item" data-page="taskPage" onclick="navigate('taskPage',this)"><span class="icon">📋</span>Task</button>
- <button class="nav-item" data-page="minePage" onclick="navigate('minePage',this)"><span class="icon">👤</span>Mine</button>
-</nav>
-<script>
-const $ = id => document.getElementById(id);
-const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
-
-const DEPOSIT_ACCOUNTS = {
- EasyPaisa_1: { method: "EasyPaisa", number: "03192649784", holder: "Waqas Nadeem" },
- EasyPaisa_2: { method: "EasyPaisa", number: "03010901786", holder: "Qutab sher" },
- UPaisa:      { method: "UPaisa",     number: "033324232482", holder: "Tasleem Khatoon" },
- JazzCash:    { method: "JazzCash",   number: "03037939388", holder: "Shaheen Akhtar" }
-};
-
-function safeLoad(key, fallback) {
- try {
-  const raw = localStorage.getItem(key);
-  return raw ? JSON.parse(raw) : fallback;
- } catch (e) {
-  return fallback;
- }
-}
-
-function safeSave(key, val) {
- try {
-  localStorage.setItem(key, JSON.stringify(val));
- } catch (e) {}
-}
-
-let db = safeLoad("ASML_GLOBAL_V2", {
- users: [
-  {
-   contact: "Ladlawaqas527@gmail.com",
-   password: "8845",
-   balance:35,
-   code: "ASML-ADMIN1",
-   blocked: false,
-   lastCheckin: "",
-   totalProfit: 35,
-   bank: { wallet: "EasyPaisa", holder: "Waqas Nadeem", number: "03192649784" }
-  }
- ],
- deposits: [],
- withdrawals: [],
- plans: [],
- members: [],
- tasks: [
-  { id: 1, title: "Daily Welcome & First Login", reward: 20, done: false },
-  { id: 2, title: "Downline Investment Rs 3,000", reward: 300, done: false },
-  { id: 3, title: "Downline Investment Rs 9,000", reward: 900, done: false },
-  { id: 4, title: "Downline Investment Rs 27,000", reward: 2700, done: false }
- ]
-});
- let currentUser = localStorage.getItem("ASML_CURRENT_USER_V2") || "Ladlawaqas527@gmail.com";
-let adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
-let lastPage = "homePage";
-let rotationIndex = Number(localStorage.getItem("ASML_ROTATION_IDX") || "0");
-
-function saveDB() {
- safeSave("ASML_GLOBAL_V2", db);
-}
-
-function getUser() {
- let u = db.users.find(x => x.contact.toLowerCase() === currentUser.toLowerCase());
- if (!u) {
-  u = db.users[0];
-  currentUser = u.contact;
-  localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
- }
- return u;
-}
-
-function money(n) {
- return "Rs " + Number(n || 0).toLocaleString("en-PK");
-}
-
-function makeCode() {
- return "ASML-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-}
-
-const planData = [
- { price: 500,   daily: 20,   hourly: 0.83 },
- { price: 900,   daily: 36,   hourly: 1.50 },
- { price: 1500,  daily: 60,   hourly: 2.50 },
- { price: 2000,  daily: 80,   hourly: 3.33 },
- { price: 2500,  daily: 100,  hourly: 4.17 },
- { price: 3000,  daily: 120,  hourly: 5.00 },
- { price: 6000,  daily: 240,  hourly: 10.00 },
- { price: 10000, daily: 400,  hourly: 16.67 },
- { price: 20000, daily: 800,  hourly: 33.33 },
- { price: 50000, daily: 2000, hourly: 83.33 }
-].map(p => ({ ...p, cycle: 120, total: p.daily * 120 }));
-
-function autoSelectDepositAccount() {
- const keys = Object.keys(DEPOSIT_ACCOUNTS);
- rotationIndex = (rotationIndex + 1) % keys.length;
- localStorage.setItem("ASML_ROTATION_IDX", String(rotationIndex));
- const chosen = keys[rotationIndex];
- $("depositMethod").value = chosen;
- updateDepositAccount();
-}
-
-function autoSelectWithdrawAccount() {
- const u = getUser();
- const methods = ["EasyPaisa", "JazzCash", "UPaisa", "Bank Transfer"];
- if (u.bank && methods.includes(u.bank.wallet)) {
-  $("withdrawMethod").value = u.bank.wallet;
-  $("withdrawHolder").value = u.bank.holder || "";
-  $("withdrawAccount").value = u.bank.number || "";
- } else {
-  $("withdrawMethod").value = methods[rotationIndex % methods.length];
- }
- updateWithdrawMethod();
- calculateWithdraw();
- }
- function hideAll() {
- document.querySelectorAll("main section").forEach(s => s.classList.add("hidden"));
-}
-
-function openPage(id) {
- const cur = document.querySelector("main section:not(.hidden)");
- if (cur && cur.id !== id) lastPage = cur.id;
- hideAll();
- $(id).classList.remove("hidden");
- if (id === "depositPage") autoSelectDepositAccount();
- if (id === "withdrawPage") autoSelectWithdrawAccount();
- if (id === "bankPage") {
-  const u = getUser();
-  if (u.bank) {
-   $("bankWallet").value = u.bank.wallet || "EasyPaisa";
-   $("bankHolder").value = u.bank.holder || "";
-   $("bankNumber").value = u.bank.number || "";
-  }
- }
- if (id === "adminPage" && currentUser.toLowerCase() === ADMIN_EMAIL) {
-  adminMode = true;
-  $("adminDashboard").classList.remove("hidden");
- }
- window.scrollTo({ top: 0, behavior: "smooth" });
- renderAll();
-}
-
-function goBack() {
- openPage(lastPage || "homePage");
-}
-
-function navigate(id, btn) {
- hideAll();
- $(id).classList.remove("hidden");
- document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
- if (btn) btn.classList.add("active");
- window.scrollTo({ top: 0, behavior: "smooth" });
- renderAll();
-}
-
-function renderPlans() {
- $("homePlans").innerHTML = planData.map((p, i) => `
-  <div class="plan">
-   <div class="plan-top"><b>VIP ${i + 1}</b><span class="badge">120 Days · Investment cycle</span></div>
-   <div class="price">${money(p.price)}</div>
-   <div class="plan-details">
-    <div>Daily Profit<b>${money(p.daily)}</b></div>
-    <div>Hourly Income<b>${money(p.hourly.toFixed(2))}</b></div>
-    <div>Total Revenue<b>${money(p.total)}</b></div>
-    <div>Payback<b>${Math.ceil(p.price / p.daily)} Days</b></div>
-   </div>
-   <div class="progress"><div style="width:${Math.min(p.price / 50000 * 100, 100)}%"></div></div>
-   <div class="row">
-    <button class="btn secondary" onclick="planDetails(${i})">Details</button>
-    <button class="btn" onclick="buyPlan(${i})">Buy Now</button>
-   </div>
-  </div>
- `).join("");
- } 
- function planDetails(i) {
- const p = planData[i];
- openPage("planDetailPage");
- $("planDetailContent").innerHTML = `
-  <h2>VIP ${i + 1}</h2>
-  <div class="price">${money(p.price)}</div>
-  <div class="plan-details">
-   <div>Daily Profit<b>${money(p.daily)}</b></div>
-   <div>Hourly Income<b>${money(p.hourly.toFixed(2))}</b></div>
-   <div>Total Revenue<b>${money(p.total)}</b></div>
-   <div>Cycle<b>120 Days</b></div>
-  </div>
-  <button class="btn" onclick="buyPlan(${i})">Activate VIP ${i + 1}</button>
- `;
-}
-
-function buyPlan(i) {
- const u = getUser();
- if (u.blocked) return alert("Account is blocked.");
- const p = planData[i];
- if (Number(u.balance) < p.price) return alert("Insufficient balance! Please Recharge/Deposit first.");
- u.balance = Number(u.balance) - p.price;
- db.plans.push({ id: Date.now(), user: u.contact, vip: "VIP " + (i + 1), price: p.price, daily: p.daily, cycle: 120 });
- saveDB();
- alert("VIP " + (i + 1) + " activated successfully!");
- renderAll();
-}
-
-function checkin() {
- const u = getUser();
- if (u.blocked) return alert("Account is blocked.");
- const today = new Date().toISOString().slice(0, 10);
- if (u.lastCheckin === today) return alert("You already claimed today's Rs 10 check-in!");
- u.balance = Number(u.balance) + 10;
- u.totalProfit = Number(u.totalProfit || 0) + 10;
- u.lastCheckin = today;
- saveDB();
- alert("Daily Check-in successful! +Rs 10 added.");
- renderAll();
- } 
- function collectDailyProfit() {
- const u = getUser();
- const myPlans = db.plans.filter(p => p.user.toLowerCase() === u.contact.toLowerCase());
- if (!myPlans.length) return alert("No active plan purchased yet.");
- const profit = myPlans.reduce((sum, p) => sum + Number(p.daily || 0), 0);
- u.balance = Number(u.balance) + profit;
- u.totalProfit = Number(u.totalProfit || 0) + profit;
- saveDB();
- alert("Collected " + money(profit) + " profit!");
- renderAll();
-}
-
-function authTab(tab) {
- $("signupTab").classList.toggle("active", tab === "signup");
- $("signinTab").classList.toggle("active", tab === "signin");
- $("signupForm").classList.toggle("hidden", tab !== "signup");
- $("signinForm").classList.toggle("hidden", tab !== "signin");
- if (tab === "signup") refreshCode();
-}
-
-function refreshCode() {
- $("verifyCode").innerText = String(Math.floor(1000 + Math.random() * 9000));
-}
-
-function signup() {
- const contact = $("suContact").value.trim();
- const pw = $("suPassword").value;
- const pw2 = $("suConfirm").value;
- const v = $("suVerify").value.trim();
- const ref = $("suReferral").value.trim();
- if (!contact || pw.length < 4) return alert("Enter valid email/phone and password (min 4 chars).");
- if (pw !== pw2) return alert("Passwords do not match.");
- if (v !== $("verifyCode").innerText.trim()) { refreshCode(); return alert("Wrong 4-digit code."); }
- if (db.users.some(x => x.contact.toLowerCase() === contact.toLowerCase())) return alert("Account already exists.");
-
- db.users.push({
-  contact,
-  password: pw,
-  balance: 30,
-  code: makeCode(),
-  blocked: false,
-  lastCheckin: "",
-  totalProfit: 30,
-  bank: null
- });
- if (ref) db.members.push({ referrerCode: ref, member: contact });
- currentUser = contact;
- localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
- adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
- saveDB();
- alert("Account created! Rs 30 Welcome Bonus added.");
- openPage("homePage");
-}
-
-function signin() {
- const contact = $("siContact").value.trim();
- const pw = $("siPassword").value;
- const found = db.users.find(x => x.contact.toLowerCase() === contact.toLowerCase() && x.password === pw);
- if (!found) return alert("Invalid email/phone or password.");
- currentUser = found.contact;
- localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
- adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
- alert("Signed in as " + currentUser);
- openPage("homePage");
- }
- function logout() {
- alert("Logged out.");
- openPage("authPage");
-}
-
-function updateDepositAccount() {
- const acc = DEPOSIT_ACCOUNTS[$("depositMethod").value] || DEPOSIT_ACCOUNTS.EasyPaisa_1;
- $("depositAccount").innerText = acc.number;
- $("depositHolder").innerText = acc.holder + " · " + acc.method;
-}
-
-function copyDepositNumber() {
- const num = $("depositAccount").innerText;
- if (navigator.clipboard) navigator.clipboard.writeText(num).catch(() => {});
- alert("Copied account number: " + num);
-}
-
-function submitDeposit() {
- const u = getUser();
- if (u.blocked) return alert("Account is blocked.");
- const amt = Number($("depositAmount").value);
- const tid = $("depositTID").value.trim();
- const acc = DEPOSIT_ACCOUNTS[$("depositMethod").value] || DEPOSIT_ACCOUNTS.EasyPaisa_1;
- if (!amt || amt < 500) return alert("Minimum deposit amount is Rs 500.");
- if (!tid) return alert("Please enter Transaction ID (TID).");
-
- db.deposits.push({ id: Date.now(), user: u.contact, method: acc.method, account: acc.number, amount: amt, tid, status: "Pending" });
- $("depositAmount").value = "";
- $("depositTID").value = "";
- saveDB();
- alert("Deposit request submitted! Waiting for Admin approval.");
- renderAll();
-}
-
-function updateWithdrawMethod() {
- $("bankNameField").classList.toggle("hidden", $("withdrawMethod").value !== "Bank Transfer");
-}
-
-function calculateWithdraw() {
- const amt = Number($("withdrawAmount").value || 0);
- const tax = Math.round(amt * 0.10);
- $("taxAmount").innerText = money(tax);
- $("netAmount").innerText = money(Math.max(0, amt - tax));
-}
-
-function submitWithdraw() {
- const u = getUser();
- if (u.blocked) return alert("Account is blocked.");
- const method = $("withdrawMethod").value;
- const holder = $("withdrawHolder").value.trim();
- const account = $("withdrawAccount").value.trim();
- const amt = Number($("withdrawAmount").value);
- if (!amt || amt < 500) return alert("Minimum withdrawal is Rs 500.");
- if (!account) return alert("Enter account/wallet number.");
- if (Number(u.balance) < amt) return alert("Insufficient balance.");
-
- const tax = Math.round(amt * 0.10);
- u.balance = Number(u.balance) - amt;
- db.withdrawals.push({ id: Date.now(), user: u.contact, method, holder, account, amount: amt, net: amt - tax, status: "Pending" });
- $("withdrawAmount").value = "";
- calculateWithdraw();
- saveDB();
- alert("Withdrawal request submitted!");
- renderAll();
- }
- function saveBank() {
- const u = getUser();
- const wallet = $("bankWallet").value;
- const holder = $("bankHolder").value.trim();
- const number = $("bankNumber").value.trim();
- if (!number) return alert("Enter account/wallet number.");
- u.bank = { wallet, holder, number };
- saveDB();
- alert("Bank / Wallet account bound successfully!");
-}
-
-function copyReferral() {
- const code = $("refCode").innerText;
- if (navigator.clipboard) navigator.clipboard.writeText(code).catch(() => {});
- alert("Referral Code Copied: " + code);
-}
-
-function claimTask(id) {
- const u = getUser();
- const t = db.tasks.find(x => x.id === id);
- if (!t || t.done) return;
- t.done = true;
- u.balance = Number(u.balance) + Number(t.reward);
- u.totalProfit = Number(u.totalProfit || 0) + Number(t.reward);
- saveDB();
- alert("Task reward " + money(t.reward) + " claimed!");
- renderAll();
-}
-
-function adminLogin() {
-  const email = ($("adminEmail")?.value || "").trim().toLowerCase();
-  if (email !== ADMIN_EMAIL.toLowerCase()) {
-    adminMode = false;
-    $("adminDashboard")?.classList.add("hidden");
-    return alert("Only ladlawaqas527@gmail.com can access Admin Panel.");
-  }
-  currentUser = ADMIN_EMAIL;
-  localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
-  adminMode = true;
-  $("adminDashboard")?.classList.remove("hidden");
-  if (typeof adminRefresh === "function") adminRefresh();
- }
- 
-
-function adminRefresh() {
- const sel = $("adminUserSelect");
- const prev = sel.value;
- sel.innerHTML = db.users.map(u => `<option value="${u.contact}">${u.contact} (${money(u.balance)})${u.blocked ? " [Blocked]" : ""}</option>`).join("");
- if (prev && db.users.some(u => u.contact === prev)) sel.value = prev;
- const target = db.users.find(u => u.contact === sel.value) || db.users[0];
- $("adminBalance").innerText = money(target.balance);
-
- $("adminDeposits").innerHTML = db.deposits.length ? db.deposits.map(d => `
- <div class="list-item">
-   <div><b>${d.user}</b> · ${d.method} (${d.account}) · ${money(d.amount)}<br><small class="muted">TID: ${d.tid} · ${d.status}</small></div>
-   <div>${d.status === "Pending" ? `<button class="btn small" onclick="decideDeposit(${d.id},'Approved')">Approve</button> <button class="btn secondary small" onclick="decideDeposit(${d.id},'Rejected')">Reject</button>` : `<b>${d.status}</b>`}</div>
-  </div>
- `).join("") : `<div class="empty">No deposit requests yet.</div>`;
-
- $("adminWithdrawals").innerHTML = db.withdrawals.length ? db.withdrawals.map(w => `
-  <div class="list-item">
-   <div><b>${w.user}</b> · ${w.method} (${w.account}) · ${money(w.amount)}<br><small class="muted">Net: ${money(w.net)} · ${w.status}</small></div>
-   <div>${w.status === "Pending" ? `<button class="btn small" onclick="decideWithdraw(${w.id},'Approved')">Approve</button> <button class="btn secondary small" onclick="decideWithdraw(${w.id},'Rejected')">Reject</button>` : `<b>${w.status}</b>`}</div>
-  </div>
- `).join("") : `<div class="empty">No withdrawal requests yet.</div>`;
-}
-
-function adminAdjust(mode) {
- const target = db.users.find(u => u.contact === $("adminUserSelect").value);
- const amt = Number($("adminAmount").value);
- if (!target || isNaN(amt) || amt < 0) return alert("Enter valid amount.");
- if (mode === "add") target.balance = Number(target.balance) + amt;
- if (mode === "subtract") target.balance = Math.max(0, Number(target.balance) - amt);
- if (mode === "set") target.balance = amt;
- $("adminAmount").value = "";
- saveDB();
- adminRefresh();
- renderAll();
-}
-
-function adminBlock(flag) {
- const target = db.users.find(u => u.contact === $("adminUserSelect").value);
- if (!target) return;
- target.blocked = Boolean(flag);
- saveDB();
- adminRefresh();
- renderAll();
-}
-
-function decideDeposit(id, status) {
- const d = db.deposits.find(x => x.id === id);
- if (!d || d.status !== "Pending") return;
- d.status = status;
- if (status === "Approved") {
-  const u = db.users.find(x => x.contact.toLowerCase() === d.user.toLowerCase());
-  if (u) u.balance = Number(u.balance) + Number(d.amount);
- }
- saveDB();
- adminRefresh();
- renderAll();
- }
- function decideWithdraw(id, status) {
- const w = db.withdrawals.find(x => x.id === id);
- if (!w || w.status !== "Pending") return;
- w.status = status;
- if (status === "Rejected") {
-  const u = db.users.find(x => x.contact.toLowerCase() === w.user.toLowerCase());
-  if (u) u.balance = Number(u.balance) + Number(w.amount);
- }
- saveDB();
- adminRefresh();
- renderAll();
-}
-
-function renderAll() {
- const u = getUser();
- const myPlans = db.plans.filter(p => p.user.toLowerCase() === u.contact.toLowerCase());
- const activePlanName = myPlans.length ? myPlans[myPlans.length - 1].vip : "None";
- const dailySum = myPlans.reduce((s, p) => s + Number(p.daily || 0), 0);
-
- $("homeBalance").innerText = "Rs " + Number(u.balance || 0).toFixed(2);
- $("mineBalance").innerText = "Rs " + Number(u.balance || 0).toFixed(2);
- $("activeUserLabel").innerText = u.contact + (u.blocked ? " · Blocked" : " · Active");
- $("mineUserLabel").innerText = u.contact;
- $("mineCode").innerText = u.code;
- $("mineStatusTag").innerText = u.blocked ? "Blocked" : "Active";
- $("homePlanStatus").innerText = "Active Plan: " + activePlanName;
- $("homeOrderCount").innerText = String(myPlans.length);
- $("homeEarnings").innerText = money(u.totalProfit || 0);
-if ($("adminMenuBtn")) $("adminMenuBtn").style.setProperty("display", "none", "important");
-adminMode = false;
- 
- 
- $("totalProfit").innerText = money(u.totalProfit || 0);
- $("todayProfit").innerText = money(dailySum);
- $("productQty").innerText = String(myPlans.length);
- $("ordersCurrentPlan").innerText = "Current Plan: " + activePlanName;
- $("ordersList").innerHTML = myPlans.length ? myPlans.map(p => `
-  <div class="list-item"><div><b>${p.vip}</b> · ${p.cycle} Days</div><div><b>${money(p.daily)}/day</b></div></div>
- `).join("") : `<div class="empty">No active plan purchased yet.</div>`;
-
- const refLink = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(u.code || "")}`;
-$("refCode").innerText = u.code || "";
-if ($("asmlRefLinkDisplay")) $("asmlRefLinkDisplay").innerText = refLink;
-window.asmlCopyReferral = function() {
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(refLink).catch(() => {});
-  }
-  alert("Referral link copied:\n" + refLink);
-};
-const myMembers = db.members.filter(m => m.referrerCode === u.code);
-if ($("teamTotalCount")) $("teamTotalCount").innerText = String(myMembers.length);
-$("level1").innerText = myMembers.length + " · Rs 0.00";
-if ($("level2")) $("level2").innerText = "0 · Rs 0.00";
-if ($("level3")) $("level3").innerText = "0 · Rs 0.00";
- $("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
-  <div class="list-item">
-    <div>
-      <b>${m.member}</b><br>
-      <small class="muted">Member ID: ${m.id || m.code || "N/A"} · Referrer Team: ${m.referrerCode || u.code || "N/A"}</small>
-    </div>
-    <span>Level 1 (10%)</span>
-  </div>
-`).join("") : `<div class="empty">Total Joined: 0 · No referred members yet. Share your referral link to invite friends.</div>`;
- 
- const claimedTotal = db.tasks.filter(t => t.done).reduce((s, t) => s + t.reward, 0);
- $("taskRewardTotal").innerText = money(claimedTotal);
- $("tasksList").innerHTML = (Array.isArray(db.tasks) && db.tasks.length) ? db.tasks.map(t => `
-  <div class="list-item">
-    <div>
-      <b>${t.title || "Milestone Task"}</b><br>
-      <small class="muted">Level: ${t.level || "Level 1"} · Deposit/Target: ${t.depositReq || t.target || "Rs 0"} · Reward/Rate: ${t.rate || money(t.reward || 0)}</small>
-    </div>
-    <button class="btn small ${t.done ? "secondary" : ""}" onclick="claimTask(${t.id})">${t.done ? "Claimed" : "Claim"}</button>
-  </div>
-`).join("") : `<div class="empty">No tasks available right now.</div>`;
- 
-
- const myDeps = db.deposits.filter(d => d.user.toLowerCase() === u.contact.toLowerCase());
- $("depositHistory").innerHTML = myDeps.length ? myDeps.map(d => `
-  <div class="list-item"><div><b>${d.method}</b> · ${money(d.amount)}<br><small class="muted">TID: ${d.tid}</small></div><b>${d.status}</b></div>
- `).join("") : `<div class="empty">No deposit history yet.</div>`;
-
- const myWds = db.withdrawals.filter(w => w.user.toLowerCase() === u.contact.toLowerCase());
- $("withdrawHistory").innerHTML = myWds.length ? myWds.map(w => `
-  <div class="list-item"><div><b>${w.method}</b> · ${money(w.amount)}<br><small class="muted">Net: ${money(w.net)}</small></div><b>${w.status}</b></div>
- `).join("") : `<div class="empty">No withdrawal history yet.</div>`;
-
- if (adminMode) adminRefresh();
-}
-
-refreshCode();
-renderPlans();
-updateDepositAccount();
-updateWithdrawMethod();
-calculateWithdraw();
-renderAll();
-</script>
-</body>
-</html>
-<script>
-(function() {
-  const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
-  const OWNER_NAME = "Waqas Nadeem";
-  const OWNER_PHONE = "03192649784";
-  const CFG_KEY = "ASML_MASTER_PROFIT_CFG_V4";
-  const $ = id => document.getElementById(id);
-
-  function loadCfg() {
-    try {
-      const data = JSON.parse(localStorage.getItem(CFG_KEY) || "null");
-      if (data && typeof data === "object") return data;
-    } catch (e) {}
-    return { multiplier: 2.5, customDaily: {} };
-  }
-
-  function saveCfg(cfg) {
-    try {
-      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
-    } catch (e) {}
-  }
-
-  let cfg = loadCfg();
-
-  function cleanStrayText() {
-    const tokens = [
-      "injectProfitEditorBox",
-      "ASML_PLAN_PROFIT_BOOST",
-      "applyBoostToPlans",
-      "syncSelectedPlanProfitInput",
-      "saveSinglePlanProfit",
-      "applyAllPlansMultiplier",
-      "cleanLeakedCodeText"
-    ];
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const removeList = [];
-    let n;
-    while ((n = walker.nextNode())) {
-      const parentTag = n.parentElement ? n.parentElement.tagName : "";
-      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
-      const txt = (n.nodeValue || "").trim();
-      if (txt && tokens.some(t => txt.includes(t))) {
-        removeList.push(n);
-      }
-    } 
-  let cfg = loadCfg();
-
-  function cleanStrayText() {
-    const tokens = [
-      "injectProfitEditorBox",
-      "ASML_PLAN_PROFIT_BOOST",
-      "applyBoostToPlans",
-      "syncSelectedPlanProfitInput",
-      "saveSinglePlanProfit",
-      "applyAllPlansMultiplier",
-      "cleanLeakedCodeText"
-    ];
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const removeList = [];
-    let n;
-    while ((n = walker.nextNode())) {
-      const parentTag = n.parentElement ? n.parentElement.tagName : "";
-      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
-      const txt = (n.nodeValue || "").trim();
-      if (txt && tokens.some(t => txt.includes(t))) {
-        removeList.push(n);
-      }
-    }
-    removeList.forEach(item => {
-      if (item.parentNode) item.parentNode.removeChild(item);
-    });
-  }
-
-  function getActiveEmail() {
-    try {
-      const savedUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
-      if (savedUser && savedUser.includes("@")) return savedUser;
-    } catch (e) {}
-    const m = ($("mineUserLabel")?.textContent || "").toLowerCase();
-    const h = ($("activeUserLabel")?.textContent || "").toLowerCase();
-    const match = (m + " " + h).match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
-    return match ? match[0].toLowerCase() : "";
-  }
-
-  function isAdminUser() {
-    return getActiveEmail() === ADMIN_EMAIL;
-  }
-
-  function getDailyForPlanIndex(idx, baseDaily) {
-    const custom = cfg.customDaily[idx];
-    if (typeof custom === "number" && !isNaN(custom) && custom > 0) {
-      return custom;
-    }
-    return Math.round(Number(baseDaily || 0) * Number(cfg.multiplier || 1));
-  }
-
-  function applyProfitsToPlansAndOrders() {
-    if (Array.isArray(window.planData)) {
-      window.planData.forEach((plan, idx) => {
-        if (typeof plan._baseDaily !== "number") {
-          plan._baseDaily = Number(plan.daily || 0);
-        }
-        const newDaily = getDailyForPlanIndex(idx, plan._baseDaily);
-        plan.daily = newDaily;
-        plan.hourly = Number((newDaily / 24).toFixed(2));
-        plan.cycle = plan.cycle || 120;
-        plan.total = newDaily * plan.cycle;
-      });
-} 
-   try {
-      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
-      if (dbRaw) {
-        const db = JSON.parse(dbRaw);
-        const orderArrays = [db.orders, db.userOrders, db.activeOrders, db.investments].filter(Array.isArray);
-        orderArrays.forEach(arr => {
-          arr.forEach((ord, idx) => {
-            const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
-            const base = typeof ord._baseDaily === "number"
-              ? ord._baseDaily
-              : Number(ord.daily || ord.dailyProfit || 0);
-            if (base > 0) {
-              ord._baseDaily = base;
-              const updatedDaily = getDailyForPlanIndex(pIdx, base);
-              if ("daily" in ord) ord.daily = updatedDaily;
-              if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
-              if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
-              const cycle = Number(ord.cycle || 120);
-              if ("total" in ord) ord.total = updatedDaily * cycle;
-            }
-          });
-        });
-        localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-      }
-    } catch (e) {}
-
-    if (Array.isArray(window.userOrders)) {
-      window.userOrders.forEach((ord, idx) => {
-        const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
-        const base = typeof ord._baseDaily === "number"
-          ? ord._baseDaily
-          : Number(ord.daily || ord.dailyProfit || 0);
-        if (base > 0) {
-          ord._baseDaily = base;
-          const updatedDaily = getDailyForPlanIndex(pIdx, base);
-          if ("daily" in ord) ord.daily = updatedDaily;
-          if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
-          if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
-        }
-      });
-    }
-
-    if (typeof window.renderPlans === "function") {
-      window.renderPlans();
-    }
-    if (typeof window.renderOrders === "function") {
-      window.renderOrders();
-    }
-       }
-   function getReferralLink() {
-    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
-    return window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(code);
-  }
-
-  window.asmlCopyReferral = function() {
-    const link = getReferralLink();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(link).catch(() => {});
-    }
-    alert("Referral Link Copied:\n" + link);
-  };
-
-  function syncTeamPage() {
-    const teamSec = $("teamPage");
-    if (!teamSec) return;
-    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
-    const link = getReferralLink();
-
-    let members = [];
-    try {
-      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (Array.isArray(db.members)) members = db.members;
-    } catch (e) {}
-
-    teamSec.innerHTML = `
-      <div class="section-title">Team</div>
-      <div class="hero">
-        <div class="balance">Rs 0</div>
-        <p>Total Team Earnings</p>
-        <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
-        <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-          <span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
-          <button class="btn small" onclick="window.asmlCopyReferral()">Copy</button>
-        </div>
-        <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong>${code}</strong></p>
+<body>
+    <!-- Opening Channel Ad Popup with Skip Button -->
+  <div id="openingAdModal" class="modal-backdrop open">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span class="bonus-tag" style="margin:0">OFFICIAL ANNOUNCEMENT</span>
+        <button class="btn btn-soft btn-sm" onclick="closeOpeningAd()">Skip ✕</button>
       </div>
-      <div class="card">
-        <h3>Team Overview</h3>
-        <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
-        <div class="list-item"><span>Team Level 1 (18%)</span><span>${members.length} · Rs 0.00</span></div>
-        <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
-        <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
-      </div>
-      <div class="card">
-        <h3>Referred Members</h3>
-        ${
-          members.length
-            ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (18%)</span></div>`).join("")
-            : `<div class="empty">No referred members yet.</div>`
-        }
-      </div>
-      <div class="card">
-        <h3>Referral Rebate Rules!</h3>
-        <p class="muted" style="line-height:1.65;margin:0">
-          Users you invite directly are considered your "Level 1" users; you will receive a rebate equal to 18% of their top-up (deposit) amount. Users invited by your Level 1 users are considered your "Level 2" users; you will receive a rebate equal to 2% of their top-up (deposit) amount. Users invited by your Level 2 users are considered your "Level 3" users; you will receive a rebate equal to 1% of their top-up (deposit) amount.
+      <div style="background:var(--grad-main);color:#fff;border-radius:16px;padding:16px;margin-bottom:12px">
+        <div style="font-size:18px;font-weight:900">ASML Global (VIP) Official Channel</div>
+        <p style="font-size:12px;margin-top:6px;line-height:1.5;opacity:0.95">
+          Join our official WhatsApp channel for daily updates, VIP signals, and claim your <strong>Rs 30</strong> channel join reward inside Task Center!
         </p>
       </div>
-    `;
-         }
-   function syncTaskPage() {
-    const taskSec = $("taskPage");
-    if (!taskSec) return;
-    const milestones = [
-      { task: "Task 1", target: "3,000", reward: "Rs300" },
-      { task: "Task 2", target: "9,000", reward: "Rs900" },
-      { task: "Task 3", target: "27,000", reward: "Rs2,700" },
-      { task: "Task 4", target: "77,000", reward: "Rs7,700" },
-      { task: "Task 5", target: "177,000", reward: "Rs17,700" },
-      { task: "Task 6", target: "377,000", reward: "Rs37,700" },
-      { task: "Task 7", target: "770,000", reward: "Rs77,000" },
-      { task: "Task 8", target: "1,770,000", reward: "Rs177,000" }
-    ];
-
-    taskSec.innerHTML = `
-      <div class="section-title">Task Center</div>
-      <div class="hero">
-        <p>Cumulative Team Invitation</p>
-        <div class="balance">Rs 0</div>
-        <p>Team investment milestones</p>
+      <div class="btn-row">
+        <a id="openingChannelLink" href="https://whatsapp.com/channel/0029VbEdkCEAojYpbT79RR3f" target="_blank" rel="noopener" class="btn btn-gold" style="text-align:center;text-decoration:none">Join Channel</a>
+        <button class="btn btn-primary" onclick="closeOpeningAd()">Skip & Continue</button>
       </div>
-      ${milestones.map(m => `
-        <div class="card">
-          <div class="plan-top">
-            <p style="margin:0;font-size:13px;line-height:1.6;max-width:74%">
-              Level 1 downline members who reach a total investment of <strong>Rs ${m.target}</strong> active investors , will receive a reward of Rs <strong>${m.reward}</strong>
-            </p>
-            <span class="badge">${m.task}</span>
+    </div>
+  </div>
+
+  <!-- Top Header -->
+  <header class="topbar">
+    <div class="brand">
+      <span>ASML Global</span>
+      <span class="vip-badge">VIP</span>
+    </div>
+    <div class="top-actions">
+      <button class="pill-btn" id="authHeaderBtn" onclick="openAuthModal('login')">Login / Register</button>
+      <button class="pill-btn" onclick="openAdminGate()">Admin</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HOME PAGE -->
+    <section id="homePage" class="page active">
+      <div class="ticker" id="liveTicker">Welcome to ASML Global (VIP) · Join official channel & get Rs 30 reward · Daily 120-day VIP cycles</div>
+
+      <div class="hero-card">
+        <span class="bonus-tag">NEW USER BONUS & VIP REWARDS</span>
+        <div class="bal-big" id="homeBalance">Rs 100.00</div>
+        <div class="bal-sub">Account Balance · User ID: <strong id="homeUserId">ASML-1001</strong></div>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-val" id="homeActiveOrders">0</div>
+            <div class="stat-lbl">Active Plans</div>
           </div>
-          <div class="progress"><div style="width:0%"></div></div>
-          <div class="row" style="text-align:center;font-size:12px">
-            <div><strong style="color:#d92b2b">0/${m.target}</strong><div class="muted">Invitation</div></div>
-            <div><strong style="color:#d92b2b">${m.reward}</strong><div class="muted">Earnings</div></div>
-            <div><span class="badge">Milestone</span></div>
+          <div class="stat-box">
+            <div class="stat-val" id="homeTotalEarnings">Rs 100.00</div>
+            <div class="stat-lbl">Total Earnings</div>
           </div>
         </div>
-      `).join("")}
-    `;
-       }
-   function syncAuthChangePassword() {
-    const authSec = $("authPage");
-    if (!authSec || $("asmlAuthPassBox")) return;
-    const card = document.createElement("div");
-    card.className = "card";
-    card.id = "asmlAuthPassBox";
-    card.innerHTML = `
-      <h3>Change Password</h3>
-      <label>Account Email or Phone</label>
-      <input class="input" id="asmlCpUser" placeholder="Enter account email or phone">
-      <label>Old Password</label>
-      <input class="input" id="asmlCpOld" type="password" placeholder="Enter current password">
-      <label>New Password</label>
-      <input class="input" id="asmlCpNew" type="password" placeholder="Enter new password (min 4 chars)">
-      <button class="btn" onclick="window.asmlChangePassSubmit()">Change Password</button>
-    `;
-    const backBtn = authSec.querySelector("button.btn.secondary");
-    if (backBtn) authSec.insertBefore(card, backBtn);
-    else authSec.appendChild(card);
-  }
-
-  window.asmlChangePassSubmit = function() {
-    const contact = ($("asmlCpUser")?.value || "").trim().toLowerCase();
-    const oldPass = $("asmlCpOld")?.value || "";
-    const newPass = $("asmlCpNew")?.value || "";
-    if (!contact || !oldPass || newPass.length < 4) {
-      return alert("Please enter account, old password, and new password (min 4 chars).");
-    }
-    try {
-      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (!Array.isArray(db.users)) return alert("No users found.");
-      const idx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
-      if (idx === -1) return alert("Account or old password is incorrect.");
-      db.users[idx].password = newPass;
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-      $("asmlCpOld").value = "";
-      $("asmlCpNew").value = "";
-      alert("Password changed successfully!");
-    } catch (e) {
-      alert("Failed to update password.");
-    }
-  };
-        function syncPrivateAdminAndProfitControl() {
-    const adminOk = isAdminUser();
-    const adminBtn = $("adminMenuBtn");
-    const adminPage = $("adminPage");
-    const adminDash = $("adminDashboard");
-    let profitCtrl = $("asmlPrivateProfitCtrl");
-
-    if (adminBtn) {
-      adminBtn.style.setProperty("display", adminOk ? "" : "none", "important");
-    }
-
-    if (!adminOk) {
-      if (profitCtrl) profitCtrl.style.setProperty("display", "none", "important");
-      if (adminDash) adminDash.classList.add("hidden");
-      if (adminPage && !adminPage.classList.contains("hidden")) {
-        adminPage.classList.add("hidden");
-        const minePage = $("minePage");
-        if (minePage) minePage.classList.remove("hidden");
-      }
-      return;
-    }
-
-    const host = adminDash || adminPage;
-    if (host && Array.isArray(window.planData) && !profitCtrl) {
-      profitCtrl = document.createElement("div");
-      profitCtrl.className = "card";
-      profitCtrl.id = "asmlPrivateProfitCtrl";
-      profitCtrl.innerHTML = `
-        <h3>Private Admin: Daily Profit & Order Rate Control</h3>
-        <p class="muted">Changes apply to VIP plans and daily orders immediately.</p>
-        <label>Select VIP Plan</label>
-        <select class="input" id="asmlAdminPlanSel" onchange="window.asmlSyncAdminPlanRate()">
-          ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
-        </select>
-        <label>Daily Profit (Rs)</label>
-        <input class="input" id="asmlAdminDailyVal" type="number" min="1" placeholder="Enter daily profit">
-        <button class="btn" onclick="window.asmlSavePlanRate()">Save Plan Daily Profit</button>
-        <hr style="margin:12px 0">
-        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
-        <input class="input" id="asmlAdminMultVal" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
-        <button class="btn secondary" onclick="window.asmlApplyAllRates()">Apply to All Plans & Orders</button>
-      `;
-      host.appendChild(profitCtrl);
-      window.asmlSyncAdminPlanRate();
- }
-     if (profitCtrl) {
-      profitCtrl.style.setProperty("display", "", "important");
-    }
-  }
-
-  window.asmlSyncAdminPlanRate = function() {
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($("asmlAdminPlanSel")?.value || 0);
-    const plan = window.planData[idx];
-    if (plan && $("asmlAdminDailyVal")) {
-      $("asmlAdminDailyVal").value = plan.daily;
-    }
-  };
-
-  window.asmlSavePlanRate = function() {
-    if (!isAdminUser()) return alert("Unauthorized access.");
-    const idx = Number($("asmlAdminPlanSel")?.value || 0);
-    const val = Number($("asmlAdminDailyVal")?.value || 0);
-    if (!val || val <= 0) return alert("Please enter a valid daily profit.");
-    cfg.customDaily[idx] = val;
-    saveCfg(cfg);
-    applyProfitsToPlansAndOrders();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
-  };
-
-  window.asmlApplyAllRates = function() {
-    if (!isAdminUser()) return alert("Unauthorized access.");
-    const mult = Number($("asmlAdminMultVal")?.value || 1);
-    if (!mult || mult <= 0) return alert("Please enter a valid multiplier.");
-    cfg.multiplier = mult;
-    cfg.customDaily = {};
-    saveCfg(cfg);
-    applyProfitsToPlansAndOrders();
-    window.asmlSyncAdminPlanRate();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("All VIP plans & orders updated with " + mult + "x profit.");
-  };
-
-  function syncOwnerFooter() {
-    if ($("asmlProfessionalFooter")) return;
-    const footer = document.createElement("footer");
-    footer.id = "asmlProfessionalFooter";
-    footer.style.cssText = "margin:18px auto 84px;max-width:480px;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.08);text-align:center;font-size:12px;color:#333;box-shadow:0 4px 14px rgba(0,0,0,.04)";
-    footer.innerHTML = `
-      <div style="font-weight:700;font-size:13px;color:#d92b2b;margin-bottom:4px">ASML GLOBAL VIP — Official Platform</div>
-      <div style="margin:2px 0">Website Owner: <strong>${OWNER_NAME}</strong></div>
-       <div style="margin:2px 0">Contact / WhatsApp: <strong>${OWNER_PHONE}</strong></div>
-    `;
-    const mainEl = document.querySelector("main.container") || document.body;
-    mainEl.appendChild(footer);
-  }
-
-  function runEverything() {
-    cleanStrayText();
-    applyProfitsToPlansAndOrders();
-    syncTeamPage();
-    syncTaskPage();
-    syncAuthChangePassword();
-    syncPrivateAdminAndProfitControl();
-    syncOwnerFooter();
-  }
-
-  runEverything();
-  const observer = new MutationObserver(runEverything);
-  observer.observe(document.body, { childList: true, subtree: true });
-  setInterval(runEverything, 500);
-})();
-</script>
- 
-<script>
-(function() {
-  const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
-  const OWNER_NAME = "Waqas Nadeem";
-  const OWNER_PHONE = "03192649784";
-  const CFG_KEY = "ASML_MASTER_PROFIT_CFG_V6";
-  const $ = id => document.getElementById(id);
-
-  function loadCfg() {
-    try {
-      const data = JSON.parse(localStorage.getItem(CFG_KEY) || "null");
-      if (data && typeof data === "object") return data;
-    } catch (e) {}
-    return { multiplier: 2.5, customDaily: {} };
-  }
-
-  function saveCfg(cfg) {
-    try {
-      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
-    } catch (e) {}
-  }
-
-  let cfg = loadCfg();
-
-  function cleanStrayText() {
-    const tokens = [
-      "injectProfitEditorBox",
-      "ASML_PLAN_PROFIT_BOOST",
-      "applyBoostToPlans",
-      "syncSelectedPlanProfitInput",
-      "saveSinglePlanProfit",
-      "applyAllPlansMultiplier",
-      "cleanLeakedCodeText"
-    ];
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const removeList = [];
-    let n;
-    while ((n = walker.nextNode())) {
-      const parentTag = n.parentElement ? n.parentElement.tagName : "";
-      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
-      const txt = (n.nodeValue || "").trim();
-      if (txt && tokens.some(t => txt.includes(t))) {
-        removeList.push(n);
-      }
-    }
-    removeList.forEach(item => {
-      if (item.parentNode) item.parentNode.removeChild(item);
-    });
-  }
- function getActiveEmail() {
-    try {
-      const savedUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
-      if (savedUser && savedUser.includes("@")) return savedUser;
-    } catch (e) {}
-    const m = ($("mineUserLabel")?.textContent || "").toLowerCase();
-    const h = ($("activeUserLabel")?.textContent || "").toLowerCase();
-    const match = (m + " " + h).match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
-    return match ? match[0].toLowerCase() : "";
-  }
-
-  function isAdminUser() {
-    return getActiveEmail() === ADMIN_EMAIL;
-  }
-
-  function getDailyForPlanIndex(idx, baseDaily) {
-    const custom = cfg.customDaily[idx];
-    if (typeof custom === "number" && !isNaN(custom) && custom > 0) {
-      return custom;
-    }
-    return Math.round(Number(baseDaily || 0) * Number(cfg.multiplier || 1));
-  }
-
-  function applyProfitsToPlansAndOrders() {
-    if (Array.isArray(window.planData)) {
-      window.planData.forEach((plan, idx) => {
-        if (typeof plan._baseDaily !== "number") {
-          plan._baseDaily = Number(plan.daily || 0);
-        }
-        const newDaily = getDailyForPlanIndex(idx, plan._baseDaily);
-        plan.daily = newDaily;
-        plan.hourly = Number((newDaily / 24).toFixed(2));
-        plan.cycle = plan.cycle || 120;
-        plan.total = newDaily * plan.cycle;
-      });
-    }
-   try {
-      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
-      if (dbRaw) {
-        const db = JSON.parse(dbRaw);
-        const orderArrays = [db.orders, db.userOrders, db.activeOrders, db.investments].filter(Array.isArray);
-        orderArrays.forEach(arr => {
-          arr.forEach((ord, idx) => {
-            const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
-            const base = typeof ord._baseDaily === "number"
-              ? ord._baseDaily
-              : Number(ord.daily || ord.dailyProfit || 0);
-            if (base > 0) {
-              ord._baseDaily = base;
-              const updatedDaily = getDailyForPlanIndex(pIdx, base);
-              if ("daily" in ord) ord.daily = updatedDaily;
-              if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
-              if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
-              const cycle = Number(ord.cycle || 120);
-              if ("total" in ord) ord.total = updatedDaily * cycle;
-            }
-          });
-        });
-        localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-      }
-    } catch (e) {}
-
-    if (Array.isArray(window.userOrders)) {
-      window.userOrders.forEach((ord, idx) => {
-        const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
-        const base = typeof ord._baseDaily === "number"
-          ? ord._baseDaily
-          : Number(ord.daily || ord.dailyProfit || 0);
-        if (base > 0) {
-          ord._baseDaily = base;
-          const updatedDaily = getDailyForPlanIndex(pIdx, base);
-          if ("daily" in ord) ord.daily = updatedDaily;
-          if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
-          if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
-        }
-      });
-    }
-
-    if (typeof window.renderPlans === "function") {
-      window.renderPlans();
-    }
-    if (typeof window.renderOrders === "function") {
-      window.renderOrders();
-    }
-  } 
- function syncFriendshipBanner() {
-  const homeSec = $("homePage") || document.querySelector("main.container") || document.body;
-  if (!homeSec) return;
-
-  if (!$("asmlFriendshipBanner")) {
-    const banner = document.createElement("div");
-    banner.id = "asmlFriendshipBanner";
-    banner.style.cssText = "margin:12px 0;padding:14px;border-radius:16px;background:linear-gradient(135deg,#ff512f,#dd2476);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 18px rgba(221,36,118,.18)";
-    banner.innerHTML = `
-      <div style="flex:1">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Brothers & Friendship Hub</div>
-        <div style="font-size:15px;font-weight:800;margin-top:2px">Boys Friendship & Team Circle</div>
-        <div style="font-size:12px;opacity:.95;margin-top:3px">Real friends, strong bonding & growing together daily.</div>
+       </div>
+       <div class="quick-grid">
+        <button class="q-btn" onclick="openActionSheet('recharge')">
+          <span class="q-icon" style="background:#16a34a">Rs+</span>
+          <span>Recharge</span>
+        </button>
+        <button class="q-btn" onclick="openActionSheet('withdraw')">
+          <span class="q-icon" style="background:#dc2626">Rs-</span>
+          <span>Withdraw</span>
+        </button>
+        <button class="q-btn" onclick="switchPage('taskPage')">
+          <span class="q-icon" style="background:#ea580c">Task</span>
+          <span>Task</span>
+        </button>
+        <button class="q-btn" onclick="claimDailyCheckIn()">
+          <span class="q-icon" style="background:#d97706">Chk</span>
+          <span>Check-in</span>
+        </button>
       </div>
-      <div style="width:74px;height:74px;border-radius:14px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <svg width="58" height="58" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="20" cy="19" r="6.5" fill="#FFD1A9"/>
-          <path d="M9 46C9 37 14 32 20 32C26 32 31 37 31 46H9Z" fill="#2563EB"/>
-          <circle cx="44" cy="19" r="6.5" fill="#F4C29B"/>
-          <path d="M33 46C33 37 38 32 44 32C50 32 55 37 55 46H33Z" fill="#16A34A"/>
-          <path d="M27 42L37 42" stroke="#FACC15" stroke-width="3.5" stroke-linecap="round"/>
-        </svg>
-      </div>
-    `;
-    const featuredTitle = Array.from(homeSec.querySelectorAll(".section-title"))
-      .find(el => (el.textContent || "").toLowerCase().includes("featured"));
-     && featuredTitle.parentNode) {
-      featuredTitle.parentNode.insertBefore(banner, featuredTitle);
-    } else {
-      homeSec.prepend(banner);
-    }
-  }
 
-  if (!$("asmlTeaChickenBanner")) {
-    const promo = document.createElement("div");
-    promo.id = "asmlTeaChickenBanner";
-    promo.style.cssText = "margin:10px 0 14px;padding:13px 14px;border-radius:16px;background:linear-gradient(135deg,#7c2d12,#d97706);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 6px 16px rgba(124,45,18,.18)";
-    promo.innerHTML = `
-      <div style="flex:1">
-        <div style="font-size:11px;font-weight:700;letter-spacing:.4px;opacity:.92;text-transform:uppercase">Chai Patti & Chicken Special</div>
-        <div style="font-size:15px;font-weight:800;margin-top:2px">Fresh Chai Patti & Chicken Hub</div>
-        <div style="font-size:12px;opacity:.95;margin-top:3px">Rich tea aroma, fresh poultry & daily rewards together.</div>
-      </div>
-      <div style="width:74px;height:74px;border-radius:14px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:28px;line-height:1">
-        <span>☕🍗</span>
-      </div>
-    `;
-    const anchor = $("asmlFriendshipBanner");
-    if (anchor && anchor.parentNode) {
-      anchor.parentNode.insertBefore(promo, anchor.nextSibling);
-    } else {
-      homeSec.prepend(promo);
-    }
-  }
-     }
-
-  function getReferralLink() {
-    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
-    return window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(code);
-  }
-
-  window.asmlCopyReferral = function() {
-    const link = getReferralLink();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(link).catch(() => {});
-    }
-    alert("Referral Link Copied:\n" + link);
-  };
-
-function syncTeamPage() {
-  const teamSec = $("teamPage");
-  if (!teamSec) return;
-  let dbObj = {};
-  try {
-    dbObj = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}") || {};
-  } catch (e) {}
-  const activeUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
-  const usersArr = Array.isArray(dbObj.users) ? dbObj.users : [];
-  const uObj = usersArr.find(x => String(x.contact || "").toLowerCase() === activeUser) || usersArr[0];
-  const code = ($("refCode")?.textContent || uObj?.code || "ASML-ADMIN1").trim();
-  const link = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(code)}`;
-  const members = Array.isArray(dbObj.members) ? dbObj.members : [];
-
-  const membersHtml = members.length ? members.map(m => {
-    const mName = typeof m === "string" ? m : (m.member || m.user || "Member");
-    const mId = typeof m === "string" ? "N/A" : (m.id || m.code || "N/A");
-    const refTeam = typeof m === "string" ? code : (m.referrerCode || code);
-    const teamCount = members.filter(x => (typeof x === "string" ? code : (x.referrerCode || code)) === refTeam).length;
-    return `
-      <div class="list-item">
+      <!-- Friendship Banner -->
+      <div class="banner banner-friend">
         <div>
-          <b>${mName}</b><br>
-          <small class="muted">ID: ${mId} · Referrer Team: ${refTeam} · Team Joined: ${teamCount}</small>
+          <div style="font-size:11px;font-weight:800;opacity:0.9">FRIENDSHIP & TEAM CIRCLE</div>
+          <div class="banner-title">Boys Friendship & Referral Bonding</div>
+          <div class="banner-sub">Invite friends, build your Level 1–3 team & earn daily rebates together.</div>
         </div>
-        <span>Level 1 (10%)</span>
+        <div class="banner-chip">TEAM<br>VIP</div>
       </div>
-    `;
-  }).join("") : `<div class="empty">Total Joined: 0 · No referred members yet. Copy and share your referral link to invite friends.</div>`;
 
-  teamSec.innerHTML = `
-    <div class="section-title">Team</div>
-    <div class="hero">
-      <div class="balance">Rs 0</div>
-      <p>Total Team Earnings</p>
-      <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
-      <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;gap:8px">
-        <span id="asmlRefLinkDisplay" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;text-align:left">${link}</span>
-        <button class="btn small" onclick="window.asmlCopyReferral()">Copy Link</button>
+      <!-- Chicken & Chai Patti Banner -->
+      <div class="banner banner-chai">
+        <div>
+          <div style="font-size:11px;font-weight:800;opacity:0.9">CHAI PATTI & CHICKEN HUB</div>
+          <div class="banner-title">Fresh Chai Patti & Chicken Rewards</div>
+          <div class="banner-sub">Steady daily returns, instant plan tracking & reliable payouts.</div>
+        </div>
+        <div class="banner-chip">DAILY<br>PROFIT</div>
       </div>
-      <p style="font-size:11px;margin-top:8px;opacity:.95">Referral Code: <strong id="refCode">${code}</strong></p>
+
+      <div class="sec-title">VIP Investment Plans</div>
+      <div id="homePlansList"></div>
+
+      <div class="notice-box">
+        Notice: If more than two (2) IDs are created on a single mobile phone, those accounts will be blocked by Customer Service. Please maintain one genuine account per device.
+      </div>
+    </section>
+
+    <!-- PLAN DETAIL PAGE -->
+    <section id="planDetailPage" class="page">
+      <button class="btn btn-soft btn-sm" style="margin-bottom:10px" onclick="switchPage('homePage')">← Back to Plans</button>
+      <div id="planDetailContent"></div>
+    </section>
+
+    <!-- ORDERS / ACTIVE PLANS PAGE -->
+    <section id="ordersPage" class="page">
+      <div class="sec-title">Active Plans & Orders</div>
+      <div class="hero-card">
+        <div class="grid-3">
+          <div class="stat-box">
+            <div class="stat-val" id="ordTotalProfit">Rs 0.00</div>
+            <div class="stat-lbl">Total Profit</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="ordTodayProfit">Rs 0.00</div>
+            <div class="stat-lbl">Today's Profit</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val" id="ordQty">0</div>
+            <div class="stat-lbl">Product Qty</div>
+          </div>
+        </div>
+        <button class="btn btn-gold" style="width:100%;margin-top:12px" onclick="collectRunningProfit()">Collect Running Profit Now</button>
+      </div>
+      <div id="activeOrdersList"></div>
+    </section>
+
+    <!-- TEAM & REFERRAL PAGE -->
+    <section id="teamPage" class="page">
+      <div class="sec-title">Team & Referrals</div>
+      <div id="teamPageContent"></div>
+    </section>
+
+    <!-- TASK CENTER PAGE -->
+    <section id="taskPage" class="page">
+      <div class="sec-title">Task Center</div>
+      <div id="taskPageContent"></div>
+    </section>
+
+    <!-- MINE / ACCOUNT PAGE -->
+    <section id="minePage" class="page">
+      <div class="sec-title">My Account</div>
+      <div id="minePageContent"></div>
+    </section>
+
+    <!-- PRIVATE ADMIN PANEL PAGE -->
+    <section id="adminPage" class="page">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="sec-title" style="margin:0">Private Admin Panel</div>
+        <button class="btn btn-soft btn-sm" onclick="logoutAdmin()">Exit Admin</button>
+      </div>
+      <div id="adminPageContent"></div>
+    </section>
+ </main>
+   <!-- Recharge / Withdraw / Bank Modal -->
+  <div id="actionModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 id="actionModalTitle" style="font-size:17px;font-weight:900">Action</h3>
+        <button class="btn btn-soft btn-sm" onclick="closeActionModal()">✕</button>
+      </div>
+      <div id="actionModalBody"></div>
     </div>
-    <div class="card">
-      <h3>Team Overview</h3>
-      <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
-      <div class="list-item"><span>Team Level 1 (10%)</span><span>${members.length} · Rs 0.00</span></div>
-      <div class="list-item"><span>Team Level 2 (5%)</span><span>0 · Rs 0.00</span></div>
-      <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
+  </div>
+
+  <!-- Login / Register Modal -->
+  <div id="authModal" class="modal-backdrop">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <h3 id="authModalTitle" style="font-size:17px;font-weight:900">Sign In</h3>
+        <button class="btn btn-soft btn-sm" onclick="closeAuthModal()">✕</button>
+      </div>
+      <div id="authModalBody"></div>
     </div>
-    <div class="card">
-      <h3>Referred Members (${members.length})</h3>
-      ${membersHtml}
-    </div>
-    const finalCode = (uObj?.code && uObj.code !== "ASML-XXXXXX" ? uObj.code : "ASML-ADMIN1");
-  const finalLink = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(finalCode)}`;
-  if ($("asmlRefLinkDisplay")) $("asmlRefLinkDisplay").textContent = finalLink;
-  if ($("refCode")) $("refCode").textContent = finalCode;
-  
-  `;
-       }
+  </div>
 
-(function captureReferralJoin() {
-  try {
-    const params = new URLSearchParams(window.location.search || "");
-    const refParam = (params.get("ref") || "").trim();
-    if (refParam) {
-      localStorage.setItem("ASML_ACTIVE_REF_CODE", refParam);
-    }
-    const savedRef = (localStorage.getItem("ASML_ACTIVE_REF_CODE") || "").trim();
-    const activeEmail = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim();
-    if (!savedRef || !activeEmail) return;
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-page="homePage" onclick="switchPage('homePage')"><span>Home</span></button>
+    <button class="nav-btn" data-page="ordersPage" onclick="switchPage('ordersPage')"><span>Orders</span></button>
+    <button class="nav-btn" data-page="teamPage" onclick="switchPage('teamPage')"><span>Team</span></button>
+    <button class="nav-btn" data-page="taskPage" onclick="switchPage('taskPage')"><span>Task</span></button>
+    <button class="nav-btn" data-page="minePage" onclick="switchPage('minePage')"><span>Mine</span></button>
+  </nav>
 
-    const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
-    const db = dbRaw ? JSON.parse(dbRaw) : {};
-    if (!Array.isArray(db.members)) db.members = [];
+  <script>
+    const CHANNEL_URL = "https://whatsapp.com/channel/0029VbEdkCEAojYpbT79RR3f";
+    const DEFAULT_ADMIN_PIN = "ASML-ADMIN-2026";
+    const DB_KEY = "ASML_GLOBAL_VIP_DB_V1";
 
-    const already = db.members.some(m => {
-      const name = typeof m === "string" ? m : (m.member || m.user || "");
-      return String(name).toLowerCase() === activeEmail.toLowerCase();
-    });
-
-    if (!already) {
-      db.members.push({
-        member: activeEmail,
-        referrerCode: savedRef,
-        level: 1,
-        joinedAt: new Date().toISOString().slice(0, 10)
-      });
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-    }
-  } catch (e) {}
-})();
-    `;
-   function syncTaskPage() {
-    const taskSec = $("taskPage");
-    if (!taskSec) return;
-    const milestones = [
-      { task: "Task 1", target: "3,000", reward: "Rs300" },
-      { task: "Task 2", target: "9,000", reward: "Rs900" },
-      { task: "Task 3", target: "27,000", reward: "Rs2,700" },
-      { task: "Task 4", target: "77,000", reward: "Rs7,700" },
-      { task: "Task 5", target: "177,000", reward: "Rs17,700" },
-      { task: "Task 6", target: "377,000", reward: "Rs37,700" },
-      { task: "Task 7", target: "770,000", reward: "Rs77,000" },
-      { task: "Task 8", target: "1,770,000", reward: "Rs177,000" }
+    const DEFAULT_PLANS = [
+      { id: "VIP-1", name: "VIP 1", price: 500, daily: 50, cycle: 120, status: "active", desc: "Fixed 120-day cycle plan. Invest Rs 500 once and earn Rs 50 daily (Rs 2.08/hr). Initial investment recovers in ~10 days." },
+      { id: "VIP-2", name: "VIP 2", price: 900, daily: 200, cycle: 120, status: "active", desc: "Fixed 120-day cycle plan. Invest Rs 900 once and earn Rs 200 daily with steady hourly & daily profit tracking." },
+      { id: "VIP-3", name: "VIP 3", price: 2500, daily: 624, cycle: 120, status: "active", desc: "Fixed 120-day cycle plan. Invest Rs 2,500 once and earn Rs 624 daily across a 120-day cycle." },
+      { id: "VIP-4", name: "VIP 4", price: 6000, daily: 1581, cycle: 120, status: "active", desc: "Fixed 120-day cycle plan. Invest Rs 6,000 once and earn Rs 1,581 daily across a 120-day cycle." },
+      { id: "VIP-5", name: "VIP 5", price: 15000, daily: 3324, cycle: 120, status: "coming_soon", desc: "Fixed 120-day VIP 5 cycle plan. Enable from Admin Panel when ready." },
+      { id: "VIP-6", name: "VIP 6", price: 30000, daily: 7326, cycle: 120, status: "coming_soon", desc: "Fixed 120-day VIP 6 cycle plan. Enable from Admin Panel when ready." },
+      { id: "VIP-7", name: "VIP 7", price: 65000, daily: 15555, cycle: 120, status: "coming_soon", desc: "Fixed 120-day VIP 7 cycle plan. Enable from Admin Panel when ready." },
+      { id: "VIP-8", name: "VIP 8", price: 130000, daily: 33330, cycle: 120, status: "coming_soon", desc: "Fixed 120-day VIP 8 cycle plan. Enable from Admin Panel when ready." }
+    ];
+   const MILESTONE_TASKS = [
+      { id: "MS1", title: "Task 1", target: 3000, reward: 300 },
+      { id: "MS2", title: "Task 2", target: 9000, reward: 900 },
+      { id: "MS3", title: "Task 3", target: 27000, reward: 2700 },
+      { id: "MS4", title: "Task 4", target: 77000, reward: 7700 },
+      { id: "MS5", title: "Task 5", target: 177000, reward: 17700 },
+      { id: "MS6", title: "Task 6", target: 377000, reward: 37700 },
+      { id: "MS7", title: "Task 7", target: 770000, reward: 77000 },
+      { id: "MS8", title: "Task 8", target: 1770000, reward: 177000 }
     ];
 
-    taskSec.innerHTML = `
-      <div class="section-title">Task Center</div>
-      <div class="hero">
-        <p>Cumulative Team Invitation</p>
-        <div class="balance">Rs 0</div>
-        <p>Team investment milestones</p>
-      </div>
-      ${milestones.map(m => `
-        <div class="card">
-          <div class="plan-top">
-            <p style="margin:0;font-size:13px;line-height:1.6;max-width:74%">
-              Level 1 downline members who reach a total investment of <strong>Rs ${m.target}</strong> active investors , will receive a reward of Rs <strong>${m.reward}</strong>
-            </p>
-            <span class="badge">${m.task}</span>
+    function getDeviceId() {
+      let did = localStorage.getItem("ASML_DEVICE_ID");
+      if (!did) {
+        did = "DEV-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+        localStorage.setItem("ASML_DEVICE_ID", did);
+      }
+      return did;
+    }
+
+    function createInitialDB() {
+      const adminUser = {
+        id: "ID-100001",
+        phone: "+923000000000",
+        password: "admin123",
+        refCode: "ASML-ADMIN1",
+        referredBy: "",
+        balance: 100,
+        totalEarnings: 100,
+        blocked: false,
+        deviceId: getDeviceId(),
+        channelJoined: false,
+        channelRewardClaimed: false,
+        claimedMilestones: [],
+        lastCheckIn: "",
+        bank: { bankName: "", holderName: "", accountNumber: "" }
+      };
+
+      const demoMembers = [
+        { id: "ID-20411", phone: "+923011111111", referrerCode: "ASML-ADMIN1", deposited: 500, level: 1 },
+        { id: "ID-20412", phone: "+923022222222", referrerCode: "ASML-ADMIN1", deposited: 0, level: 1 }
+      ];
+
+      return {
+        adminPin: DEFAULT_ADMIN_PIN,
+        adminUnlocked: false,
+        currentUserId: adminUser.id,
+        plans: DEFAULT_PLANS,
+        users: [adminUser],
+        members: demoMembers,
+        orders: [],
+        transactions: [
+          { id: "TX-INIT1", userId: adminUser.id, type: "Welcome Bonus", amount: 100, status: "Approved", note: "New user bonus", time: new Date().toLocaleString() }
+        ],
+        profitMode: "normal", // normal | boost | loss
+        profitMultiplier: 1.0,
+        paymentChannels: [
+          { method: "EasyPaisa", title: "ASML Global Official", account: "03XX-XXXXXXX" },
+          { method: "JazzCash", title: "ASML Global Official", account: "03XX-XXXXXXX" },
+          { method: "UPaisa", title: "ASML Global Official", account: "03XX-XXXXXXX" },
+          { method: "Bank Transfer (Meezan / HBL / UBL)", title: "ASML Global Official", account: "PK00-XXXX-0000000000" }
+        ]
+      };
+   } 
+   function loadDB() {
+      try {
+        const raw = localStorage.getItem(DB_KEY);
+        if (!raw) {
+          const fresh = createInitialDB();
+          saveDB(fresh);
+          return fresh;
+        }
+        const parsed = JSON.parse(raw);
+        return { ...createInitialDB(), ...parsed };
+      } catch (e) {
+        return createInitialDB();
+      }
+    }
+
+    function saveDB(db) {
+      localStorage.setItem(DB_KEY, JSON.stringify(db));
+    }
+
+    let db = loadDB();
+
+    // Capture ?ref= from URL
+    (function captureRefParam() {
+      const params = new URLSearchParams(window.location.search);
+      const ref = (params.get("ref") || "").trim();
+      if (ref) {
+        localStorage.setItem("ASML_CAPTURED_REF", ref);
+      }
+    })();
+
+    function getCurrentUser() {
+      let u = db.users.find(x => x.id === db.currentUserId) || db.users[0];
+      if (!u) {
+        db = createInitialDB();
+        saveDB(db);
+        u = db.users[0];
+      }
+      return u;
+    }
+
+    function closeOpeningAd() {
+      document.getElementById("openingAdModal").classList.remove("open");
+    }
+
+    function switchPage(pageId) {
+      if (pageId === "adminPage" && !db.adminUnlocked) {
+        openAdminGate();
+        return;
+      }
+      document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+      const target = document.getElementById(pageId);
+      if (target) target.classList.add("active");
+
+      document.querySelectorAll(".nav-btn").forEach(b => {
+        b.classList.toggle("active", b.dataset.page === pageId);
+      });
+
+      renderAll();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function formatRs(num) {
+      const n = Number(num || 0);
+      return "Rs " + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function getReferralLink(code) {
+      const base = `${window.location.origin}${window.location.pathname}`;
+      return `${base}?ref=${encodeURIComponent(code)}`;
+    }
+
+    function copyReferralLink() {
+      const u = getCurrentUser();
+      const link = getReferralLink(u.refCode);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).catch(() => {});
+      }
+      alert(`Referral Link Copied!\nTeam ID / Code: ${u.refCode}\nLink: ${link}`);
+   } 
+   function renderHome() {
+      const u = getCurrentUser();
+      const myOrders = db.orders.filter(o => o.userId === u.id && o.status === "Running");
+
+      document.getElementById("homeBalance").textContent = formatRs(u.balance);
+      document.getElementById("homeUserId").textContent = u.id;
+      document.getElementById("homeActiveOrders").textContent = myOrders.length;
+      document.getElementById("homeTotalEarnings").textContent = formatRs(u.totalEarnings);
+
+      const plansContainer = document.getElementById("homePlansList");
+      plansContainer.innerHTML = db.plans.map((p, idx) => {
+        const totalRev = Number(p.daily) * Number(p.cycle);
+        const isComing = p.status === "coming_soon";
+        return `
+          <div class="plan-card">
+            <div class="plan-top">
+              <div class="plan-name">${p.name} ${u.blocked ? '<span class="tag-no">BLOCKED</span>' : ''}</div>
+              <div class="plan-price">Rs ${Number(p.price).toLocaleString()}</div>
+            </div>
+            <div class="muted">${p.cycle} Days · Investment cycle</div>
+            <div class="plan-pills">
+              <span class="pill">Rs ${Number(p.daily).toLocaleString()} Daily profit</span>
+              <span class="pill">Rs ${totalRev.toLocaleString()} Total revenue</span>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-soft" onclick="openPlanDetail(${idx})">Details</button>
+              ${
+                isComing
+                  ? `<button class="btn btn-disabled" disabled>Coming Soon</button>`
+                  : `<button class="btn btn-primary" onclick="buyPlan(${idx})">Buy Now / Rs ${Number(p.price).toLocaleString()}</button>`
+              }
+            </div>
           </div>
-          <div class="progress"><div style="width:0%"></div></div>
-          <div class="row" style="text-align:center;font-size:12px">
-            <div><strong style="color:#d92b2b">0/${m.target}</strong><div class="muted">Invitation</div></div>
-            <div><strong style="color:#d92b2b">${m.reward}</strong><div class="muted">Earnings</div></div>
-            <div><span class="badge">Milestone</span></div>
+        `;
+      }).join("");
+    }
+
+    function openPlanDetail(index) {
+      const p = db.plans[index];
+      if (!p) return;
+      const hourly = (Number(p.daily) / 24).toFixed(2);
+      const totalIncome = Number(p.daily) * Number(p.cycle);
+      const netProfit = Math.max(0, totalIncome - Number(p.price));
+      const returnPct = p.price > 0 ? Math.round((totalIncome / Number(p.price)) * 100) : 0;
+      const dailyRate = p.price > 0 ? ((Number(p.daily) / Number(p.price)) * 100).toFixed(1) : "0.0";
+      const paybackDays = p.daily > 0 ? Math.max(1, Math.ceil(Number(p.price) / Number(p.daily))) : 10;
+
+      document.getElementById("planDetailContent").innerHTML = `
+        <div class="hero-card">
+          <div style="font-size:20px;font-weight:900">${p.name} Details</div>
+          <div class="bal-sub">${p.cycle} Days Fixed Cycle · Price: Rs ${Number(p.price).toLocaleString()}</div>
+          <div class="grid-2" style="margin-top:12px">
+            <div class="stat-box"><div class="stat-val">Rs ${hourly}</div><div class="stat-lbl">Hourly Income</div></div>
+            <div class="stat-box"><div class="stat-val">Rs ${Number(p.daily).toFixed(2)}</div><div class="stat-lbl">Daily Income</div></div>
+            <div class="stat-box"><div class="stat-val">Rs ${totalIncome.toLocaleString()}</div><div class="stat-lbl">Total Income</div></div>
+            <div class="stat-box"><div class="stat-val">${p.cycle} Days</div><div class="stat-lbl">Investment Cycle</div></div>
+          </div>
+          ${ 
+   p.status === "coming_soon"
+              ? `<button class="btn btn-disabled" style="width:100%;margin-top:12px" disabled>Coming Soon</button>`
+              : `<button class="btn btn-gold" style="width:100%;margin-top:12px" onclick="buyPlan(${index})">Buy Now · Rs ${Number(p.price).toLocaleString()}</button>`
+          }
+        </div>
+        <div class="card">
+          <h3 style="font-size:16px;font-weight:800;margin-bottom:8px">Product Description</h3>
+          <p class="muted" style="line-height:1.6;margin-bottom:12px">${p.desc}</p>
+          <div class="grid-3" style="margin-bottom:10px">
+            <div class="mini-stat"><div style="font-weight:900;color:var(--red)">Rs ${Number(p.price).toLocaleString()}</div><div class="muted">Product Price</div></div>
+            <div class="mini-stat"><div style="font-weight:900;color:var(--orange)">${paybackDays} Days</div><div class="muted">Payback In</div></div>
+            <div class="mini-stat"><div style="font-weight:900;color:#15803d">Rs ${netProfit.toLocaleString()}</div><div class="muted">Net Profit</div></div>
+          </div>
+          <div class="grid-3">
+            <div class="mini-stat"><div style="font-weight:900">${returnPct}%</div><div class="muted">Total Return</div></div>
+            <div class="mini-stat"><div style="font-weight:900">${dailyRate}%</div><div class="muted">Daily Rate</div></div>
+            <div class="mini-stat"><div style="font-weight:900">${p.cycle} Days</div><div class="muted">Cycle</div></div>
+          </div>
+          <div style="margin-top:14px;font-size:12px;line-height:1.7">
+            <div><strong>1. Purchase the product:</strong> Choose ${p.name} and pay Rs ${Number(p.price).toLocaleString()} from your balance.</div>
+            <div><strong>2. Earnings credited:</strong> Daily & hourly earnings accrue according to active plan settings.</div>
+            <div><strong>3. Withdraw or reinvest:</strong> Manage profits and withdrawals smoothly from your account.</div>
           </div>
         </div>
-      `).join("")}
-    `;
-}
-   function syncAuthChangePassword() {
-    const authSec = $("authPage");
-    if (!authSec || $("asmlAuthPassBox")) return;
-    const card = document.createElement("div");
-    card.className = "card";
-    card.id = "asmlAuthPassBox";
-    card.innerHTML = `
-      <h3>Change Password</h3>
-      <label>Account Email or Phone</label>
-      <input class="input" id="asmlCpUser" placeholder="Enter account email or phone">
-      <label>Old Password</label>
-      <input class="input" id="asmlCpOld" type="password" placeholder="Enter current password">
-      <label>New Password</label>
-      <input class="input" id="asmlCpNew" type="password" placeholder="Enter new password (min 4 chars)">
-      <button class="btn" onclick="window.asmlChangePassSubmit()">Change Password</button>
-    `;
-    const backBtn = authSec.querySelector("button.btn.secondary");
-    if (backBtn) authSec.insertBefore(card, backBtn);
-    else authSec.appendChild(card);
-  }
-
-  window.asmlChangePassSubmit = function() {
-    const contact = ($("asmlCpUser")?.value || "").trim().toLowerCase();
-    const oldPass = $("asmlCpOld")?.value || "";
-    const newPass = $("asmlCpNew")?.value || "";
-    if (!contact || !oldPass || newPass.length < 4) {
-      return alert("Please enter account, old password, and new password (min 4 chars).");
-    }
-   try {
-      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (!Array.isArray(db.users)) return alert("No users found.");
-      const idx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
-      if (idx === -1) return alert("Account or old password is incorrect.");
-      db.users[idx].password = newPass;
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-      $("asmlCpOld").value = "";
-      $("asmlCpNew").value = "";
-      alert("Password changed successfully!");
-    } catch (e) {
-      alert("Failed to update password.");
-    }
-  };
-
-  window.asmlDirectAdminLogin = function() {
-    try {
-      localStorage.setItem("ASML_CURRENT_USER_V2", ADMIN_EMAIL);
-      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
-      const db = dbRaw ? JSON.parse(dbRaw) : {};
-      if (!Array.isArray(db.users)) db.users = [];
-      const existingIdx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === ADMIN_EMAIL);
-      if (existingIdx >= 0) {
-        db.users[existingIdx].password = db.users[existingIdx].password || "8845";
-        
-        db.users.push({ contact: ADMIN_EMAIL, password: "8845", balance: 0 });
-        
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
-    } catch (e) {}
-
-    if ($("mineUserLabel")) $("mineUserLabel").textContent = ADMIN_EMAIL;
-    if ($("activeUserLabel")) $("activeUserLabel").textContent = ADMIN_EMAIL;
-
-    const adminLoginCard = $("adminLoginCard");
-    const adminDash = $("adminDashboard");
-    const adminPage = $("adminPage");
-    if (adminLoginCard) adminLoginCard.classList.add("hidden");
-    if (adminDash) adminDash.classList.remove("hidden");
-    if (adminPage) adminPage.classList.remove("hidden");
-
-    syncPrivateAdminAndProfitControl();
-    if (typeof window.openPage === "function") window.openPage("adminPage");
-  };
-   function syncPrivateAdminAndProfitControl() {
-    const adminOk = isAdminUser();
-    const adminBtn = $("adminMenuBtn");
-    const adminPage = $("adminPage");
-    const adminDash = $("adminDashboard");
-    const adminLoginCard = $("adminLoginCard");
-    let profitCtrl = $("asmlPrivateProfitCtrl");
-
-    if (adminBtn) {
-      adminBtn.style.setProperty("display", adminOk ? "" : "none", "important");
-    }
-
-    if (!adminOk) {
-      if (profitCtrl) profitCtrl.style.setProperty("display", "none", "important");
-      if (adminDash) adminDash.classList.add("hidden");
-      if (adminPage && !adminPage.classList.contains("hidden")) {
-        adminPage.classList.add("hidden");
-        const minePage = $("minePage");
-        if (minePage) minePage.classList.remove("hidden");
-      }
-      return;
-    }
-
-    if (adminLoginCard) adminLoginCard.classList.add("hidden");
-    if (adminDash) adminDash.classList.remove("hidden");
-
-    const host = adminDash || adminPage;
-    if (host && !$("asmlAdminRecoveryCard")) {
-      const recovery = document.createElement("div");
-      recovery.className = "card";
-      recovery.id = "asmlAdminRecoveryCard";
-      recovery.innerHTML = `
-        <h3>Admin Session Active (${ADMIN_EMAIL})</h3>
-        <p class="muted">Exclusive password-free owner recovery enabled for ${ADMIN_EMAIL} only.</p>
-        <button class="btn small" onclick="window.asmlDirectAdminLogin()">Refresh Admin Session</button>
       `;
-      host.prepend(recovery);
+     switchPage("planDetailPage");
     }
 
-    if (host && Array.isArray(window.planData) && !profitCtrl) {
-      profitCtrl = document.createElement("div");
-      profitCtrl.className = "card";
-      profitCtrl.id = "asmlPrivateProfitCtrl";
-      profitCtrl.innerHTML = `
-        <h3>Private Admin: Daily Profit & Order Rate Control</h3>
-        <p class="muted">Changes apply to VIP plans and daily orders immediately.</p>
-        <label>Select VIP Plan</label>
-        <select class="input" id="asmlAdminPlanSel" onchange="window.asmlSyncAdminPlanRate()">
-          ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
-        </select>
-        <label>Daily Profit (Rs)</label>
-        <input class="input" id="asmlAdminDailyVal" type="number" min="1" placeholder="Enter daily profit">
-        <button class="btn" onclick="window.asmlSavePlanRate()">Save Plan Daily Profit</button>
-        <hr style="margin:12px 0">
-        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
-        <input class="input" id="asmlAdminMultVal" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
-        <button class="btn secondary" onclick="window.asmlApplyAllRates()">Apply to All Plans & Orders</button>
-      `;      
-     host.appendChild(profitCtrl);
-      window.asmlSyncAdminPlanRate();
+    function buyPlan(index) {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Your account ID is blocked by Customer Service.");
+        return;
+      }
+      const p = db.plans[index];
+      if (!p || p.status === "coming_soon") {
+        alert("This plan is currently Coming Soon.");
+        return;
+      }
+      if (Number(u.balance) < Number(p.price)) {
+        alert(`Insufficient balance! Required: Rs ${Number(p.price).toLocaleString()}, Available: ${formatRs(u.balance)}. Please Recharge first.`);
+        openActionSheet("recharge");
+        return;
+      }
+
+      u.balance = Number(u.balance) - Number(p.price);
+      const order = {
+        id: "ORD-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        planName: p.name,
+        invested: Number(p.price),
+        dailyProfit: Number(p.daily),
+        totalEarned: 0,
+        todayEarned: 0,
+        cycleDays: Number(p.cycle),
+        status: "Running",
+        createdAt: new Date().toLocaleString()
+      };
+      db.orders.unshift(order);
+
+      // Mark member as deposited if referred
+      const mem = db.members.find(m => m.id === u.id);
+      if (mem) {
+        mem.deposited = Number(mem.deposited || 0) + Number(p.price);
+      }
+
+      db.transactions.unshift({
+        id: "TX-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Plan Purchase",
+        amount: -Number(p.price),
+        status: "Approved",
+        note: `Activated ${p.name}`,
+        time: new Date().toLocaleString()
+      });
+
+      saveDB(db);
+      alert(`${p.name} activated successfully! Balance deducted: Rs ${Number(p.price).toLocaleString()}.`);
+      switchPage("ordersPage");
     }
 
-    if (profitCtrl) {
-      profitCtrl.style.setProperty("display", "", "important");
+    function collectRunningProfit() {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Account is blocked.");
+        return;
+      }
+      const active = db.orders.filter(o => o.userId === u.id && o.status === "Running");
+      if (!active.length) {
+        alert("No running plans found. Buy a plan first.");
+        return;
+      }
+      let gained = 0;
+      active.forEach(o => {
+        const rawStep = Number(o.dailyProfit) * 0.1; // 10% of daily per claim click for testing/running
+        const adjusted = db.profitMode === "loss"
+          ? -Math.abs(rawStep * 0.5)
+          : rawStep * Number(db.profitMultiplier || 1);
+        o.totalEarned = Number(o.totalEarned || 0) + adjusted;
+        o.todayEarned = Number(o.todayEarned || 0) + adjusted;
+        gained += adjusted;
+      });
+
+      u.balance = Math.max(0, Number(u.balance) + gained);
+      u.totalEarnings = Number(u.totalEarnings) + gained;
+
+      db.transactions.unshift({
+        id: "TX-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: gained >= 0 ? "Plan Profit" : "Profit Adjustment",
+        amount: Number(gained.toFixed(2)),
+        status: "Approved",
+        note: `Orders profit update (${db.profitMode})`,
+        time: new Date().toLocaleString()
+      });
+
+      saveDB(db);
+      alert(`Profit updated: ${formatRs(gained)}`);
+      renderAll();
+   } 
+   function renderOrders() {
+      const u = getCurrentUser();
+      const myOrders = db.orders.filter(o => o.userId === u.id);
+      const totalP = myOrders.reduce((s, o) => s + Number(o.totalEarned || 0), 0);
+      const todayP = myOrders.reduce((s, o) => s + Number(o.todayEarned || 0), 0);
+
+      document.getElementById("ordTotalProfit").textContent = formatRs(totalP);
+      document.getElementById("ordTodayProfit").textContent = formatRs(todayP);
+      document.getElementById("ordQty").textContent = myOrders.filter(o => o.status === "Running").length;
+
+      const listEl = document.getElementById("activeOrdersList");
+      if (!myOrders.length) {
+        listEl.innerHTML = `<div class="card"><div class="muted">No active plans yet. Go to Home and buy a VIP plan.</div></div>`;
+        return;
+      }
+
+      listEl.innerHTML = myOrders.map(o => `
+        <div class="card">
+          <div class="plan-top">
+            <div class="plan-name">${o.planName} (${o.id})</div>
+            <span class="tag-ok">${o.status}</span>
+          </div>
+          <div class="muted">Invested: Rs ${Number(o.invested).toLocaleString()} · Daily: Rs ${Number(o.dailyProfit).toLocaleString()} · Cycle: ${o.cycleDays}d</div>
+          <div style="margin-top:8px;font-size:13px;font-weight:700">
+            Earned: ${formatRs(o.totalEarned)} · Today: ${formatRs(o.todayEarned)}
+          </div>
+        </div>
+      `).join("");
     }
-  }
 
-  window.asmlSyncAdminPlanRate = function() {
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($("asmlAdminPlanSel")?.value || 0);
-    const plan = window.planData[idx];
-    if (plan && $("asmlAdminDailyVal")) {
-      $("asmlAdminDailyVal").value = plan.daily;
+    function renderTeam() {
+      const u = getCurrentUser();
+      const link = getReferralLink(u.refCode);
+      const allMembers = db.members || [];
+      const myTeam = allMembers.filter(m => m.referrerCode === u.refCode);
+      const depositedMembers = myTeam.filter(m => Number(m.deposited || 0) > 0);
+      const nonDepositedMembers = myTeam.filter(m => Number(m.deposited || 0) <= 0);
+      const totalTeamInvest = myTeam.reduce((s, m) => s + Number(m.deposited || 0), 0);
+
+      const memberRows = myTeam.length ? myTeam.map(m => {
+        const hasDep = Number(m.deposited || 0) > 0;
+        const sameTeamCount = allMembers.filter(x => x.referrerCode === m.referrerCode).length;
+        return `
+          <div class="list-item">
+            <div>
+              <div><strong>${m.phone || m.id}</strong> · <span class="muted">ID: ${m.id}</span></div>
+              <div class="muted">Referrer Team: ${m.referrerCode} · Team Total Joined: ${sameTeamCount} · Deposit: Rs ${Number(m.deposited || 0).toLocaleString()}</div>
+            </div>
+            <span class="${hasDep ? "tag-ok" : "tag-no"}">${hasDep ? "Deposited" : "No Deposit"}</span>
+          </div>
+        `;
+      }).join("") : `<div class="muted">No invited members under team <strong>${u.refCode}</strong> yet. Share your link to invite friends.</div>`;
+
+      const allTeamRows = allMembers.map(m => {
+        const hasDep = Number(m.deposited || 0) > 0;
+        return `
+          <div class="list-item">
+            <div>
+              <strong>${m.id}</strong> (${m.phone || "Member"})<br>
+              <span class="muted">Referrer ID/Code: ${m.referrerCode} · Invested: Rs ${Number(m.deposited || 0).toLocaleString()}</span>
+            </div>
+            <span class="${hasDep ? "tag-ok" : "tag-no"}">${hasDep ? "Deposited" : "Not Deposited"}</span>
+          </div>
+        `;
+      }).join("");
+   document.getElementById("teamPageContent").innerHTML = `
+        <div class="hero-card">
+          <div class="bal-big">Rs 0.00</div>
+          <div class="bal-sub">Total Team Earnings · Your Team ID: <strong>${u.refCode}</strong></div>
+          <div class="bal-sub" style="margin-top:4px">Total Team Members: <strong>${myTeam.length}</strong> (Deposited: <strong>${depositedMembers.length}</strong> · Non-Deposited: <strong>${nonDepositedMembers.length}</strong>)</div>
+          <div style="background:#fff;color:#241915;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${link}</span>
+            <button class="btn btn-gold btn-sm" onclick="copyReferralLink()">Copy</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Team Overview</h3>
+          <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
+          <div class="list-item"><span>Team Level 1 (18%)</span><span>${myTeam.length} · Rs ${totalTeamInvest.toFixed(2)}</span></div>
+          <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
+          <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">My Invited Members (${myTeam.length})</h3>
+          <div class="muted" style="margin-bottom:8px">Deposited: ${depositedMembers.length} · Without Deposit: ${nonDepositedMembers.length}</div>
+          ${memberRows}
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">All Platform Team & IDs (${allMembers.length})</h3>
+          ${allTeamRows}
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">Referral Rebate Rules!</h3>
+          <p class="muted" style="line-height:1.65">
+            Users you invite directly are your Level 1 team. Level 1, Level 2, and Level 3 team members generate referral rewards and team task milestones when they join and invest.
+          </p>
+        </div>
+      `;
+   }
+   function claimChannelTask() {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Your account is blocked.");
+        return;
+      }
+      if (u.channelRewardClaimed) {
+        alert("You have already claimed the Rs 30 channel join reward!");
+        return;
+      }
+      u.channelJoined = true;
+      u.channelRewardClaimed = true;
+      u.balance = Number(u.balance) + 30;
+      u.totalEarnings = Number(u.totalEarnings) + 30;
+      db.transactions.unshift({
+        id: "TX-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Channel Task Reward",
+        amount: 30,
+        status: "Approved",
+        note: "Joined official channel",
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      alert("Congratulations! Rs 30 added to your balance for joining the channel.");
+      renderAll();
     }
-  };
 
-  window.asmlSavePlanRate = function() {
-    if (!isAdminUser()) return alert("Unauthorized access.");
-    const idx = Number($("asmlAdminPlanSel")?.value || 0);
-    const val = Number($("asmlAdminDailyVal")?.value || 0);
-    if (!val || val <= 0) return alert("Please enter a valid daily profit.");
-    cfg.customDaily[idx] = val;
-    saveCfg(cfg);
-    applyProfitsToPlansAndOrders();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
-  };
+    function claimMilestoneTask(taskId) {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Account is blocked.");
+        return;
+      }
+      const task = MILESTONE_TASKS.find(t => t.id === taskId);
+      if (!task) return;
+      if (u.claimedMilestones.includes(taskId)) {
+        alert("Milestone reward already claimed.");
+        return;
+      }
+      const myTeam = db.members.filter(m => m.referrerCode === u.refCode);
+      const teamInvest = myTeam.reduce((s, m) => s + Number(m.deposited || 0), 0);
+      if (teamInvest < task.target) {
+        alert(`Target not reached yet (${teamInvest}/${task.target}).`);
+        return;
+      }
+      u.claimedMilestones.push(taskId);
+      u.balance = Number(u.balance) + task.reward;
+      u.totalEarnings = Number(u.totalEarnings) + task.reward;
+      db.transactions.unshift({
+        id: "TX-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Team Task Reward",
+        amount: task.reward,
+        status: "Approved",
+        note: `${task.title} completed`,
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      alert(`${task.title} reward of Rs ${task.reward} credited!`);
+      renderAll();
+    }
 
-  window.asmlApplyAllRates = function() {
-    if (!isAdminUser()) return alert("Unauthorized access.");
-    const mult = Number($("asmlAdminMultVal")?.value || 1);
-    if (!mult || mult <= 0) return alert("Please enter a valid multiplier.");
-    cfg.multiplier = mult;
-    cfg.customDaily = {};
-    saveCfg(cfg);
-    applyProfitsToPlansAndOrders();
-    window.asmlSyncAdminPlanRate();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("All VIP plans & orders updated with " + mult + "x profit.");
-  };
-   function syncOwnerFooter() {
-    if ($("asmlProfessionalFooter")) return;
-    const footer = document.createElement("footer");
-    footer.id = "asmlProfessionalFooter";
-    footer.style.cssText = "margin:18px auto 84px;max-width:480px;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.08);text-align:center;font-size:12px;color:#333;box-shadow:0 4px 14px rgba(0,0,0,.04)";
-    footer.innerHTML = `
-      <div style="font-weight:700;font-size:13px;color:#d92b2b;margin-bottom:4px">ASML GLOBAL VIP — Official Platform</div>
-      <div style="margin:2px 0">Website Owner: <strong>${OWNER_NAME}</strong></div>
-      <div style="margin:2px 0">Contact / WhatsApp: <strong>${OWNER_PHONE}</strong></div>
-    `;
-    const mainEl = document.querySelector("main.container") || document.body;
-    mainEl.appendChild(footer);
-  }
+    function renderTasks() {
+      const u = getCurrentUser();
+      const myTeam = db.members.filter(m => m.referrerCode === u.refCode);
+      const teamInvest = myTeam.reduce((s, m) => s + Number(m.deposited || 0), 0);
 
-  function runEverything() {
-    cleanStrayText();
-    applyProfitsToPlansAndOrders();
-    syncFriendshipBanner();
-    syncTeamPage();
-    syncTaskPage();
-    syncAuthChangePassword();
-    syncPrivateAdminAndProfitControl();
-    syncOwnerFooter();
-  }
+      const milestonesHtml = MILESTONE_TASKS.map(t => {
+        const claimed = u.claimedMilestones.includes(t.id);
+        const eligible = teamInvest >= t.target && !claimed;
+        return `
+          <div class="card">
+            <div class="plan-top">
+              <strong>${t.title}</strong>
+              <span class="pill">Reward: Rs ${t.reward.toLocaleString()}</span>
+            </div>
+            <p class="muted" style="line-height:1.5;margin-bottom:10px">
+              Level 1 downline members who reach a total investment of <strong>Rs ${t.target.toLocaleString()}</strong> active investors will receive a reward of <strong>Rs ${t.reward.toLocaleString()}</strong>.
+            </p>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span class="muted">${teamInvest.toLocaleString()} / ${t.target.toLocaleString()} Invitation</span>
+              ${
+                claimed
+                  ? `<button class="btn btn-soft btn-sm" disabled>Claimed</button>`
+                  : `<button class="btn ${eligible ? "btn-gold" : "btn-disabled"} btn-sm" onclick="claimMilestoneTask('${t.id}')">Claim</button>`
+              }
+            </div>
+          </div>
+        `;
+      }).join("");
 
-  runEverything();
-  
-})();
-</script>
+      document.getElementById("taskPageContent").innerHTML = `
+        <div class="hero-card">
+          <div class="bal-sub">Cumulative Team Investment</div>
+          <div class="bal-big">Rs ${teamInvest.toLocaleString()}</div>
+        </div>
+
+        <div class="card" style="border:2px solid var(--amber)">
+          <div class="plan-top">
+            <strong style="color:var(--red-dark)">Free Task #1 · Join Official Channel</strong>
+            <span class="bonus-tag" style="margin:0">+Rs 30 FREE</span>
+          </div>
+          <p class="muted" style="line-height:1.55;margin-bottom:10px">
+            Click below to open our official channel, join it, and then claim your free <strong>Rs 30</strong> reward!
+          </p>
+          <div class="btn-row">
+            <a href="${CHANNEL_URL}" target="_blank" rel="noopener" class="btn btn-soft" style="text-align:center;text-decoration:none">Open Channel Link</a>
+            ${
+              u.channelRewardClaimed
+                ? `<button class="btn btn-soft" disabled>Claimed (Rs 30)</button>`
+                : `<button class="btn btn-gold" onclick="claimChannelTask()">Claim Rs 30</button>`
+            }
+          </div>
+        </div>
+
+        ${milestonesHtml}
+      `;
+   } 
+   function claimDailyCheckIn() {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Account is blocked.");
+        return;
+      }
+      const today = new Date().toISOString().slice(0, 10);
+      if (u.lastCheckIn === today) {
+        alert("You already checked in today!");
+        return;
+      }
+      u.lastCheckIn = today;
+      u.balance = Number(u.balance) + 10;
+      u.totalEarnings = Number(u.totalEarnings) + 10;
+      db.transactions.unshift({
+        id: "TX-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Daily Check-in",
+        amount: 10,
+        status: "Approved",
+        note: "Daily check-in bonus",
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      alert("Daily Check-in successful! +Rs 10 added.");
+      renderAll();
+    }
+
+    function redeemGiftCode() {
+      const input = document.getElementById("giftCodeInput");
+      if (!input) return;
+      const code = input.value.trim().toUpperCase();
+      if (!code) {
+        alert("Enter a gift code first.");
+        return;
+      }
+      const u = getCurrentUser();
+      if (code === "ASML30" || code === "VIPGIFT") {
+        u.balance = Number(u.balance) + 30;
+        u.totalEarnings = Number(u.totalEarnings) + 30;
+        saveDB(db);
+        alert("Gift code redeemed! +Rs 30 added.");
+        renderAll();
+      } else {
+        alert("Invalid or expired gift code.");
+      }
+    }
+
+    function renderMine() {
+      const u = getCurrentUser();
+      const myTx = db.transactions.filter(t => t.userId === u.id);
+
+      document.getElementById("minePageContent").innerHTML = `
+        <div class="hero-card">
+          <div style="font-size:18px;font-weight:900">ID: ${u.id} ${u.blocked ? '<span class="tag-no">BLOCKED</span>' : ''}</div>
+          <div class="bal-sub">Account: ${u.phone} · Ref Code: ${u.refCode}</div>
+          <div class="stats-row">
+            <div class="stat-box"><div class="stat-val">${formatRs(u.balance)}</div><div class="stat-lbl">Account Balance</div></div>
+            <div class="stat-box"><div class="stat-val">${formatRs(u.totalEarnings)}</div><div class="stat-lbl">Total Earnings</div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">System Gift (FREE)</h3>
+          <div class="muted" style="margin-bottom:8px">Enter gift code to receive reward (Try: ASML30)</div>
+          <div style="display:flex;gap:8px">
+            <input id="giftCodeInput" class="input" style="margin:0" placeholder="Enter gift code" />
+            <button class="btn btn-gold btn-sm" onclick="redeemGiftCode()">Open</button>
+          </div>
+  </div> 
    
+        <div class="card">
+          <div class="grid-3">
+            <button class="btn btn-primary" onclick="openActionSheet('recharge')">Recharge</button>
+            <button class="btn btn-gold" onclick="openActionSheet('withdraw')">Withdraw</button>
+            <button class="btn btn-soft" onclick="openActionSheet('bank')">Bank</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Transactions</h3>
+          ${
+            myTx.length ? myTx.slice(0, 12).map(t => `
+              <div class="list-item">
+                <div>
+                  <strong>${t.type}</strong> · <span class="muted">${t.time}</span><br>
+                  <span class="muted">${t.note || ""}</span>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-weight:800">${Number(t.amount) >= 0 ? "+" : ""}${formatRs(t.amount)}</div>
+                  <span class="${t.status === "Approved" ? "tag-ok" : t.status === "Rejected" ? "tag-no" : "pill"}">${t.status}</span>
+                </div>
+              </div>
+            `).join("") : `<div class="muted">No transactions yet.</div>`
+          }
+        </div>
+
+        <div class="notice-box">
+          Customer Service Policy: Creating more than two (2) IDs on a single mobile phone will result in ID blocking.
+        </div>
+      `;
+    }
+
+    function openActionSheet(mode) {
+      const u = getCurrentUser();
+      if (u.blocked) {
+        alert("Your ID is blocked by Customer Service.");
+        return;
+      }
+      const titleEl = document.getElementById("actionModalTitle");
+      const bodyEl = document.getElementById("actionModalBody");
+
+      if (mode === "recharge") {
+        titleEl.textContent = "Recharge / Deposit";
+        const methodsHtml = db.paymentChannels.map(c => `
+          <div class="list-item">
+            <div><strong>${c.method}</strong><br><span class="muted">${c.title} · ${c.account}</span></div>
+          </div>
+        `).join("");
+
+        bodyEl.innerHTML = `
+          <div class="card" style="box-shadow:none;background:#fffaf5">${methodsHtml}</div>
+          <label class="label">Select Payment Channel</label>
+          <select id="depMethod" class="select">
+            ${db.paymentChannels.map(c => `<option value="${c.method}">${c.method}</option>`).join("")}
+          </select>
+          <label class="label">Amount (Rs)</label>
+          <input id="depAmount" type="number" class="input" placeholder="e.g. 500" />
+          <label class="label">Transaction ID / TID</label>
+          <input id="depTid" class="input" placeholder="Enter payment TID" />
+          <button class="btn btn-primary" style="width:100%" onclick="submitDeposit()">Submit Deposit Request</button>
+        `;
+      } else if (mode === "withdraw") {
+        titleEl.textContent = "Withdraw Funds";
+        bodyEl.innerHTML = `
+          <div class="muted" style="margin-bottom:8px">Available Balance: <strong>${formatRs(u.balance)}</strong></div>
+          <label class="label">Withdrawal Method</label>
+          <select id="wdMethod" class="select">
+            <option value="EasyPaisa">EasyPaisa</option>
+            <option value="JazzCash">JazzCash</option>
+            <option value="UPaisa">UPaisa</option>
+            <option value="Bank Account">Bank Account</option>
+          </select>
+          <label class="label">Account Title & Number</label>
+          <input id="wdAccount" class="input" value="${u.bank.accountNumber || ""}" placeholder="03XX-XXXXXXX / IBAN" />
+          <label class="label">Withdraw Amount (Rs)</label>
+          <input id="wdAmount" type="number" class="input" placeholder="Enter amount" />
+          <button class="btn btn-gold" style="width:100%" onclick="submitWithdraw()">Submit Pending Withdrawal</button>
+        `;
+          } else if (mode === "bank") {
+        titleEl.textContent = "Bank Account — Bind Withdrawal Account";
+        bodyEl.innerHTML = `
+          <label class="label">Bank Name</label>
+          <select id="bindBankName" class="select">
+            <option value="EasyPaisa">EasyPaisa</option>
+            <option value="JazzCash">JazzCash</option>
+            <option value="UPaisa">UPaisa</option>
+            <option value="Meezan Bank">Meezan Bank</option>
+            <option value="HBL">HBL</option>
+            <option value="UBL">UBL</option>
+            <option value="Allied Bank">Allied Bank</option>
+          </select>
+          <label class="label">Account Holder Name</label>
+          <input id="bindHolder" class="input" value="${u.bank.holderName || ""}" placeholder="Please enter your name" />
+          <label class="label">Account Number</label>
+          <input id="bindAccNo" class="input" value="${u.bank.accountNumber || ""}" placeholder="Please enter your bank account number" />
+          <button class="btn btn-primary" style="width:100%" onclick="saveBankBinding()">Confirm</button>
+        `;
+      }
+
+      document.getElementById("actionModal").classList.add("open");
+    }
+
+    function closeActionModal() {
+      document.getElementById("actionModal").classList.remove("open");
+    }
+
+    function submitDeposit() {
+      const u = getCurrentUser();
+      const method = document.getElementById("depMethod").value;
+      const amount = Number(document.getElementById("depAmount").value || 0);
+      const tid = document.getElementById("depTid").value.trim();
+      if (amount <= 0 || !tid) {
+        alert("Please enter a valid amount and Transaction ID.");
+        return;
+      }
+      db.transactions.unshift({
+        id: "DEP-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Deposit (" + method + ")",
+        amount: amount,
+        status: "Pending",
+        note: "TID: " + tid,
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      closeActionModal();
+      alert("Deposit request submitted as Pending! Admin can approve it in Private Admin Panel.");
+      renderAll();
+    }
+
+    function submitWithdraw() {
+      const u = getCurrentUser();
+      const method = document.getElementById("wdMethod").value;
+      const acc = document.getElementById("wdAccount").value.trim();
+      const amount = Number(document.getElementById("wdAmount").value || 0);
+      if (amount <= 0 || !acc) {
+        alert("Enter withdrawal amount and account details.");
+        return;
+      }
+      if (amount > Number(u.balance)) {
+        alert("Insufficient balance for this withdrawal.");
+        return;
+      }
+      // Deduct balance into pending hold until admin approves or rejects
+      u.balance = Number(u.balance) - amount;
+      db.transactions.unshift({
+        id: "WD-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Withdraw (" + method + ")",
+        amount: -Math.abs(amount),
+        status: "Pending",
+        note: "To: " + acc,
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      closeActionModal();
+      alert("Withdrawal request submitted as Pending! Admin can Approve or Reject in Private Admin Panel.");
+      renderAll();
+ }
+ function saveBankBinding() {
+      const u = getCurrentUser();
+      u.bank = {
+        bankName: document.getElementById("bindBankName").value,
+        holderName: document.getElementById("bindHolder").value.trim(),
+        accountNumber: document.getElementById("bindAccNo").value.trim()
+      };
+      saveDB(db);
+      closeActionModal();
+      alert("Withdrawal bank account saved!");
+      renderAll();
+    }
+
+    /* Login & Register Modal */
+    function openAuthModal(mode) {
+      const titleEl = document.getElementById("authModalTitle");
+      const bodyEl = document.getElementById("authModalBody");
+      const savedRef = localStorage.getItem("ASML_CAPTURED_REF") || "";
+
+      if (mode === "register") {
+        titleEl.textContent = "Create Account";
+        bodyEl.innerHTML = `
+          <div class="bonus-tag">WELCOME BONUS</div>
+          <label class="label">Phone Number (+92)</label>
+          <input id="regPhone" class="input" placeholder="+923001234567" />
+          <label class="label">Password</label>
+          <input id="regPass" type="password" class="input" placeholder="Enter password" />
+          <label class="label">Re-enter Password</label>
+          <input id="regPass2" type="password" class="input" placeholder="Re-enter password" />
+          <label class="label">Referral Code (Optional)</label>
+          <input id="regRef" class="input" value="${savedRef}" placeholder="Referral code" />
+          <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="handleRegister()">Sign Up</button>
+          <button class="btn btn-soft" style="width:100%" onclick="openAuthModal('login')">Already have an account? Sign In</button>
+        `;
+      } else {
+        titleEl.textContent = "Sign In";
+        bodyEl.innerHTML = `
+          <label class="label">Phone Number (+92)</label>
+          <input id="loginPhone" class="input" placeholder="+923001234567" />
+          <label class="label">Password</label>
+          <input id="loginPass" type="password" class="input" placeholder="Enter password" />
+          <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="handleLogin()">Sign In</button>
+          <button class="btn btn-soft" style="width:100%" onclick="openAuthModal('register')">Don't have an account? Register</button>
+        `;
+      }
+      document.getElementById("authModal").classList.add("open");
+    }
+
+    function closeAuthModal() {
+      document.getElementById("authModal").classList.remove("open");
+    }
+
+    function handleRegister() {
+      const phone = document.getElementById("regPhone").value.trim();
+      const pass = document.getElementById("regPass").value;
+      const pass2 = document.getElementById("regPass2").value;
+      const refCode = (document.getElementById("regRef").value || "").trim() || "ASML-ADMIN1";
+      const devId = getDeviceId();
+
+      if (!phone || !pass) {
+        alert("Enter phone number and password.");
+        return;
+      }
+      if (pass !== pass2) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      const sameDeviceCount = db.users.filter(u => u.deviceId === devId).length;
+      const isOverLimit = sameDeviceCount >= 2;
+
+      const newUser = {
+        id: "ID-" + Math.floor(100000 + Math.random() * 900000),
+        phone,
+        password: pass,
+        refCode: "ASML-" + Math.random().toString(36).slice(2, 7).toUpperCase(),
+        referredBy: refCode,
+        balance: isOverLimit ? 0 : 100,
+        totalEarnings: isOverLimit ? 0 : 100,
+        blocked: isOverLimit,
+        deviceId: devId,
+        channelJoined: false,
+        channelRewardClaimed: false,
+        claimedMilestones: [],
+        lastCheckIn: "",
+        bank: { bankName: "", holderName: "", accountNumber: "" }
+      };
+
+      db.users.push(newUser);
+      db.members.push({
+        id: newUser.id,
+        phone: newUser.phone,
+        referrerCode: refCode,
+        deposited: 0,
+        level: 1
+      });
+      db.currentUserId = newUser.id;
+      saveDB(db);
+      closeAuthModal();
+
+      if (isOverLimit) {
+        alert("More than 2 IDs detected on this device. Account created as BLOCKED per Customer Service policy.");
+      } else {
+        alert(`Account created! ID: ${newUser.id} · Referred by: ${refCode}`);
+      }
+      renderAll();
+ }
+   function handleLogin() {
+      const phone = document.getElementById("loginPhone").value.trim();
+      const pass = document.getElementById("loginPass").value;
+      const found = db.users.find(u => u.phone === phone && u.password === pass);
+      if (!found) {
+        alert("Invalid phone or password.");
+        return;
+      }
+      db.currentUserId = found.id;
+      saveDB(db);
+      closeAuthModal();
+      alert(`Welcome back, ${found.id}!`);
+      renderAll();
+    }
+
+    /* Private Admin Panel */
+    function openAdminGate() {
+      if (db.adminUnlocked) {
+        switchPage("adminPage");
+        return;
+      }
+      const pin = prompt("Enter Private Admin PIN:");
+      if (pin === null) return;
+      if (pin.trim() === db.adminPin) {
+        db.adminUnlocked = true;
+        saveDB(db);
+        switchPage("adminPage");
+      } else {
+        alert("Incorrect Admin PIN.");
+      }
+    }
+
+    function logoutAdmin() {
+      db.adminUnlocked = false;
+      saveDB(db);
+      switchPage("homePage");
+    }
+
+    function adminAdjustUserBalance(userId, delta) {
+      const u = db.users.find(x => x.id === userId);
+      if (!u) return;
+      u.balance = Math.max(0, Number(u.balance) + Number(delta));
+      if (Number(delta) > 0) u.totalEarnings = Number(u.totalEarnings) + Number(delta);
+      db.transactions.unshift({
+        id: "ADM-" + Date.now().toString().slice(-6),
+        userId: u.id,
+        type: "Admin Balance Adjust",
+        amount: Number(delta),
+        status: "Approved",
+        note: "Adjusted by Admin",
+        time: new Date().toLocaleString()
+      });
+      saveDB(db);
+      renderAdmin();
+    }
+
+    function adminSetCustomBalance(userId) {
+      const inp = document.getElementById("admBalInput_" + userId);
+      if (!inp) return;
+      const val = Number(inp.value);
+      if (isNaN(val) || val < 0) return;
+      const u = db.users.find(x => x.id === userId);
+      if (!u) return;
+      u.balance = val;
+      saveDB(db);
+      renderAdmin();
+    }
+
+    function adminToggleBlock(userId) {
+      const u = db.users.find(x => x.id === userId);
+      if (!u) return;
+      u.blocked = !u.blocked;
+      saveDB(db);
+      renderAdmin();
+    }
+
+    function adminTogglePlanStatus(planIdx) {
+      const p = db.plans[planIdx];
+      if (!p) return;
+      p.status = p.status === "active" ? "coming_soon" : "active";
+      saveDB(db);
+      renderAdmin();
+    }
+
+    function adminUpdatePlanValues(planIdx) {
+      const price = Number(document.getElementById("admPlanPrice_" + planIdx).value);
+      const daily = Number(document.getElementById("admPlanDaily_" + planIdx).value);
+      const cycle = Number(document.getElementById("admPlanCycle_" + planIdx).value);
+      const p = db.plans[planIdx];
+      if (!p) return;
+      if (price > 0) p.price = price;
+      if (daily >= 0) p.daily = daily;
+      if (cycle > 0) p.cycle = cycle;
+      saveDB(db);
+      alert(`${p.name} updated!`);
+      renderAdmin();
+ }
+ function adminAddNewPlan() {
+      const name = document.getElementById("newPlanName").value.trim();
+      const price = Number(document.getElementById("newPlanPrice").value);
+      const daily = Number(document.getElementById("newPlanDaily").value);
+      const cycle = Number(document.getElementById("newPlanCycle").value || 120);
+      if (!name || price <= 0 || daily < 0) {
+        alert("Enter valid plan name, price, and daily profit.");
+        return;
+      }
+      db.plans.push({
+        id: "VIP-" + (db.plans.length + 1),
+        name,
+        price,
+        daily,
+        cycle,
+        status: "active",
+        desc: `Custom VIP plan (${cycle} days cycle).`
+      });
+      saveDB(db);
+      alert("New plan added!");
+      renderAdmin();
+    }
+
+    function adminDecideTx(txId, decision) {
+      const tx = db.transactions.find(t => t.id === txId);
+      if (!tx || tx.status !== "Pending") return;
+      const u = db.users.find(x => x.id === tx.userId);
+
+      if (decision === "Approved") {
+        tx.status = "Approved";
+        // If deposit, credit user balance & mark member deposited
+        if (tx.type.startsWith("Deposit") && u) {
+          u.balance = Number(u.balance) + Number(tx.amount);
+          const mem = db.members.find(m => m.id === u.id);
+          if (mem) mem.deposited = Number(mem.deposited || 0) + Number(tx.amount);
+        }
+      } else if (decision === "Rejected") {
+        tx.status = "Rejected";
+        // If withdrawal was deducted on submit, refund back to user balance
+        if (tx.type.startsWith("Withdraw") && u) {
+          u.balance = Number(u.balance) + Math.abs(Number(tx.amount));
+        }
+   }
+     saveDB(db);
+      renderAdmin();
+    }
+
+    function adminSaveProfitSettings() {
+      db.profitMode = document.getElementById("admProfitMode").value;
+      db.profitMultiplier = Number(document.getElementById("admProfitMult").value || 1);
+      const newPin = document.getElementById("admNewPin").value.trim();
+      if (newPin) db.adminPin = newPin;
+      saveDB(db);
+      alert("Admin profit/loss & security settings saved!");
+      renderAdmin();
+    }
+
+    function renderAdmin() {
+      const pendingTx = db.transactions.filter(t => t.status === "Pending");
+      const referredUsers = db.users.filter(u => u.referredBy);
+      const organicUsers = db.users.filter(u => !u.referredBy);
+
+      const plansHtml = db.plans.map((p, i) => `
+        <div class="card" style="box-shadow:none;background:#fffaf5">
+          <div class="plan-top">
+            <strong>${p.name}</strong>
+            <button class="btn btn-sm ${p.status === "active" ? "btn-success" : "btn-gold"}" onclick="adminTogglePlanStatus(${i})">
+              ${p.status === "active" ? "Active (Click -> Coming Soon)" : "Coming Soon (Click -> Active)"}
+            </button>
+          </div>
+          <div class="grid-3" style="margin-top:8px">
+            <div><span class="label">Price</span><input id="admPlanPrice_${i}" type="number" class="input" style="margin:0" value="${p.price}" /></div>
+            <div><span class="label">Daily</span><input id="admPlanDaily_${i}" type="number" class="input" style="margin:0" value="${p.daily}" /></div>
+            <div><span class="label">Days</span><input id="admPlanCycle_${i}" type="number" class="input" style="margin:0" value="${p.cycle}" /></div>
+          </div>
+          <button class="btn btn-primary btn-sm" style="margin-top:8px;width:100%" onclick="adminUpdatePlanValues(${i})">Save ${p.name}</button>
+        </div>
+      `).join("");
+
+      const pendingHtml = pendingTx.length ? pendingTx.map(t => `
+        <div class="list-item">
+          <div>
+            <strong>${t.id}</strong> · ${t.type}<br>
+            <span class="muted">User: ${t.userId} · Amount: ${formatRs(Math.abs(t.amount))} · ${t.note || ""}</span>
+          </div>
+          <div style="display:flex;gap:6px">
+            <button class="btn btn-success btn-sm" onclick="adminDecideTx('${t.id}','Approved')">Approve</button>
+            <button class="btn btn-danger btn-sm" onclick="adminDecideTx('${t.id}','Rejected')">Reject</button>
+          </div>
+        </div>
+      `).join("") : `<div class="muted">No pending deposit/withdrawal requests.</div>`;
+
+      const usersHtml = db.users.map(u => `
+        <div class="card" style="box-shadow:none;background:#fffaf5">
+          <div class="plan-top">
+            <div><strong>${u.id}</strong> (${u.phone}) · <span class="muted">Ref: ${u.refCode}</span></div>
+            <button class="btn btn-sm ${u.blocked ? "btn-success" : "btn-danger"}" onclick="adminToggleBlock('${u.id}')">
+              ${u.blocked ? "Unblock ID" : "Block ID"}
+            </button>
+          </div>
+          <div class="muted" style="margin-bottom:8px">Balance: <strong>${formatRs(u.balance)}</strong> · Invited By: ${u.referredBy || "Direct/Organic"}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="btn btn-success btn-sm" onclick="adminAdjustUserBalance('${u.id}', 100)">+100</button>
+            <button class="btn btn-danger btn-sm" onclick="adminAdjustUserBalance('${u.id}', -100)">-100</button>
+            <input id="admBalInput_${u.id}" type="number" class="input" style="width:90px;margin:0;padding:6px" placeholder="Set Rs" />
+            <button class="btn btn-soft btn-sm" onclick="adminSetCustomBalance('${u.id}')">Set</button>
+          </div>
+        </div>
+      `).join("");
+     document.getElementById("adminPageContent").innerHTML = `
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Profit / Loss & Admin PIN Control</h3>
+          <label class="label">Profit Mode</label>
+          <select id="admProfitMode" class="select">
+            <option value="normal" ${db.profitMode === "normal" ? "selected" : ""}>Normal Profit</option>
+            <option value="boost" ${db.profitMode === "boost" ? "selected" : ""}>Boost Profit</option>
+            <option value="loss" ${db.profitMode === "loss" ? "selected" : ""}>Loss Adjustment</option>
+          </select>
+          <label class="label">Profit Multiplier (e.g. 1.0, 1.5, 2.0)</label>
+          <input id="admProfitMult" type="number" step="0.1" class="input" value="${db.profitMultiplier}" />
+          <label class="label">Change Private Admin PIN</label>
+          <input id="admNewPin" class="input" placeholder="Leave blank to keep current PIN" />
+          <button class="btn btn-primary" style="width:100%" onclick="adminSaveProfitSettings()">Save Admin Settings</button>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Pending Deposits & Withdrawals (${pendingTx.length})</h3>
+          ${pendingHtml}
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Add New Plan</h3>
+          <input id="newPlanName" class="input" placeholder="Plan Name (e.g. VIP 9)" />
+          <div class="grid-3">
+            <input id="newPlanPrice" type="number" class="input" placeholder="Price Rs" />
+            <input id="newPlanDaily" type="number" class="input" placeholder="Daily Rs" />
+            <input id="newPlanCycle" type="number" class="input" placeholder="Days (120)" value="120" />
+          </div>
+          <button class="btn btn-gold" style="width:100%" onclick="adminAddNewPlan()">+ Add Plan</button>
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:8px">Manage Plans (Active / Coming Soon / Rates)</h3>
+          ${plansHtml}
+        </div>
+
+        <div class="card">
+          <h3 style="font-size:15px;font-weight:800;margin-bottom:6px">Referral vs New/Organic Users</h3>
+          <div class="muted" style="margin-bottom:8px">Referred Users: <strong>${referredUsers.length}</strong> · Direct/Other Users: <strong>${organicUsers.length}</strong></div>
+          ${usersHtml}
+        </div>
+      `;
+    }
+
+    function renderAll() {
+      renderHome();
+      renderOrders();
+      renderTeam();
+      renderTasks();
+      renderMine();
+      if (db.adminUnlocked) renderAdmin();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
