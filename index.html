@@ -931,15 +931,15 @@ if ($("teamTotalCount")) $("teamTotalCount").innerText = String(myMembers.length
 $("level1").innerText = myMembers.length + " · Rs 0.00";
 if ($("level2")) $("level2").innerText = "0 · Rs 0.00";
 if ($("level3")) $("level3").innerText = "0 · Rs 0.00";
-$("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
+ $("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
   <div class="list-item">
     <div>
       <b>${m.member}</b><br>
-      <small class="muted">Member ID: ${m.id || m.code || "N/A"}</small>
+      <small class="muted">Member ID: ${m.id || m.code || "N/A"} · Referrer Team: ${m.referrerCode || u.code || "N/A"}</small>
     </div>
     <span>Level 1 (10%)</span>
   </div>
-`).join("") : `<div class="empty">No referred members yet. Copy and share your referral link to invite friends.</div>`;
+`).join("") : `<div class="empty">Total Joined: 0 · No referred members yet. Share your referral link to invite friends.</div>`;
  
  const claimedTotal = db.tasks.filter(t => t.done).reduce((s, t) => s + t.reward, 0);
  $("taskRewardTotal").innerText = money(claimedTotal);
