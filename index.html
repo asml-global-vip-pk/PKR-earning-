@@ -923,3 +923,315 @@ renderAll();
 </script>
 </body>
 </html>
+<script>
+(function() {
+  const $id = id => document.getElementById(id);
+
+  function getActiveRefLink() {
+    const codeEl = $id("refCode");
+    const code = (codeEl && codeEl.innerText.trim() && codeEl.innerText.trim() !== "ASML-XXXXXX")
+      ? codeEl.innerText.trim()
+      : "ASML-ADMIN1";
+    const baseUrl = window.location.origin + window.location.pathname;
+    return baseUrl + "?ref=" + encodeURIComponent(code);
+  }
+
+  function enhanceTeamPage() {
+    const teamSec = $id("teamPage");
+    if (!teamSec) return;
+
+    const refLink = getActiveRefLink();
+    const refCodeText = ($id("refCode")?.innerText || "ASML-ADMIN1").trim();
+
+    let members = [];
+    try {
+      const raw = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (Array.isArray(raw.members)) {
+        members = raw.members.filter(m => !m.referrerCode || m.referrerCode === refCodeText || raw.members.length > 0);
+      }
+    } catch (e) {}
+
+    const count = members.length;
+    teamSec.innerHTML = `
+      <div class="section-title">Team</div>
+      <div class="hero">
+        <div class="balance" id="teamTotalEarnings">Rs 0</div>
+        <p>Total Team Earnings</p>
+        <p style="margin-top:4px">Total Team Members: <strong id="teamTotalMembers">${count}</strong></p>
+        <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+          <span id="youReferLinkText" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${refLink}</span>
+          <button class="btn small" onclick="window.copyTeamRefLink()">Copy</button>
+          </div>
+        <p style="font-size:11px;margin-top:8px;opacity:.92">Your Refer Code: <strong id="teamRefCodeDisplay">${refCodeText}</strong></p>
+      </div>
+
+      <div class="card">
+        <h3>Team Overview</h3>
+        <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
+        <div class="list-item"><span>Team Level 1 (18%)</span><span>${count} · Rs 0.00</span></div>
+        <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
+        <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
+      </div>
+
+      <div class="card">
+        <h3>Referred Members</h3>
+        <div id="teamMembersBox">${
+          count
+            ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (18%)</span></div>`).join("")
+            : `<div class="empty">No referred members yet. Share your referral link above.</div>`
+        }</div>
+      </div>
+
+      <div class="card">
+        <h3>Referral Rebate Rules!</h3>
+        <p class="muted" style="line-height:1.65;margin:0">
+          Users you invite directly are considered your "Level 1" users; you will receive a rebate equal to 18% of their top-up (deposit) amount. Users invited by your Level 1 users are considered your "Level 2" users; you will receive a rebate equal to 2% of their top-up (deposit) amount. Users invited by your Level 2 users are considered your "Level 3" users; you will receive a rebate equal to 1% of their top-up (deposit) amount.
+        </p>
+      </div>
+    `;
+  } 
+ window.copyTeamRefLink = function() {
+    const link = getActiveRefLink();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).catch(() => {});
+    }
+    alert("Referral Link Copied:\n" + link);
+  };
+
+  function enhanceTaskPage() {
+    const taskSec = $id("taskPage");
+    if (!taskSec) return;
+
+    const milestones = [
+      { task: "Task 1", target: "3,000", reward: "Rs300" },
+      { task: "Task 2", target: "9,000", reward: "Rs900" },
+      { task: "Task 3", target: "27,000", reward: "Rs2,700" },
+      { task: "Task 4", target: "77,000", reward: "Rs7,700" },
+      { task: "Task 5", target: "177,000", reward: "Rs17,700" },
+      { task: "Task 6", target: "377,000", reward: "Rs37,700" },
+      { task: "Task 7", target: "770,000", reward: "Rs77,000" },
+      { task: "Task 8", target: "1,770,000", reward: "Rs177,000" }
+    ];
+
+    taskSec.innerHTML = `
+      <div class="section-title">Task Center</div>
+      <div class="hero">
+        <p>Cumulative Team Invitation</p>
+        <div class="balance">Rs 0</div>
+        <p>Team investment milestone structure (No manual claim button)</p>
+      </div>
+      ${milestones.map(m => `
+        <div class="card">
+          <div class="plan-top">
+            <p style="margin:0;font-size:13px;line-height:1.6;max-width:74%">
+              Level 1 downline members who reach a total investment of <strong>Rs ${m.target}</strong> active investors , will receive a reward of Rs <strong>${m.reward}</strong>
+            </p>
+            <span class="badge">${m.task}</span>
+          </div>
+          <div class="progress"><div style="width:0%"></div></div>
+          <div class="row" style="text-align:center;font-size:12px">
+            <div><strong style="color:#d92b2b">0/${m.target}</strong><div class="muted">Invitation</div></div>
+            <div><strong style="color:#d92b2b">${m.reward}</strong><div class="muted">Earnings</div></div>
+            <div><span class="badge">Milestone</span></div>
+          </div>
+        </div>
+      `).join("")}
+    `;
+  } 
+ function enhanceAuthWithChangePassword() {
+    const authSec = $id("authPage");
+    if (!authSec || $id("changePassBox")) return;
+
+    const box = document.createElement("div");
+    box.className = "card";
+    box.id = "changePassBox";
+    box.innerHTML = `
+      <h3>Change Password</h3>
+      <label>Account Email or Phone</label>
+      <input class="input" id="cpContact" placeholder="Enter account email or phone">
+      <label>Current Password</label>
+      <input class="input" id="cpOldPass" type="password" placeholder="Enter current password">
+      <label>New Password</label>
+      <input class="input" id="cpNewPass" type="password" placeholder="Enter new password (min 4 chars)">
+      <button class="btn" onclick="window.updateAccountPassword()">Update Password</button>
+    `;
+    authSec.insertBefore(box, authSec.querySelector("button.btn.secondary"));
+  }
+
+  window.updateAccountPassword = function() {
+    const contact = ($id("cpContact")?.value || "").trim().toLowerCase();
+    const oldPass = $id("cpOldPass")?.value || "";
+    const newPass = $id("cpNewPass")?.value || "";
+    if (!contact || !oldPass || newPass.length < 4) {
+      return alert("Enter account, current password, and a new password (at least 4 characters).");
+    }
+    try {
+      const raw = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (!Array.isArray(raw.users)) return alert("No account data found.");
+      const idx = raw.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
+      if (idx === -1) return alert("Account or current password is incorrect.");
+      raw.users[idx].password = newPass;
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(raw));
+      $id("cpOldPass").value = "";
+      $id("cpNewPass").value = "";
+      alert("Password updated successfully!");
+    } catch (e) {
+      alert("Unable to update password.");
+    }
+  };
+
+  function bindReferralFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const refParam = (params.get("ref") || "").trim();
+    if (refParam && $id("suReferral") && !$id("suReferral").value) {
+      $id("suReferral").value = refParam;
+    }
+  }
+
+  function applyAllEnhancements() {
+    bindReferralFromUrl();
+    enhanceTeamPage();
+    enhanceTaskPage();
+    enhanceAuthWithChangePassword();
+  }
+
+  applyAllEnhancements();
+
+  const prevRender = window.renderAll;
+  window.renderAll = function() {
+    if (typeof prevRender === "function") prevRender();
+    enhanceTeamPage();
+    enhanceAuthWithChangePassword();
+  };
+
+  const prevNav = window.navigate;
+  window.navigate = function(id, btn) {
+    if (typeof prevNav === "function") prevNav(id, btn);
+    if (id === "teamPage") enhanceTeamPage();
+    if (id === "taskPage") enhanceTaskPage();
+    if (id === "authPage") enhanceAuthWithChangePassword();
+  };
+})();
+</script
+ <script>
+(function() {
+  const $id = id => document.getElementById(id);
+  const STORAGE_KEY = "ASML_PLAN_PROFIT_BOOST_V1";
+
+  function loadProfitConfig() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+      if (saved && typeof saved === "object") return saved;
+    } catch (e) {}
+    return {
+      multiplier: 2.5,
+      customDaily: {}
+    };
+  }
+
+  function saveProfitConfig(cfg) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
+    } catch (e) {}
+  }
+
+  let profitCfg = loadProfitConfig();
+
+  function applyBoostToPlans() {
+    if (!Array.isArray(window.planData)) return;
+
+    window.planData.forEach((p, idx) => {
+      if (typeof p._baseDaily !== "number") {
+        p._baseDaily = Number(p.daily || 0);
+      }
+      const customVal = profitCfg.customDaily[idx];
+      const nextDaily = (typeof customVal === "number" && !isNaN(customVal) && customVal > 0)
+        ? customVal
+        : Math.round(p._baseDaily * Number(profitCfg.multiplier || 1));
+
+      p.daily = nextDaily;
+      p.hourly = Number((nextDaily / 24).toFixed(2));
+      p.cycle = p.cycle || 120;
+      p.total = nextDaily * p.cycle;
+    });
+
+    if (typeof window.renderPlans === "function") {
+      window.renderPlans();
+    }
+  }
+
+  function injectProfitEditorBox() {
+    if (!Array.isArray(window.planData) || $id("customPlanProfitBox")) return;
+    const targetParent = $id("adminDashboard") || $id("minePage") || document.querySelector("main.container") || document.body;
+    if (!targetParent) return;
+        const box = document.createElement("div");
+    box.className = "card";
+    box.id = "customPlanProfitBox";
+    box.innerHTML = `
+      <h3>VIP Plan Profit Rate Settings</h3>
+      <p class="muted">Change plan daily profit or boost rate anytime without touching old code.</p>
+      <label>Select VIP Plan</label>
+      <select class="input" id="profitPlanSelect" onchange="window.syncSelectedPlanProfitInput()">
+        ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
+      </select>
+      <label>Daily Profit for Selected Plan (Rs)</label>
+      <input class="input" id="profitDailyInput" type="number" min="1" placeholder="Enter daily profit">
+      <button class="btn" onclick="window.saveSinglePlanProfit()">Save Plan Daily Profit</button>
+      <hr style="margin:14px 0">
+      <label>Boost All Plans Multiplier (e.g. 2, 2.5, 3)</label>
+      <input class="input" id="profitMultInput" type="number" step="0.1" min="0.5" value="${profitCfg.multiplier}">
+      <button class="btn secondary" onclick="window.applyAllPlansMultiplier()">Apply Multiplier to All Plans</button>
+    `;
+
+    targetParent.appendChild(box);
+    window.syncSelectedPlanProfitInput();
+  }
+
+  window.syncSelectedPlanProfitInput = function() {
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($id("profitPlanSelect")?.value || 0);
+    const plan = window.planData[idx];
+    if (plan && $id("profitDailyInput")) {
+      $id("profitDailyInput").value = plan.daily;
+    }
+  };
+
+  window.saveSinglePlanProfit = function() {
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($id("profitPlanSelect")?.value || 0);
+    const val = Number($id("profitDailyInput")?.value || 0);
+    if (!val || val <= 0) {
+      return alert("Please enter a valid daily profit amount.");
+    }
+    profitCfg.customDaily[idx] = val;
+    saveProfitConfig(profitCfg);
+    applyBoostToPlans();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val + "!");
+  };
+ window.applyAllPlansMultiplier = function() {
+    const mult = Number($id("profitMultInput")?.value || 1);
+    if (!mult || mult <= 0) {
+      return alert("Please enter a valid multiplier.");
+    }
+    profitCfg.multiplier = mult;
+    profitCfg.customDaily = {};
+    saveProfitConfig(profitCfg);
+    applyBoostToPlans();
+    window.syncSelectedPlanProfitInput();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("All VIP plans updated with " + mult + "x profit!");
+  };
+
+  applyBoostToPlans();
+  injectProfitEditorBox();
+
+  const origRender = window.renderAll;
+  window.renderAll = function() {
+    applyBoostToPlans();
+    injectProfitEditorBox();
+    if (typeof origRender === "function") origRender();
+  };
+})();
+</script>
+ 
