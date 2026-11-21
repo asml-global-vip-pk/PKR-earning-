@@ -925,63 +925,214 @@ renderAll();
 </html>
 <script>
 (function() {
-  const $id = id => document.getElementById(id);
+  const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
+  const OWNER_NAME = "Waqas Nadeem";
+  const OWNER_PHONE = "03192649784";
+  const CFG_KEY = "ASML_MASTER_PROFIT_CFG_V4";
+  const $ = id => document.getElementById(id);
 
-  function getActiveRefLink() {
-    const codeEl = $id("refCode");
-    const code = (codeEl && codeEl.innerText.trim() && codeEl.innerText.trim() !== "ASML-XXXXXX")
-      ? codeEl.innerText.trim()
-      : "ASML-ADMIN1";
-    const baseUrl = window.location.origin + window.location.pathname;
-    return baseUrl + "?ref=" + encodeURIComponent(code);
+  function loadCfg() {
+    try {
+      const data = JSON.parse(localStorage.getItem(CFG_KEY) || "null");
+      if (data && typeof data === "object") return data;
+    } catch (e) {}
+    return { multiplier: 2.5, customDaily: {} };
   }
 
-  function enhanceTeamPage() {
-    const teamSec = $id("teamPage");
-    if (!teamSec) return;
-
-    const refLink = getActiveRefLink();
-    const refCodeText = ($id("refCode")?.innerText || "ASML-ADMIN1").trim();
-
-    let members = [];
+  function saveCfg(cfg) {
     try {
-      const raw = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (Array.isArray(raw.members)) {
-        members = raw.members.filter(m => !m.referrerCode || m.referrerCode === refCodeText || raw.members.length > 0);
+      localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+    } catch (e) {}
+  }
+
+  let cfg = loadCfg();
+
+  function cleanStrayText() {
+    const tokens = [
+      "injectProfitEditorBox",
+      "ASML_PLAN_PROFIT_BOOST",
+      "applyBoostToPlans",
+      "syncSelectedPlanProfitInput",
+      "saveSinglePlanProfit",
+      "applyAllPlansMultiplier",
+      "cleanLeakedCodeText"
+    ];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const removeList = [];
+    let n;
+    while ((n = walker.nextNode())) {
+      const parentTag = n.parentElement ? n.parentElement.tagName : "";
+      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
+      const txt = (n.nodeValue || "").trim();
+      if (txt && tokens.some(t => txt.includes(t))) {
+        removeList.push(n);
+      }
+    } 
+  let cfg = loadCfg();
+
+  function cleanStrayText() {
+    const tokens = [
+      "injectProfitEditorBox",
+      "ASML_PLAN_PROFIT_BOOST",
+      "applyBoostToPlans",
+      "syncSelectedPlanProfitInput",
+      "saveSinglePlanProfit",
+      "applyAllPlansMultiplier",
+      "cleanLeakedCodeText"
+    ];
+    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    const removeList = [];
+    let n;
+    while ((n = walker.nextNode())) {
+      const parentTag = n.parentElement ? n.parentElement.tagName : "";
+      if (parentTag === "SCRIPT" || parentTag === "STYLE") continue;
+      const txt = (n.nodeValue || "").trim();
+      if (txt && tokens.some(t => txt.includes(t))) {
+        removeList.push(n);
+      }
+    }
+    removeList.forEach(item => {
+      if (item.parentNode) item.parentNode.removeChild(item);
+    });
+  }
+
+  function getActiveEmail() {
+    try {
+      const savedUser = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
+      if (savedUser && savedUser.includes("@")) return savedUser;
+    } catch (e) {}
+    const m = ($("mineUserLabel")?.textContent || "").toLowerCase();
+    const h = ($("activeUserLabel")?.textContent || "").toLowerCase();
+    const match = (m + " " + h).match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
+    return match ? match[0].toLowerCase() : "";
+  }
+
+  function isAdminUser() {
+    return getActiveEmail() === ADMIN_EMAIL;
+  }
+
+  function getDailyForPlanIndex(idx, baseDaily) {
+    const custom = cfg.customDaily[idx];
+    if (typeof custom === "number" && !isNaN(custom) && custom > 0) {
+      return custom;
+    }
+    return Math.round(Number(baseDaily || 0) * Number(cfg.multiplier || 1));
+  }
+
+  function applyProfitsToPlansAndOrders() {
+    if (Array.isArray(window.planData)) {
+      window.planData.forEach((plan, idx) => {
+        if (typeof plan._baseDaily !== "number") {
+          plan._baseDaily = Number(plan.daily || 0);
+        }
+        const newDaily = getDailyForPlanIndex(idx, plan._baseDaily);
+        plan.daily = newDaily;
+        plan.hourly = Number((newDaily / 24).toFixed(2));
+        plan.cycle = plan.cycle || 120;
+        plan.total = newDaily * plan.cycle;
+      });
+} 
+   try {
+      const dbRaw = localStorage.getItem("ASML_GLOBAL_V2");
+      if (dbRaw) {
+        const db = JSON.parse(dbRaw);
+        const orderArrays = [db.orders, db.userOrders, db.activeOrders, db.investments].filter(Array.isArray);
+        orderArrays.forEach(arr => {
+          arr.forEach((ord, idx) => {
+            const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
+            const base = typeof ord._baseDaily === "number"
+              ? ord._baseDaily
+              : Number(ord.daily || ord.dailyProfit || 0);
+            if (base > 0) {
+              ord._baseDaily = base;
+              const updatedDaily = getDailyForPlanIndex(pIdx, base);
+              if ("daily" in ord) ord.daily = updatedDaily;
+              if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
+              if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
+              const cycle = Number(ord.cycle || 120);
+              if ("total" in ord) ord.total = updatedDaily * cycle;
+            }
+          });
+        });
+        localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
       }
     } catch (e) {}
 
-    const count = members.length;
+    if (Array.isArray(window.userOrders)) {
+      window.userOrders.forEach((ord, idx) => {
+        const pIdx = typeof ord.planIndex === "number" ? ord.planIndex : idx;
+        const base = typeof ord._baseDaily === "number"
+          ? ord._baseDaily
+          : Number(ord.daily || ord.dailyProfit || 0);
+        if (base > 0) {
+          ord._baseDaily = base;
+          const updatedDaily = getDailyForPlanIndex(pIdx, base);
+          if ("daily" in ord) ord.daily = updatedDaily;
+          if ("dailyProfit" in ord) ord.dailyProfit = updatedDaily;
+          if ("hourly" in ord) ord.hourly = Number((updatedDaily / 24).toFixed(2));
+        }
+      });
+    }
+
+    if (typeof window.renderPlans === "function") {
+      window.renderPlans();
+    }
+    if (typeof window.renderOrders === "function") {
+      window.renderOrders();
+    }
+       }
+   function getReferralLink() {
+    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
+    return window.location.origin + window.location.pathname + "?ref=" + encodeURIComponent(code);
+  }
+
+  window.asmlCopyReferral = function() {
+    const link = getReferralLink();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).catch(() => {});
+    }
+    alert("Referral Link Copied:\n" + link);
+  };
+
+  function syncTeamPage() {
+    const teamSec = $("teamPage");
+    if (!teamSec) return;
+    const code = ($("refCode")?.textContent || "ASML-ADMIN1").trim() || "ASML-ADMIN1";
+    const link = getReferralLink();
+
+    let members = [];
+    try {
+      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (Array.isArray(db.members)) members = db.members;
+    } catch (e) {}
+
     teamSec.innerHTML = `
       <div class="section-title">Team</div>
       <div class="hero">
-        <div class="balance" id="teamTotalEarnings">Rs 0</div>
+        <div class="balance">Rs 0</div>
         <p>Total Team Earnings</p>
-        <p style="margin-top:4px">Total Team Members: <strong id="teamTotalMembers">${count}</strong></p>
+        <p style="margin-top:4px">Total Team Members: <strong>${members.length}</strong></p>
         <div style="background:#fff;color:#292525;border-radius:12px;padding:8px 10px;margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-          <span id="youReferLinkText" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${refLink}</span>
-          <button class="btn small" onclick="window.copyTeamRefLink()">Copy</button>
-          </div>
-        <p style="font-size:11px;margin-top:8px;opacity:.92">Your Refer Code: <strong id="teamRefCodeDisplay">${refCodeText}</strong></p>
+          <span style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">🔗 ${link}</span>
+          <button class="btn small" onclick="window.asmlCopyReferral()">Copy</button>
+        </div>
+        <p style="font-size:11px;margin-top:8px;opacity:.92">Referral Code: <strong>${code}</strong></p>
       </div>
-
       <div class="card">
         <h3>Team Overview</h3>
         <div class="list-item"><strong>Team Level</strong><strong>Quantity · Invest total</strong></div>
-        <div class="list-item"><span>Team Level 1 (18%)</span><span>${count} · Rs 0.00</span></div>
+        <div class="list-item"><span>Team Level 1 (18%)</span><span>${members.length} · Rs 0.00</span></div>
         <div class="list-item"><span>Team Level 2 (2%)</span><span>0 · Rs 0.00</span></div>
         <div class="list-item"><span>Team Level 3 (1%)</span><span>0 · Rs 0.00</span></div>
       </div>
-
       <div class="card">
         <h3>Referred Members</h3>
-        <div id="teamMembersBox">${
-          count
+        ${
+          members.length
             ? members.map(m => `<div class="list-item"><span>${m.member || m}</span><span>Level 1 (18%)</span></div>`).join("")
-            : `<div class="empty">No referred members yet. Share your referral link above.</div>`
-        }</div>
+            : `<div class="empty">No referred members yet.</div>`
+        }
       </div>
-
       <div class="card">
         <h3>Referral Rebate Rules!</h3>
         <p class="muted" style="line-height:1.65;margin:0">
@@ -989,19 +1140,10 @@ renderAll();
         </p>
       </div>
     `;
-  } 
- window.copyTeamRefLink = function() {
-    const link = getActiveRefLink();
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(link).catch(() => {});
-    }
-    alert("Referral Link Copied:\n" + link);
-  };
-
-  function enhanceTaskPage() {
-    const taskSec = $id("taskPage");
+         }
+   function syncTaskPage() {
+    const taskSec = $("taskPage");
     if (!taskSec) return;
-
     const milestones = [
       { task: "Task 1", target: "3,000", reward: "Rs300" },
       { task: "Task 2", target: "9,000", reward: "Rs900" },
@@ -1018,7 +1160,7 @@ renderAll();
       <div class="hero">
         <p>Cumulative Team Invitation</p>
         <div class="balance">Rs 0</div>
-        <p>Team investment milestone structure (No manual claim button)</p>
+        <p>Team investment milestones</p>
       </div>
       ${milestones.map(m => `
         <div class="card">
@@ -1037,391 +1179,161 @@ renderAll();
         </div>
       `).join("")}
     `;
-  } 
- function enhanceAuthWithChangePassword() {
-    const authSec = $id("authPage");
-    if (!authSec || $id("changePassBox")) return;
-
-    const box = document.createElement("div");
-    box.className = "card";
-    box.id = "changePassBox";
-    box.innerHTML = `
-      <h3>Change Password</h3>
-      <label>Account Email or Phone</label>
-      <input class="input" id="cpContact" placeholder="Enter account email or phone">
-      <label>Current Password</label>
-      <input class="input" id="cpOldPass" type="password" placeholder="Enter current password">
-      <label>New Password</label>
-      <input class="input" id="cpNewPass" type="password" placeholder="Enter new password (min 4 chars)">
-      <button class="btn" onclick="window.updateAccountPassword()">Update Password</button>
-    `;
-    authSec.insertBefore(box, authSec.querySelector("button.btn.secondary"));
-  }
-
-  window.updateAccountPassword = function() {
-    const contact = ($id("cpContact")?.value || "").trim().toLowerCase();
-    const oldPass = $id("cpOldPass")?.value || "";
-    const newPass = $id("cpNewPass")?.value || "";
-    if (!contact || !oldPass || newPass.length < 4) {
-      return alert("Enter account, current password, and a new password (at least 4 characters).");
-    }
-    try {
-      const raw = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (!Array.isArray(raw.users)) return alert("No account data found.");
-      const idx = raw.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
-      if (idx === -1) return alert("Account or current password is incorrect.");
-      raw.users[idx].password = newPass;
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(raw));
-      $id("cpOldPass").value = "";
-      $id("cpNewPass").value = "";
-      alert("Password updated successfully!");
-    } catch (e) {
-      alert("Unable to update password.");
-    }
-  };
-
-  function bindReferralFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const refParam = (params.get("ref") || "").trim();
-    if (refParam && $id("suReferral") && !$id("suReferral").value) {
-      $id("suReferral").value = refParam;
-    }
-  }
-
-  function applyAllEnhancements() {
-    bindReferralFromUrl();
-    enhanceTeamPage();
-    enhanceTaskPage();
-    enhanceAuthWithChangePassword();
-  }
-
-  applyAllEnhancements();
-
-  const prevRender = window.renderAll;
-  window.renderAll = function() {
-    if (typeof prevRender === "function") prevRender();
-    enhanceTeamPage();
-    enhanceAuthWithChangePassword();
-  };
-
-  const prevNav = window.navigate;
-  window.navigate = function(id, btn) {
-    if (typeof prevNav === "function") prevNav(id, btn);
-    if (id === "teamPage") enhanceTeamPage();
-    if (id === "taskPage") enhanceTaskPage();
-    if (id === "authPage") enhanceAuthWithChangePassword();
-  };
-})();
-</script
- <script>
-(function() {
-  const $id = id => document.getElementById(id);
-  const STORAGE_KEY = "ASML_PLAN_PROFIT_BOOST_V1";
-
-  function loadProfitConfig() {
-    try {
-      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-      if (saved && typeof saved === "object") return saved;
-    } catch (e) {}
-    return {
-      multiplier: 2.5,
-      customDaily: {}
-    };
-  }
-
-  function saveProfitConfig(cfg) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-    } catch (e) {}
-  }
-
-  let profitCfg = loadProfitConfig();
-
-  function applyBoostToPlans() {
-    if (!Array.isArray(window.planData)) return;
-
-    window.planData.forEach((p, idx) => {
-      if (typeof p._baseDaily !== "number") {
-        p._baseDaily = Number(p.daily || 0);
-      }
-      const customVal = profitCfg.customDaily[idx];
-      const nextDaily = (typeof customVal === "number" && !isNaN(customVal) && customVal > 0)
-        ? customVal
-        : Math.round(p._baseDaily * Number(profitCfg.multiplier || 1));
-
-      p.daily = nextDaily;
-      p.hourly = Number((nextDaily / 24).toFixed(2));
-      p.cycle = p.cycle || 120;
-      p.total = nextDaily * p.cycle;
-    });
-
-    if (typeof window.renderPlans === "function") {
-      window.renderPlans();
-    }
-  }
-
-  function injectProfitEditorBox() {
-    if (!Array.isArray(window.planData) || $id("customPlanProfitBox")) return;
-    const targetParent = $id("adminDashboard") || $id("minePage") || document.querySelector("main.container") || document.body;
-    if (!targetParent) return;
-        const box = document.createElement("div");
-    box.className = "card";
-    box.id = "customPlanProfitBox";
-    box.innerHTML = `
-      <h3>VIP Plan Profit Rate Settings</h3>
-      <p class="muted">Change plan daily profit or boost rate anytime without touching old code.</p>
-      <label>Select VIP Plan</label>
-      <select class="input" id="profitPlanSelect" onchange="window.syncSelectedPlanProfitInput()">
-        ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
-      </select>
-      <label>Daily Profit for Selected Plan (Rs)</label>
-      <input class="input" id="profitDailyInput" type="number" min="1" placeholder="Enter daily profit">
-      <button class="btn" onclick="window.saveSinglePlanProfit()">Save Plan Daily Profit</button>
-      <hr style="margin:14px 0">
-      <label>Boost All Plans Multiplier (e.g. 2, 2.5, 3)</label>
-      <input class="input" id="profitMultInput" type="number" step="0.1" min="0.5" value="${profitCfg.multiplier}">
-      <button class="btn secondary" onclick="window.applyAllPlansMultiplier()">Apply Multiplier to All Plans</button>
-    `;
-
-    targetParent.appendChild(box);
-    window.syncSelectedPlanProfitInput();
-  }
-
-  window.syncSelectedPlanProfitInput = function() {
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($id("profitPlanSelect")?.value || 0);
-
- <script>
-(function() {
-  const ADMIN_MAIL = "ladlawaqas527@gmail.com";
-  const STORAGE_KEY = "ASML_PLAN_BOOST_FINAL_V1";
-  const $id = id => document.getElementById(id);
-
-  function cleanLeakedCodeText() {
-    const containers = [document.querySelector("main.container"), document.body].filter(Boolean);
-    containers.forEach(root => {
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      const toRemove = [];
-      let node;
-      while ((node = walker.nextNode())) {
-        const txt = (node.nodeValue || "").trim();
-        if (
-          txt.includes("injectProfitEditorBox") ||
-          txt.includes("ASML_PLAN_PROFIT_BOOST") ||
-          txt.includes("applyBoostToPlans") ||
-          txt.includes("syncSelectedPlanProfitInput")
-        ) {
-          toRemove.push(node);
-        }
-      }
-      toRemove.forEach(n => {
-        if (n.parentNode) n.parentNode.removeChild(n);
-      });
-    });
-  } 
- function currentAccountEmail() {
-    try {
-      const activeEmail = (localStorage.getItem("ASML_CURRENT_USER_V2") || "").trim().toLowerCase();
-      if (activeEmail) return activeEmail;
-    } catch (e) {}
-    const lbl = ($id("mineUserLabel")?.innerText || $id("activeUserLabel")?.innerText || "").toLowerCase();
-    const match = lbl.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}/i);
-    return match ? match[0].toLowerCase() : "";
-  }
-
-  function isCurrentUserAdmin() {
-    return currentAccountEmail() === ADMIN_MAIL;
-  }
-
-  function loadCfg() {
-    try {
-      const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-      if (d && typeof d === "object") return d;
-    } catch (e) {}
-    return { multiplier: 2.5, customDaily: {} };
-  }
-
-  function saveCfg(cfg) {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-    } catch (e) {}
-  }
-
-  let cfg = loadCfg();
-
-  function boostPlansNow() {
-    if (!Array.isArray(window.planData)) return;
-    window.planData.forEach((p, idx) => {
-      if (typeof p._origDaily !== "number") p._origDaily = Number(p.daily || 0);
-      const custom = cfg.customDaily[idx];
-      const dailyVal = (typeof custom === "number" && !isNaN(custom) && custom > 0)
-        ? custom
-        : Math.round(p._origDaily * Number(cfg.multiplier || 1));
-      p.daily = dailyVal;
-      p.hourly = Number((dailyVal / 24).toFixed(2));
-      p.cycle = p.cycle || 120;
-      p.total = dailyVal * p.cycle;
-    });
-  if (typeof window.renderPlans === "function") {
-      window.renderPlans();
-    }
-  }
-
-  function syncAdminVisibility() {
-    const adminAllowed = isCurrentUserAdmin();
-    const adminBtn = $id("adminMenuBtn");
-    const adminPage = $id("adminPage");
-    const adminDash = $id("adminDashboard");
-    const adminLoginCard = $id("adminLoginCard");
-    const profitBox = $id("customPlanProfitBox");
-
-    if (adminBtn) {
-      adminBtn.classList.toggle("hidden", !adminAllowed);
-    }
-
-    if (!adminAllowed) {
-      if (profitBox) profitBox.remove();
-      if (adminDash) adminDash.classList.add("hidden");
-      if (adminPage && !adminPage.classList.contains("hidden")) {
-        alert("Admin Panel is restricted to authorized admin only.");
-        if (typeof window.openPage === "function") window.openPage("minePage");
-      }
-      return;
-    }
-
-    if (adminLoginCard) adminLoginCard.classList.add("hidden");
-    if (adminDash) adminDash.classList.remove("hidden");
-
-    const parent = adminDash || adminPage;
-    if (parent && Array.isArray(window.planData) && !$id("customPlanProfitBox")) {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.id = "customPlanProfitBox";
-      const optionsHtml = window.planData
-        .map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`)
-        .join("");
-  card.innerHTML = `
-        <h3>Admin Only: VIP Plan Profit Settings</h3>
-        <p class="muted">Set daily profit or multiplier for VIP plans.</p>
-        <label>Select VIP Plan</label>
-        <select class="input" id="adminProfitPlanSelect" onchange="window.adminSyncProfitInput()">
-          ${optionsHtml}
-        </select>
-        <label>Daily Profit (Rs)</label>
-        <input class="input" id="adminProfitDailyInput" type="number" min="1" placeholder="Enter daily profit">
-        <button class="btn" onclick="window.adminSavePlanProfit()">Save Plan Profit</button>
-        <hr style="margin:12px 0">
-        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
-        <input class="input" id="adminProfitMultInput" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
-        <button class="btn secondary" onclick="window.adminApplyMultiplier()">Apply to All Plans</button>
-      `;
-      parent.appendChild(card);
-      window.adminSyncProfitInput();
-    }
-  }
-
-  window.adminSyncProfitInput = function() {
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($id("adminProfitPlanSelect")?.value || 0);
-    const pl = window.planData[idx];
-    if (pl && $id("adminProfitDailyInput")) {
-      $id("adminProfitDailyInput").value = pl.daily;
-    }
-  };
-
-  window.adminSavePlanProfit = function() {
-    if (!isCurrentUserAdmin()) return alert("Unauthorized.");
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($id("adminProfitPlanSelect")?.value || 0);
-    const val = Number($id("adminProfitDailyInput")?.value || 0);
-    if (!val || val <= 0) return alert("Enter valid daily profit.");
-    cfg.customDaily[idx] = val;
-    saveCfg(cfg);
-    boostPlansNow();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
-  };
- window.adminApplyMultiplier = function() {
-    if (!isCurrentUserAdmin()) return alert("Unauthorized.");
-    const mult = Number($id("adminProfitMultInput")?.value || 1);
-    if (!mult || mult <= 0) return alert("Enter valid multiplier.");
-    cfg.multiplier = mult;
-    cfg.customDaily = {};
-    saveCfg(cfg);
-    boostPlansNow();
-    window.adminSyncProfitInput();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("All VIP plans updated with " + mult + "x profit.");
-  };
-
-  function ensureChangePasswordSection() {
-    const authSec = $id("authPage");
-    if (!authSec || $id("changePassCardFinal")) return;
+       }
+   function syncAuthChangePassword() {
+    const authSec = $("authPage");
+    if (!authSec || $("asmlAuthPassBox")) return;
     const card = document.createElement("div");
     card.className = "card";
-    card.id = "changePassCardFinal";
+    card.id = "asmlAuthPassBox";
     card.innerHTML = `
       <h3>Change Password</h3>
       <label>Account Email or Phone</label>
-      <input class="input" id="finalCpUser" placeholder="Enter account email or phone">
+      <input class="input" id="asmlCpUser" placeholder="Enter account email or phone">
       <label>Old Password</label>
-      <input class="input" id="finalCpOld" type="password" placeholder="Enter current password">
+      <input class="input" id="asmlCpOld" type="password" placeholder="Enter current password">
       <label>New Password</label>
-      <input class="input" id="finalCpNew" type="password" placeholder="Enter new password (min 4 chars)">
-      <button class="btn" onclick="window.finalDoChangePassword()">Change Password</button>
+      <input class="input" id="asmlCpNew" type="password" placeholder="Enter new password (min 4 chars)">
+      <button class="btn" onclick="window.asmlChangePassSubmit()">Change Password</button>
     `;
     const backBtn = authSec.querySelector("button.btn.secondary");
     if (backBtn) authSec.insertBefore(card, backBtn);
     else authSec.appendChild(card);
   }
 
-  window.finalDoChangePassword = function() {
-    const userVal = ($id("finalCpUser")?.value || "").trim().toLowerCase();
-    const oldVal = $id("finalCpOld")?.value || "";
-    const newVal = $id("finalCpNew")?.value || "";
-    if (!userVal || !oldVal || newVal.length < 4) {
+  window.asmlChangePassSubmit = function() {
+    const contact = ($("asmlCpUser")?.value || "").trim().toLowerCase();
+    const oldPass = $("asmlCpOld")?.value || "";
+    const newPass = $("asmlCpNew")?.value || "";
+    if (!contact || !oldPass || newPass.length < 4) {
       return alert("Please enter account, old password, and new password (min 4 chars).");
     }
     try {
-      const store = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
-      if (!Array.isArray(store.users)) return alert("No users database found.");
-      const idx = store.users.findIndex(u => String(u.contact || "").toLowerCase() === userVal && u.password === oldVal);
-      if (idx === -1) return alert("Account or old password is wrong.");
-      store.users[idx].password = newVal;
-      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(store));
-      $id("finalCpOld").value = "";
-      $id("finalCpNew").value = "";
+      const db = JSON.parse(localStorage.getItem("ASML_GLOBAL_V2") || "{}");
+      if (!Array.isArray(db.users)) return alert("No users found.");
+      const idx = db.users.findIndex(u => String(u.contact || "").toLowerCase() === contact && u.password === oldPass);
+      if (idx === -1) return alert("Account or old password is incorrect.");
+      db.users[idx].password = newPass;
+      localStorage.setItem("ASML_GLOBAL_V2", JSON.stringify(db));
+      $("asmlCpOld").value = "";
+      $("asmlCpNew").value = "";
       alert("Password changed successfully!");
     } catch (e) {
-      alert("Error updating password.");
+      alert("Failed to update password.");
+    }
+  };
+        function syncPrivateAdminAndProfitControl() {
+    const adminOk = isAdminUser();
+    const adminBtn = $("adminMenuBtn");
+    const adminPage = $("adminPage");
+    const adminDash = $("adminDashboard");
+    let profitCtrl = $("asmlPrivateProfitCtrl");
+
+    if (adminBtn) {
+      adminBtn.style.setProperty("display", adminOk ? "" : "none", "important");
+    }
+
+    if (!adminOk) {
+      if (profitCtrl) profitCtrl.style.setProperty("display", "none", "important");
+      if (adminDash) adminDash.classList.add("hidden");
+      if (adminPage && !adminPage.classList.contains("hidden")) {
+        adminPage.classList.add("hidden");
+        const minePage = $("minePage");
+        if (minePage) minePage.classList.remove("hidden");
+      }
+      return;
+    }
+
+    const host = adminDash || adminPage;
+    if (host && Array.isArray(window.planData) && !profitCtrl) {
+      profitCtrl = document.createElement("div");
+      profitCtrl.className = "card";
+      profitCtrl.id = "asmlPrivateProfitCtrl";
+      profitCtrl.innerHTML = `
+        <h3>Private Admin: Daily Profit & Order Rate Control</h3>
+        <p class="muted">Changes apply to VIP plans and daily orders immediately.</p>
+        <label>Select VIP Plan</label>
+        <select class="input" id="asmlAdminPlanSel" onchange="window.asmlSyncAdminPlanRate()">
+          ${window.planData.map((p, i) => `<option value="${i}">VIP ${i + 1} — Price Rs ${p.price}</option>`).join("")}
+        </select>
+        <label>Daily Profit (Rs)</label>
+        <input class="input" id="asmlAdminDailyVal" type="number" min="1" placeholder="Enter daily profit">
+        <button class="btn" onclick="window.asmlSavePlanRate()">Save Plan Daily Profit</button>
+        <hr style="margin:12px 0">
+        <label>All Plans Multiplier (e.g. 2, 2.5, 3)</label>
+        <input class="input" id="asmlAdminMultVal" type="number" step="0.1" min="0.5" value="${cfg.multiplier}">
+        <button class="btn secondary" onclick="window.asmlApplyAllRates()">Apply to All Plans & Orders</button>
+      `;
+      host.appendChild(profitCtrl);
+      window.asmlSyncAdminPlanRate();
+ }
+     if (profitCtrl) {
+      profitCtrl.style.setProperty("display", "", "important");
+    }
+  }
+
+  window.asmlSyncAdminPlanRate = function() {
+    if (!Array.isArray(window.planData)) return;
+    const idx = Number($("asmlAdminPlanSel")?.value || 0);
+    const plan = window.planData[idx];
+    if (plan && $("asmlAdminDailyVal")) {
+      $("asmlAdminDailyVal").value = plan.daily;
     }
   };
 
-  function runAllCleanups() {
-    cleanLeakedCodeText();
-    boostPlansNow();
-    ensureChangePasswordSection();
-    syncAdminVisibility();
+  window.asmlSavePlanRate = function() {
+    if (!isAdminUser()) return alert("Unauthorized access.");
+    const idx = Number($("asmlAdminPlanSel")?.value || 0);
+    const val = Number($("asmlAdminDailyVal")?.value || 0);
+    if (!val || val <= 0) return alert("Please enter a valid daily profit.");
+    cfg.customDaily[idx] = val;
+    saveCfg(cfg);
+    applyProfitsToPlansAndOrders();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val);
+  };
+
+  window.asmlApplyAllRates = function() {
+    if (!isAdminUser()) return alert("Unauthorized access.");
+    const mult = Number($("asmlAdminMultVal")?.value || 1);
+    if (!mult || mult <= 0) return alert("Please enter a valid multiplier.");
+    cfg.multiplier = mult;
+    cfg.customDaily = {};
+    saveCfg(cfg);
+    applyProfitsToPlansAndOrders();
+    window.asmlSyncAdminPlanRate();
+    if (typeof window.renderAll === "function") window.renderAll();
+    alert("All VIP plans & orders updated with " + mult + "x profit.");
+  };
+
+  function syncOwnerFooter() {
+    if ($("asmlProfessionalFooter")) return;
+    const footer = document.createElement("footer");
+    footer.id = "asmlProfessionalFooter";
+    footer.style.cssText = "margin:18px auto 84px;max-width:480px;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid rgba(0,0,0,.08);text-align:center;font-size:12px;color:#333;box-shadow:0 4px 14px rgba(0,0,0,.04)";
+    footer.innerHTML = `
+      <div style="font-weight:700;font-size:13px;color:#d92b2b;margin-bottom:4px">ASML GLOBAL VIP — Official Platform</div>
+      <div style="margin:2px 0">Website Owner: <strong>${OWNER_NAME}</strong></div>
+       <div style="margin:2px 0">Contact / WhatsApp: <strong>${OWNER_PHONE}</strong></div>
+    `;
+    const mainEl = document.querySelector("main.container") || document.body;
+    mainEl.appendChild(footer);
   }
 
-  runAllCleanups();
+  function runEverything() {
+    cleanStrayText();
+    applyProfitsToPlansAndOrders();
+    syncTeamPage();
+    syncTaskPage();
+    syncAuthChangePassword();
+    syncPrivateAdminAndProfitControl();
+    syncOwnerFooter();
+  }
 
-  const prevRenderAll = window.renderAll;
-  window.renderAll = function() {
-    if (typeof prevRenderAll === "function") prevRenderAll();
-    runAllCleanups();
-  };
-
-  const prevOpenPage = window.openPage;
-  window.openPage = function(id) {
-    if (typeof prevOpenPage === "function") prevOpenPage(id);
-    runAllCleanups();
-  };
-
-  const prevNav = window.navigate;
-  window.navigate = function(id, btn) {
-    if (typeof prevNav === "function") prevNav(id, btn);
-    runAllCleanups();
-  };
+  runEverything();
+  const observer = new MutationObserver(runEverything);
+  observer.observe(document.body, { childList: true, subtree: true });
+  setInterval(runEverything, 500);
 })();
-</scrip
+</script>
+ 
