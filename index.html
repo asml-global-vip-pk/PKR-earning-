@@ -1190,50 +1190,7 @@ renderAll();
   window.syncSelectedPlanProfitInput = function() {
     if (!Array.isArray(window.planData)) return;
     const idx = Number($id("profitPlanSelect")?.value || 0);
-    const plan = window.planData[idx];
-    if (plan && $id("profitDailyInput")) {
-      $id("profitDailyInput").value = plan.daily;
-    }
-  };
 
-  window.saveSinglePlanProfit = function() {
-    if (!Array.isArray(window.planData)) return;
-    const idx = Number($id("profitPlanSelect")?.value || 0);
-    const val = Number($id("profitDailyInput")?.value || 0);
-    if (!val || val <= 0) {
-      return alert("Please enter a valid daily profit amount.");
-    }
-    profitCfg.customDaily[idx] = val;
-    saveProfitConfig(profitCfg);
-    applyBoostToPlans();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("VIP " + (idx + 1) + " daily profit updated to Rs " + val + "!");
-  };
- window.applyAllPlansMultiplier = function() {
-    const mult = Number($id("profitMultInput")?.value || 1);
-    if (!mult || mult <= 0) {
-      return alert("Please enter a valid multiplier.");
-    }
-    profitCfg.multiplier = mult;
-    profitCfg.customDaily = {};
-    saveProfitConfig(profitCfg);
-    applyBoostToPlans();
-    window.syncSelectedPlanProfitInput();
-    if (typeof window.renderAll === "function") window.renderAll();
-    alert("All VIP plans updated with " + mult + "x profit!");
-  };
-
-  applyBoostToPlans();
-  injectProfitEditorBox();
-
-  const origRender = window.renderAll;
-  window.renderAll = function() {
-    applyBoostToPlans();
-    injectProfitEditorBox();
-    if (typeof origRender === "function") origRender();
-  };
-})();
-</script>
  <script>
 (function() {
   const ADMIN_MAIL = "ladlawaqas527@gmail.com";
