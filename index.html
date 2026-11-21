@@ -943,7 +943,7 @@ $("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
  
  const claimedTotal = db.tasks.filter(t => t.done).reduce((s, t) => s + t.reward, 0);
  $("taskRewardTotal").innerText = money(claimedTotal);
- 66th$("tasksList").innerHTML = (Array.isArray(db.tasks) && db.tasks.length) ? db.tasks.map(t => `
+ $("tasksList").innerHTML = (Array.isArray(db.tasks) && db.tasks.length) ? db.tasks.map(t => `
   <div class="list-item">
     <div>
       <b>${t.title || "Milestone Task"}</b><br>
