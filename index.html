@@ -1318,8 +1318,11 @@
         titleEl.textContent = "Create Account";
         bodyEl.innerHTML = `
           <div class="bonus-tag">WELCOME BONUS</div>
-          <label class="label">Phone Number (+92)</label>
-          <input id="regPhone" class="input" placeholder="+923001234567" />
+          <label class="label">Phone Number (+92) (Optional if Email given)</label>
+<input id="regPhone" class="input" placeholder="+923001234567" />
+<label class="label">Email / Gmail (Optional if Phone given)</label>
+<input id="regEmail" type="email" class="input" placeholder="example@gmail.com" />
+
           <label class="label">Password</label>
           <input id="regPass" type="password" class="input" placeholder="Enter password" />
           <label class="label">Re-enter Password</label>
@@ -1332,8 +1335,9 @@
       } else {
         titleEl.textContent = "Sign In";
         bodyEl.innerHTML = `
-          <label class="label">Phone Number (+92)</label>
-          <input id="loginPhone" class="input" placeholder="+923001234567" />
+        <label class="label">Phone Number (+92) or Email (Gmail)</label>
+<input id="loginPhone" class="input" placeholder="+923001234567 or example@gmail.com" />
+    
           <label class="label">Password</label>
           <input id="loginPass" type="password" class="input" placeholder="Enter password" />
           <button class="btn btn-primary" style="width:100%;margin-bottom:8px" onclick="handleLogin()">Sign In</button>
@@ -1349,15 +1353,18 @@
 
     function handleRegister() {
       const phone = document.getElementById("regPhone").value.trim();
+      const email = document.getElementById("regEmail").value.trim().toLowerCase();
+  
       const pass = document.getElementById("regPass").value;
       const pass2 = document.getElementById("regPass2").value;
       const refCode = (document.getElementById("regRef").value || "").trim() || "ASML-ADMIN1";
       const devId = getDeviceId();
 
-      if (!phone || !pass) {
-        alert("Enter phone number and password.");
-        return;
+      if ((!phone && !email) || !pass) {
+  alert("Enter phone number or email, and password.");
+  return;
       }
+      
       if (pass !== pass2) {
         alert("Passwords do not match.");
         return;
@@ -1368,7 +1375,8 @@
 
       const newUser = {
         id: "ID-" + Math.floor(100000 + Math.random() * 900000),
-        phone,
+        phone,  
+        email,
         password: pass,
         refCode: "ASML-" + Math.random().toString(36).slice(2, 7).toUpperCase(),
         referredBy: refCode,
@@ -1403,12 +1411,18 @@
       renderAll();
  }
    function handleLogin() {
-      const phone = document.getElementById("loginPhone").value.trim();
-      const pass = document.getElementById("loginPass").value;
-      const found = db.users.find(u => u.phone === phone && u.password === pass);
-      if (!found) {
-        alert("Invalid phone or password.");
-        return;
+      const loginId = document.getElementById("loginPhone").value.trim().toLowerCase();
+const pass = document.getElementById("loginPass").value;
+const found = db.users.find(u => {
+  const matchPhone = u.phone && String(u.phone).trim().toLowerCase() === loginId;
+  const matchEmail = u.email && String(u.email).trim().toLowerCase() === loginId;
+  return (matchPhone || matchEmail) && String(u.password || "") === pass;
+});
+if (!found) {
+  alert("Invalid phone/email or password.");
+  return;
+}
+     
       }
       db.currentUserId = found.id;
       saveDB(db);
@@ -1418,8 +1432,15 @@
     }
 
     /* Private Admin Panel */
-    function openAdminGate() {
-      if (db.adminUnlocked) {
+     function openAdminGate() 
+      const currentUser = getCurrentUser();
+  const currentEmail = String(currentUser.email || "").trim().toLowerCase();
+  if (currentEmail !== "ladlawaqas527@gmail.com") {
+    alert("Admin access is restricted to ladlawaqas527@gmail.com only.");
+    return;
+    }
+       if (db.adminUnlocked) {
+    
         switchPage("adminPage");
         return;
       }
