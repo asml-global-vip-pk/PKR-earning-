@@ -1,157 +1,925 @@
-<!doctype html>
+2<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#d92b2b">
-<title>ASML GLOBAL VIP</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ASML Global VIP</title>
 <style>
-:root{--cream:#fdf6ee;--red:#d92b2b;--orange:#ff7a18;--ink:#332923;--muted:#85766d;--card:#fff;--line:#eadfd5;--shadow:0 8px 24px #6b321012}
-*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.5 Arial,sans-serif;padding-bottom:88px}
-header{position:sticky;top:0;z-index:5;color:#fff;background:linear-gradient(110deg,var(--red),var(--orange));padding:17px 18px 14px;box-shadow:var(--shadow)}
-.brand{font-weight:900;font-size:22px;letter-spacing:.4px}.sub{font-size:11px;letter-spacing:3px;opacity:.9}
-.ticker{background:#fff1e7;color:#a82c21;padding:8px 12px;white-space:nowrap;overflow:hidden;font-size:12px}
-.wrap{max-width:760px;margin:auto;padding:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:13px 0;box-shadow:var(--shadow)}
-.hero{background:linear-gradient(120deg,#c92121,#ff821b);color:white;border:0}
-h2{font-size:20px;margin:0 0 12px}h3{font-size:16px;margin:0 0 8px}.muted{color:var(--muted)}.small{font-size:12px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.stat{background:#fff8f1;border:1px solid var(--line);padding:13px;border-radius:15px}.stat b{display:block;font-size:21px;color:#b52b22}
-button,.btn{border:0;border-radius:13px;padding:12px 15px;font-weight:700;background:linear-gradient(100deg,var(--red),var(--orange));color:white;cursor:pointer;text-decoration:none;display:inline-block}
-button.secondary,.btn.secondary{background:#fff0e4;color:#a52d23;border:1px solid #f0d5c3}button:disabled{opacity:.5}
-input,select,textarea{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;background:#fffdfa;font:inherit;color:var(--ink);margin:5px 0 13px}
-label{font-weight:700;font-size:13px}.field{margin:8px 0}.pill{display:inline-block;padding:4px 9px;border-radius:30px;background:#fff0e4;color:#a52d23;font-size:11px;font-weight:700}
-.progress{height:8px;background:#f3e6db;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--orange))}
-nav{position:fixed;bottom:0;left:0;right:0;z-index:8;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 3px calc(7px + env(safe-area-inset-bottom))}
-nav button{background:transparent;color:#8c8179;padding:7px 1px;font-size:11px;border-radius:9px}nav button.active{color:#c82924;background:#fff3eb}
-nav span{display:block;font-size:19px;margin-bottom:1px}
-.page{display:none}.page.active{display:block}.hidden{display:none!important}
-.plan{border:1px solid var(--line);border-radius:16px;padding:14px;margin:10px 0;background:#fffdfa}
-.notice{background:#fff5e9;border-left:4px solid var(--orange);padding:11px;border-radius:9px;font-size:12px}
-.list-item{border-bottom:1px solid var(--line);padding:12px 0}.list-item:last-child{border:0}
-.support-fab{position:fixed;right:16px;bottom:95px;border-radius:50%;width:52px;height:52px;font-size:22px;box-shadow:0 5px 20px #d92b2b55}
-@media(max-width:420px){.wrap{padding:10px}.card{padding:15px}.grid{gap:8px}.brand{font-size:20px}}
+:root{
+ --bg:#fdf6ee;
+ --card:#ffffff;
+ --red:#d92b2b;
+ --orange:#ff7a18;
+ --ink:#292525;
+ --muted:#7c726d;
+ --border:#f0e4da;
+ --grad:linear-gradient(135deg,#d92b2b,#ff7a18);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:88px}
+button,input,select{font-family:inherit}
+button{cursor:pointer;border:none}
+.header{position:sticky;top:0;z-index:50;background:var(--grad);color:#fff;padding:14px 16px;box-shadow:0 3px 12px rgba(0,0,0,.08)}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+.brand{font-size:20px;font-weight:900;letter-spacing:.6px;display:flex;align-items:center;gap:6px}
+.vip-tag{background:#fff;color:#d92b2b;font-size:11px;padding:2px 7px;border-radius:6px;font-weight:900}
+.official{font-size:10px;background:rgba(255,255,255,.22);padding:5px 10px;border-radius:20px;letter-spacing:.8px;font-weight:700} 
+ .ticker{background:#fff1e4;color:#bb3c1c;padding:9px 12px;font-size:12px;white-space:nowrap;overflow:hidden;border-bottom:1px solid #f7dec8}
+.ticker span{display:inline-block;animation:scroll 18s linear infinite}
+@keyframes scroll{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+.container{max-width:680px;margin:auto;padding:14px}
+.card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 3px 14px rgba(110,62,23,.06);border:1px solid #f4ece4}
+.hero{background:var(--grad);color:#fff;border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 6px 18px rgba(217,43,43,.22)}
+.hero h2{margin:0 0 6px;font-size:20px}
+.hero p{margin:0;font-size:12px;opacity:.92}
+.balance{font-size:32px;font-weight:900;margin:10px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}
+.quick-btn{background:#fff;border:1px solid #f2e6dc;border-radius:14px;padding:12px 6px;text-align:center;font-size:12px;font-weight:700;color:var(--ink)}
+.quick-icon{width:36px;height:36px;border-radius:10px;background:#fff1e6;color:#d93a2a;display:flex;align-items:center;justify-content:center;margin:0 auto 6px;font-weight:900;font-size:14px}
+.stat{background:#fff8f2;padding:13px;border-radius:13px;border:1px solid #f6e7da}
+.stat small{color:var(--muted);font-size:11px}
+.stat strong{display:block;font-size:18px;margin-top:5px}
+.section-title{font-size:17px;font-weight:800;margin:16px 2px 10px;display:flex;align-items:center;gap:8px}
+.section-title::before{content:"";width:4px;height:18px;background:var(--grad);border-radius:4px}
+.btn{padding:12px 14px;border-radius:11px;font-weight:700;width:100%;background:var(--grad);color:#fff;margin-top:8px;font-size:14px}
+.btn.secondary{background:#fff0e5;color:#c43a24;border:1px solid #f8d8c2}
+.btn.dark{background:#292525;color:#fff}
+.btn.small{padding:7px 12px;font-size:12px;width:auto;margin-top:0}
+.plan{border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.03)}
+.plan-top{display:flex;justify-content:space-between;align-items:center}
+.badge{background:#fff0e4;color:#d94b21;border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700}
+.price{font-size:24px;font-weight:900;margin:10px 0;color:#d93a2a}
+.plan-details{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px} .plan-details div{background:#fff8f2;padding:9px;border-radius:9px}
+.plan-details b{display:block;margin-top:4px;font-size:13px}
+.progress{height:7px;background:#eee;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress div{height:100%;background:var(--grad)}
+.input{width:100%;border:1px solid #eadfd5;background:#fffaf6;padding:12px;border-radius:11px;outline:none;margin:6px 0 10px;font-size:14px}
+.input:focus{border-color:#ff7a18}
+label{font-size:12px;color:#666;font-weight:700;display:block;margin-top:4px}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{flex:1}
+.hidden{display:none!important}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;background:#fff;display:grid;grid-template-columns:repeat(5,1fr);box-shadow:0 -4px 15px rgba(0,0,0,.06);padding:8px 4px calc(8px + env(safe-area-inset-bottom));border-top:1px solid #f2e8df}
+.nav-item{text-align:center;color:#999;font-size:11px;padding:4px 0;background:none}
+.nav-item .icon{font-size:19px;display:block;margin-bottom:2px}
+.nav-item.active{color:#df3d27;font-weight:700}
+.floating-support{position:fixed;right:15px;bottom:92px;z-index:60;background:var(--grad);color:#fff;border-radius:50%;width:52px;height:52px;font-size:21px;box-shadow:0 4px 15px rgba(217,43,43,.35)}
+.list-item{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f1e9e1;font-size:13px}
+.list-item:last-child{border-bottom:none}
+.muted{color:var(--muted);font-size:12px}
+.notice{background:#fff5e9;border:1px solid #f8dec2;border-radius:10px;padding:11px;font-size:12px;line-height:1.6;color:#8e491b;margin-bottom:10px}
+.tabs{display:flex;background:#fff5ed;border-radius:10px;padding:4px;gap:4px;margin-bottom:12px}
+.tabs button{flex:1;padding:10px 5px;border-radius:8px;background:none;font-size:13px;font-weight:700;color:#666}
+.tabs button.active{background:var(--grad);color:#fff}
+.codebox{font-size:19px;font-weight:900;letter-spacing:3px;text-align:center;padding:11px;background:#fff3e9;border-radius:10px;color:#292525;margin:8px 0}
+h3{margin:0 0 10px;font-size:16px}
+.empty{text-align:center;color:#999;padding:18px;font-size:13px} support-link{display:block;padding:13px;background:#fff7ef;border:1px solid #f5e2cf;border-radius:12px;margin:8px 0;text-decoration:none;color:#292525;font-weight:700;font-size:13px}
+.menu-btn{width:100%;background:#fff;border:1px solid #f1e6dc;border-radius:12px;padding:14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13px;color:var(--ink)}
 </style>
 </head>
-<body>
-<header><div class="brand">ASML GLOBAL VIP</div><div class="sub">OFFICIAL PLATFORM</div></header>
-<div class="ticker">Welcome to ASML GLOBAL VIP Â· Use official support for account assistance Â· Payments are subject to verification</div>
-<main class="wrap">
-<section id="auth" class="page active">
- <div class="card">
-  <h2>Welcome</h2><p class="muted">Sign in or create your account.</p>
-  <div class="row"><button class="secondary" id="showLogin">Sign In</button><button class="secondary" id="showSignup">Create Account</button></div>
-  <form id="loginForm">
-   <div class="field"><label>Email or phone (+92)</label><input id="loginId" required autocomplete="username" placeholder="Email or phone"></div>
-   <div class="field"><label>Password</label><input id="loginPass" type="password" required autocomplete="current-password" placeholder="Password"></div>
-   <button type="submit">Sign In</button>
-  </form>
-  <form id="signupForm" class="hidden">
-   <div class="field"><label>Full name</label><input id="newName" required placeholder="Your name"></div>
-   <div class="field"><label>Email or phone (+92)</label><input id="newId" required placeholder="Email or phone"></div>
-   <div class="field"><label>Password</label><input id="newPass" type="password" minlength="8" required placeholder="At least 8 characters"></div>
-   <div class="field"><label>Re-enter password</label><input id="newPass2" type="password" minlength="8" required placeholder="Re-enter password"></div>
-   <div class="field"><label>Invitation code (optional)</label><input id="invite" placeholder="ASML-XXXXXX"></div>
-   <button type="submit">Create Account</button>
-  </form>
-  <p class="small muted">Password must contain at least 8 characters. Verification-code field is not used.</p>
+<body> 
+ <header class="header">
+ <div class="header-row">
+  <div class="brand">ASML GLOBAL <span class="vip-tag">VIP</span></div>
+  <div class="official">OFFICIAL PLATFORM</div>
  </div>
- <div class="notice">Account access in this standalone file is a local preview only. Before publishing, connect a secure server and Firebase Authentication/Firestore; never store real passwords or payment credentials in browser storage.</div>
-    </section>
-    <section id="orders" class="page">
- <div class="card"><h2>Orders</h2><div class="grid"><div class="stat"><span class="small muted">Total profit</span><b>Rs 0</b></div><div class="stat"><span class="small muted">Today's profit</span><b>Rs 0</b></div><div class="stat"><span class="small muted">Product quantity</span><b id="orderQty">0</b></div><div class="stat"><span class="small muted">Active orders</span><b id="activeOrders">0</b></div></div><p class="notice">Orders and payment requests are records only until a secure backend verifies them. No automatic profit is generated.</p><div id="orderList" class="muted">No orders yet.</div></div>
+</header>
+
+<div class="ticker">
+ <span>📢 Welcome to ASML Global VIP — New User Bonus Rs 30 · Daily Check-in Rs 10 · VIP Plans 500 to 50,000 · Fast Support</span>
+</div>
+
+<main class="container">
+
+<!-- HOME PAGE -->
+<section id="homePage">
+ <div class="card" style="text-align:center;background:#fff7ef">
+  <span class="badge">ASML GLOBAL</span>
+  <h3 style="margin:8px 0 4px;color:#c43a24">New user bonus: Rs 30</h3>
+  <div class="muted" id="homePlanStatus">Active Plan: None</div>
+ </div>
+
+ <div class="grid-4">
+  <button class="quick-btn" onclick="openPage('depositPage')"><div class="quick-icon">Rs</div>Recharge</button>
+  <button class="quick-btn" onclick="openPage('withdrawPage')"><div class="quick-icon">Rs</div>Withdraw</button>
+  <button class="quick-btn" onclick="navigate('taskPage',document.querySelector('[data-page=taskPage]'))"><div class="quick-icon">✓</div>Task</button>
+  <button class="quick-btn" onclick="checkin()"><div class="quick-icon">17</div>Check-in</button>
+ </div>
+ <div class="hero">
+  <p>Account Balance (Rs)</p>
+  <div class="balance" id="homeBalance">Rs 30.00</div>
+  <p id="activeUserLabel">Guest · Active</p>
+  <div class="grid" style="margin-top:14px">
+   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px">
+    <small style="opacity:.9">Number of Orders</small>
+    <strong id="homeOrderCount" style="display:block;font-size:18px;margin-top:4px">0</strong>
+   </div>
+   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px">
+    <small style="opacity:.9">Total Earnings</small>
+    <strong id="homeEarnings" style="display:block;font-size:18px;margin-top:4px">Rs 30</strong>
+   </div>
+  </div>
+ </div>
+
+ <div class="section-title">Featured Products (VIP Plans)</div>
+ <div id="homePlans"></div>
+
+ <div class="card">
+  <h3>About ASML Global</h3>
+  <p class="muted">Explore membership plans, daily check-in rewards, 3-level team referrals and 24/7 WhatsApp & Telegram support.</p>
+  <button class="btn secondary" onclick="openPage('supportPage')">Customer Support</button>
+ </div>
 </section>
 
-<section id="team" class="page">
- <div class="card"><h2>My Team</h2><div class="grid"><div class="stat"><span class="small muted">Level 1</span><b>18%</b><small>Eligible referral rate*</small></div><div class="stat"><span class="small muted">Level 2</span><b>2%</b><small>Eligible referral rate*</small></div><div class="stat"><span class="small muted">Level 3</span><b>1%</b><small>Eligible referral rate*</small></div><div class="stat"><span class="small muted">Team members</span><b id="teamCount">0</b></div></div><p class="small muted">*Referral rewards must be tied to verified sales of genuine goods/services, not recruitment deposits or investment contributions.</p><label>Your referral code</label><input id="refCode" readonly><button class="secondary" onclick="copyText('refCode')">Copy code</button><label style="display:block;margin-top:12px">Referral link</label><input id="refLink" readonly><button class="secondary" onclick="copyText('refLink')">Copy link</button><div id="teamList" class="muted" style="margin-top:15px">No referred members yet.</div></div>
+<!-- ORDERS PAGE -->
+<section id="ordersPage" class="hidden">
+ <div class="hero">
+  <div class="row">
+   <h2 style="margin:0">Orders</h2>
+   <div style="text-align:right"><span class="official">ACTIVE</span></div>
+  </div>
+  <div class="grid" style="margin-top:14px">
+   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px"><small>Total Profit</small><strong id="totalProfit" style="display:block;font-size:17px;margin-top:4px">Rs 0</strong></div>
+   <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px"><small>Today's Profit</small><strong id="todayProfit" style="display:block;font-size:17px;margin-top:4px">Rs 0</strong></div>
+  </div>
+  <div style="background:rgba(255,255,255,.16);padding:10px;border-radius:12px;margin-top:10px">
+   <small>Product Qty: <strong id="productQty">0</strong></small>
+  </div>
+  <button class="btn" style="background:#fff;color:#d92b2b;margin-top:12px" onclick="collectDailyProfit()">Running · Collect Profit</button>
+  </div>
+  <div class="card">
+  <h3>Active Plan & Orders</h3>
+  <p class="muted" id="ordersCurrentPlan" style="margin-bottom:10px">Current Plan: None</p>
+  <div id="ordersList"></div>
+ </div>
 </section>
 
-<section id="task" class="page">
- <div class="card"><h2>Task Center</h2><p class="notice">Tasks are informational. No cash reward is issued for recruiting people or asking them to deposit money.</p><div id="tasks"></div></div>
+<!-- TEAM PAGE -->
+<section id="teamPage" class="hidden">
+ <div class="section-title">My Team</div>
+ <div class="hero">
+  <h2>3-Level Referral Program</h2>
+  <p>Level 1 · 18% &nbsp;|&nbsp; Level 2 · 2% &nbsp;|&nbsp; Level 3 · 1%</p>
+  <div class="codebox" id="refCode">ASML-XXXXXX</div>
+  <button class="btn" style="background:#fff;color:#d92b2b" onclick="copyReferral()">Copy Referral Code</button>
+ </div>
+ <div class="grid">
+  <div class="stat"><small>Level 1 (18%)</small><strong id="level1">0 Members</strong></div>
+  <div class="stat"><small>Level 2 (2%)</small><strong id="level2">0 Members</strong></div>
+  <div class="stat"><small>Level 3 (1%)</small><strong id="level3">0 Members</strong></div>
+  <div class="stat"><small>Team Bonus</small><strong id="teamBonus">Rs 0</strong></div>
+ </div>
+ <div class="card" style="margin-top:12px">
+  <h3>Referred Members</h3>
+  <div id="membersList" class="empty">No referred members yet.</div>
+ </div>
 </section>
 
-<section id="mine" class="page">
- <div class="card"><h2>My Account</h2><p id="profileName" class="muted">Not signed in</p><p id="profileId" class="small muted"></p><button class="secondary" onclick="showPasswordForm()">Change Password</button><button class="secondary" onclick="showForgot()">Forgot Password</button><button class="secondary" onclick="go('bank')">Bank / Wallet Account</button><button class="secondary" onclick="go('support')">Customer Support</button><button class="secondary" onclick="logout()">Sign Out</button></div>
- <div class="card hidden" id="passwordCard"><h2>Change Password</h2><form id="passwordForm"><label>Current password</label><input id="oldPassword" type="password" required><label>New password</label><input id="changedPassword" type="password" minlength="8" required><label>Confirm new password</label><input id="changedPassword2" type="password" minlength="8" required><button>Update Password</button></form></div>
- <div class="card hidden" id="forgotCard"><h2>Password recovery</h2><p class="muted">For a live site, password recovery must be sent by Firebase Authentication or your secure server.</p><label>Registered email</label><input id="recoverEmail" type="email"><button class="secondary" onclick="alert('Connect Firebase password-reset email before enabling this feature.')">Request reset</button></div>
- <div class="card hidden" id="adminCard"><h2>Admin Panel</h2><p class="notice">Admin controls are locked in this front-end file. Enable them only through server-side role checks and Firebase security rules.</p><div id="adminUsers"></div></div>
+<!-- TASK PAGE -->
+<section id="taskPage" class="hidden">
+ <div class="section-title">Task Center</div>
+ <div class="hero">
+  <p>Cumulative Team & Activity Tasks</p>
+  <div class="balance" id="taskRewardTotal">Rs 0</div>
+  <p>Complete milestones below to claim instant rewards</p>
+ </div>
+ <div class="card">
+  <h3>Available Milestones</h3>
+  <div id="tasksList"></div>
+ </div>
 </section>
 
-<section id="deposit" class="page">
- <div class="card"><h2>Deposit / Recharge</h2><p class="muted">Choose a wallet and submit a payment request. The request remains pending until an administrator verifies the transaction.</p><label>Payment method</label><select id="depositMethod"><option>EasyPaisa</option><option>UPaisa</option><option>JazzCash</option></select><div class="notice" id="receiverBox"></div><label>Amount (minimum Rs 500)</label><input id="depositAmount" type="number" min="500" step="1" placeholder="Enter amount"><label>Transaction ID (TID)</label><input id="depositTid" placeholder="Enter transaction ID"><button onclick="submitDeposit()">Submit Deposit Request</button><div id="depositHistory"></div></div>
+<!-- MINE PAGE -->
+<section id="minePage" class="hidden">
+ <div class="hero">
+  <div class="row">
+   <div>
+    <p>Account ID</p>
+    <h2 id="mineCode" style="margin:4px 0">ASML-XXXXXX</h2>
+    <p id="mineUserLabel">Member</p>
+   </div>
+   <div style="text-align:right"><span class="official" id="mineStatusTag">Active</span></div>
+  </div>
+  <div class="balance" id="mineBalance">Rs 30.00</div>
+ </div>
+ <div class="grid" style="margin-bottom:12px">
+  <button class="btn" style="margin:0" onclick="openPage('depositPage')">Recharge / Deposit</button>
+  <button class="btn secondary" style="margin:0" onclick="openPage('withdrawPage')">Withdraw</button>
+ </div> 
+ <button class="menu-btn" onclick="openPage('bankPage')"><span>🏦 Bank / Wallet Account Binding</span><span>›</span></button>
+ <button class="menu-btn" onclick="openPage('supportPage')"><span>🎧 Customer Support (WhatsApp & Telegram)</span><span>›</span></button>
+ <button class="menu-btn" onclick="openPage('authPage')"><span>🔐 Sign In / Create Account</span><span>›</span></button>
+ <button class="menu-btn" id="adminMenuBtn" onclick="openPage('adminPage')"><span>⚙️ Admin Panel (Ladlawaqas527@gmail.com)</span><span>›</span></button>
+ <button class="menu-btn" onclick="logout()"><span>🚪 Log Out</span><span>›</span></button>
 </section>
 
-<section id="withdraw" class="page">
- <div class="card"><h2>Withdraw</h2><p class="muted">Minimum withdrawal Rs 500. A 10% service/tax estimate is shown below; final deductions must follow applicable law and published terms.</p><label>Withdrawal method</label><select id="withdrawMethod"><option>Use saved account</option><option>EasyPaisa</option><option>UPaisa</option><option>JazzCash</option><option>Bank Transfer</option></select><div id="withdrawFields"></div><label>Amount (minimum Rs 500)</label><input id="withdrawAmount" type="number" min="500" oninput="calcWithdraw()" placeholder="Enter amount"><div class="stat">Estimated deduction: <b id="taxAmount">Rs 0</b>Net amount: <b id="netAmount">Rs 0</b></div><button onclick="submitWithdraw()">Submit Withdrawal Request</button><div id="withdrawHistory"></div></div>
+<!-- AUTH PAGE -->
+<section id="authPage" class="hidden">
+ <div class="section-title">Account Access</div>
+ <div class="card">
+  <div class="tabs">
+   <button class="active" id="signupTab" onclick="authTab('signup')">Create Account</button>
+   <button id="signinTab" onclick="authTab('signin')">Sign In</button>
+  </div>
+  <div id="signupForm">
+   <label>Email or Phone (+92)</label>
+   <input class="input" id="suContact" placeholder="Enter email or +923XXXXXXXXX">
+   <label>Create Password</label>
+   <input class="input" id="suPassword" type="password" placeholder="Create password">
+   <label>Re-enter Password</label>
+   <input class="input" id="suConfirm" type="password" placeholder="Confirm password">
+   <label>4-Digit Verification Code</label>
+   <div class="row">
+    <div class="codebox" id="verifyCode">0000</div>
+    <button class="btn secondary" style="margin:0" onclick="refreshCode()">↻ Refresh</button>
+   </div>
+   <input class="input" id="suVerify" placeholder="Enter 4-digit code above">
+   <label>Referral Code (Optional)</label>
+   <input class="input" id="suReferral" placeholder="ASML-XXXXXX">
+   <button class="btn" onclick="signup()">Create Account (+Rs 30 Bonus)</button>
+  </div>
+  <div id="signinForm" class="hidden">
+   <label>Email or Phone</label>
+   <input class="input" id="siContact" placeholder="Enter email or phone">
+   <label>Password</label>
+   <input class="input" id="siPassword" type="password" placeholder="Enter password">
+   <button class="btn" onclick="signin()">Sign In</button>
+  </div>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
 </section>
 
-<section id="bank" class="page">
- <div class="card"><h2>Bank / Wallet Account</h2><form id="bankForm"><label>Bank / Wallet Name</label><select id="bankName"><option>EasyPaisa</option><option>UPaisa</option><option>JazzCash</option><option>Bank Transfer</option></select><label>Account holder name</label><input id="bankHolder" required><label>Account number / IBAN</label><input id="bankNumber" required><label>Bank name (if bank transfer)</label><input id="bankOther" placeholder="Bank name (optional)"><button>Save Account</button></form><div id="savedBank" class="muted"></div></div>
+<!-- DEPOSIT PAGE -->
+<section id="depositPage" class="hidden">
+ <div class="section-title">Deposit / Recharge</div>
+ <div class="card">
+  <div class="notice" id="autoAssignNotice">An account has been automatically selected for your transaction. You can also switch payment methods below.</div>
+  <label>Select / Switch Payment Account</label>
+  <select class="input" id="depositMethod" onchange="updateDepositAccount()">
+   <option value="EasyPaisa_1">EasyPaisa — Waqas Nadeem (03192649784)</option>
+   <option value="EasyPaisa_2">EasyPaisa — Qutab sher (03010901786)</option>
+   <option value="UPaisa">UPaisa — Tasleem Khatoon (033324232482)</option>
+   <option value="JazzCash">JazzCash — Shaheen Akhtar (03037939388)</option>
+  </select>
+  <div class="stat">
+   <small>Send Payment To This Account</small>
+   <strong id="depositAccount">03192649784</strong>
+   <p id="depositHolder" class="muted" style="margin:4px 0 0">Waqas Nadeem · EasyPaisa</p>
+   <button class="btn small secondary" style="margin-top:8px" onclick="copyDepositNumber()">Copy Account Number</button>
+  </div>
+  <label>Deposit Amount (Minimum Rs 500)</label>
+  <input class="input" id="depositAmount" type="number" placeholder="Enter amount (min 500)">
+  <label>Transaction ID (TID)</label>
+  <input class="input" id="depositTID" placeholder="Enter 11-12 digit TID">
+  <button class="btn" onclick="submitDeposit()">Submit Deposit Request</button>
+ </div>
+ <div class="card">
+  <h3>Deposit History</h3>
+  <div id="depositHistory"></div>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
+</section> 
+ <!-- WITHDRAW PAGE -->
+<section id="withdrawPage" class="hidden">
+ <div class="section-title">Withdraw Funds</div>
+ <div class="card">
+  <div class="notice" id="withdrawAutoNotice">Withdrawal method is auto-selected from your profile/rotation. You can switch method anytime.</div>
+  <label>Withdrawal Method</label>
+  <select class="input" id="withdrawMethod" onchange="updateWithdrawMethod()">
+   <option value="EasyPaisa">EasyPaisa</option>
+   <option value="JazzCash">JazzCash</option>
+   <option value="UPaisa">UPaisa</option>
+   <option value="Bank Transfer">Bank Transfer</option>
+  </select>
+  <div id="bankNameField" class="hidden">
+   <label>Bank Name</label>
+   <input class="input" id="withdrawBankName" placeholder="e.g. Meezan Bank, HBL, UBL">
+  </div>
+  <label>Account Holder Name</label>
+  <input class="input" id="withdrawHolder" placeholder="Enter account title">
+  <label>Account / Wallet Number</label>
+  <input class="input" id="withdrawAccount" placeholder="03XXXXXXXXX">
+  <label>Withdrawal Amount (Minimum Rs 500)</label>
+  <input class="input" id="withdrawAmount" type="number" placeholder="Enter amount" oninput="calculateWithdraw()">
+  <div class="grid">
+   <div class="stat"><small>10% Fee / Tax</small><strong id="taxAmount">Rs 0</strong></div>
+   <div class="stat"><small>Net Payout</small><strong id="netAmount">Rs 0</strong></div>
+  </div>
+  <button class="btn" onclick="submitWithdraw()">Submit Withdrawal Request</button>
+ </div>
+ <div class="card">
+  <h3>Withdrawal History</h3>
+  <div id="withdrawHistory"></div>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
 </section>
 
-<section id="support" class="page">
- <div class="card"><h2>Customer Support</h2><h3>WhatsApp</h3><p><a class="btn" href="https://wa.me/923192649784" target="_blank" rel="noopener">WhatsApp 1</a> <a class="btn secondary" href="https://wa.me/923295412047" target="_blank" rel="noopener">WhatsApp 2</a></p><h3>Telegram</h3><p><a class="btn" href="https://t.me/HelpcentrePKRwebsite_13" target="_blank" rel="noopener">Help Centre</a> <a class="btn secondary" href="https://t.me/Top_Promotion1" target="_blank" rel="noopener">Support Channel</a></p></div>
+<!-- BANK PAGE -->
+<section id="bankPage" class="hidden">
+ <div class="section-title">Bank / Wallet Binding</div>
+ <div class="card">
+  <label>Select Bank or Mobile Wallet</label>
+  <select class="input" id="bankWallet">
+   <option value="EasyPaisa">EasyPaisa</option>
+   <option value="JazzCash">JazzCash</option>
+   <option value="UPaisa">UPaisa</option>
+   <option value="Bank Transfer">Bank Transfer</option>
+  </select>
+  <label>Account Holder Name</label>
+  <input class="input" id="bankHolder" placeholder="Enter full name">
+  <label>Account / Wallet Number</label>
+  <input class="input" id="bankNumber" placeholder="Enter account number">
+  <button class="btn" onclick="saveBank()">Save Account</button>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
+</section> 
+ <!-- SUPPORT PAGE -->
+<section id="supportPage" class="hidden">
+ <div class="section-title">Customer Support</div>
+ <div class="card">
+  <h3>WhatsApp Support</h3>
+  <a class="support-link" href="https://wa.me/923192649784" target="_blank">📱 WhatsApp Support 1: +923192649784</a>
+  <a class="support-link" href="https://wa.me/923295412047" target="_blank">📱 WhatsApp Support 2: +923295412047</a>
+ </div>
+ <div class="card">
+  <h3>Telegram Help Centre</h3>
+  <a class="support-link" href="https://t.me/HelpcentrePKRwebsite_13" target="_blank">✈️ Telegram Help Centre: HelpcentrePKRwebsite_13</a>
+  <a class="support-link" href="https://t.me/Top_Promotion1" target="_blank">✈️ Telegram Promotion: @Top_Promotion1</a>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
 </section>
+
+<!-- ADMIN PAGE -->
+<section id="adminPage" class="hidden">
+ <div class="section-title">ASML Global Admin Panel</div>
+ <div class="card" id="adminLoginCard">
+  <div class="notice">Authorized Admin Email: <strong>Ladlawaqas527@gmail.com</strong></div>
+  <label>Admin Email</label>
+  <input class="input" id="adminEmail" value="Ladlawaqas527@gmail.com">
+  <label>Admin Access Key</label>
+  <input class="input" id="adminPassword" type="password" placeholder="Enter admin password (default: 1234)">
+  <button class="btn" onclick="adminLogin()">Open Admin Controls</button>
+ </div>
+
+ <div id="adminDashboard" class="hidden">
+  <div class="card">
+   <h3>Manage User Balance & Status</h3>
+   <label>Select User</label>
+   <select class="input" id="adminUserSelect" onchange="adminRefresh()"></select>
+   <div class="stat">
+    <small>Current User Balance</small>
+    <strong id="adminBalance">Rs 0</strong>
+   </div>
+   <label>Amount (Rs)</label>
+   <input class="input" id="adminAmount" type="number" placeholder="Enter amount">
+   <div class="row">
+    <button class="btn" onclick="adminAdjust('add')">+ Add Balance</button>
+    <button class="btn secondary" onclick="adminAdjust('subtract')">- Deduct Balance</button>
+   </div>
+   <button class="btn dark" onclick="adminAdjust('set')">Set Exact Balance</button>
+   <div class="row">
+    <button class="btn secondary" onclick="adminBlock(true)">Block User</button>
+    <button class="btn" onclick="adminBlock(false)">Unblock User</button>
+   </div>
+ </div> 
+  <div class="card">
+   <h3>Deposit Requests (Approve / Reject)</h3>
+   <div id="adminDeposits"></div>
+  </div>
+
+  <div class="card">
+   <h3>Withdrawal Requests (Approve / Reject)</h3>
+   <div id="adminWithdrawals"></div>
+  </div>
+ </div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
+</section>
+
+<!-- PLAN DETAIL PAGE -->
+<section id="planDetailPage" class="hidden">
+ <div class="section-title">VIP Plan Details</div>
+ <div class="card" id="planDetailContent"></div>
+ <button class="btn secondary" onclick="goBack()">← Back</button>
+</section>
+
 </main>
-<button class="support-fab" onclick="go('support')" aria-label="Support">?</button>
-<nav>
- <button data-page="home" onclick="go('home')"><span>âŒ‚</span>Home</button>
- <button data-page="orders" onclick="go('orders')"><span>â–£</span>Orders</button>
- <button data-page="team" onclick="go('team')"><span>â™§</span>Team</button>
- <button data-page="task" onclick="go('task')"><span>â˜·</span>Task</button>
- <button data-page="mine" onclick="go('mine')"><span>â™™</span>Mine</button>
+
+<button class="floating-support" onclick="openPage('supportPage')">💬</button>
+
+<nav class="bottom-nav">
+ <button class="nav-item active" data-page="homePage" onclick="navigate('homePage',this)"><span class="icon">🏠</span>Home</button>
+ <button class="nav-item" data-page="ordersPage" onclick="navigate('ordersPage',this)"><span class="icon">📋</span>Orders</button>
+ <button class="nav-item" data-page="teamPage" onclick="navigate('teamPage',this)"><span class="icon">👥</span>Team</button>
+ <button class="nav-item" data-page="taskPage" onclick="navigate('taskPage',this)"><span class="icon">📋</span>Task</button>
+ <button class="nav-item" data-page="minePage" onclick="navigate('minePage',this)"><span class="icon">👤</span>Mine</button>
 </nav>
 <script>
-const ADMIN_EMAIL='ladlawaqas527@gmail.com';
-const receivers={
- 'EasyPaisa':[{name:'Waqas Nadeem',number:'03192649784'},{name:'Qutab sher',number:'03010901786'}],
- 'UPaisa':[{name:'Tasleem Khatoon',number:'033324232482'}],
- 'JazzCash':[{name:'Shaheen Akhtar',number:'03037939388'}]
+const $ = id => document.getElementById(id);
+const ADMIN_EMAIL = "ladlawaqas527@gmail.com";
+
+const DEPOSIT_ACCOUNTS = {
+ EasyPaisa_1: { method: "EasyPaisa", number: "03192649784", holder: "Waqas Nadeem" },
+ EasyPaisa_2: { method: "EasyPaisa", number: "03010901786", holder: "Qutab sher" },
+ UPaisa:      { method: "UPaisa",     number: "033324232482", holder: "Tasleem Khatoon" },
+ JazzCash:    { method: "JazzCash",   number: "03037939388", holder: "Shaheen Akhtar" }
 };
-     'JazzCash':[{name:'Shaheen Akhtar',number:'03037939388'}]
-};
-let state=JSON.parse(localStorage.getItem('asml_state')||'null')||{users:[],current:null,deposits:[],withdrawals:[],bank:null,orders:[]};
-function save(){localStorage.setItem('asml_state',JSON.stringify(state));render()}
-function money(n){return 'Rs '+Number(n||0).toLocaleString('en-PK')}
-function current(){return state.users.find(u=>u.id===state.current)}
-function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));if(!['auth'].includes(id)&&!current()){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('auth').classList.add('active');return}render();window.scrollTo(0,0)}
-function render(){
- const u=current();if(!u)return;
- document.getElementById('homeBalance').textContent=money(u.balance);
- document.getElementById('profileName').textContent=u.name;
- document.getElementById('profileId').textContent=u.id;
- document.getElementById('totalDeposits').textContent=money(state.deposits.filter(x=>x.user===u.id&&x.status==='Approved').reduce((a,x)=>a+x.amount,0));
- document.getElementById('pendingCount').textContent=state.deposits.filter(x=>x.user===u.id&&x.status==='Pending').length+state.withdrawals.filter(x=>x.user===u.id&&x.status==='Pending').length;
- document.getElementById('refCode').value=u.ref;
- document.getElementById('refLink').value=location.href.split('?')[0]+'?ref='+u.ref;
- document.getElementById('orderQty').textContent=state.orders.filter(x=>x.user===u.id).length;
- document.getElementById('activeOrders').textContent=state.orders.filter(x=>x.user===u.id&&x.status==='Active').length;
- document.getElementById('teamCount').textContent=state.users.filter(x=>x.invitedBy===u.ref).length;
- document.getElementById('teamList').innerHTML=state.users.filter(x=>x.invitedBy===u.ref).map(x=>'<div class="list-item">'+escapeHtml(x.name)+' Â· '+escapeHtml(x.id)+'</div>').join('')||'No referred members yet.';
- document.getElementById('orderList').innerHTML=state.orders.filter(x=>x.user===u.id).map(x=>'<div class="list-item">'+escapeHtml(x.title)+' Â· '+money(x.amount)+' Â· '+x.status+'</div>').join('')||'No orders yet.';
- document.getElementById('depositHistory').innerHTML='<h3>Deposit requests</h3>'+state.deposits.filter(x=>x.user===u.id).map(x=>'<div class="list-item">'+money(x.amount)+' Â· '+escapeHtml(x.method)+' Â· '+x.status+'</div>').join('');
- document.getElementById('withdrawHistory').innerHTML='<h3>Withdrawal requests</h3>'+state.withdrawals.filter(x=>x.user===u.id).map(x=>'<div class="list-item">'+money(x.amount)+' Â· '+escapeHtml(x.method)+' Â· '+x.status+'</div>').join('');
- document.getElementById('savedBank').textContent=state.bank?'Saved: '+state.bank.method+' Â· '+state.bank.holder+' Â· '+state.bank.number:'No account saved.';
- document.getElementById('adminCard').classList.toggle('hidden',u.id.toLowerCase()!==ADMIN_EMAIL);
+
+function safeLoad(key, fallback) {
+ try {
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : fallback;
+ } catch (e) {
+  return fallback;
+ }
 }
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-document.getElementById('showLogin').onclick=()=>{document.getElementById('loginForm').classList.remove('hidden');document.getElementById('signupForm').classList.add('hidden')};
-document.getElementById('showSignup').onclick=()=>{document.getElementById('signupForm').classList.remove('hidden');document.getElementById('loginForm').classList.add('hidden')};
-document.getElementById('signupForm').onsubmit=e=>{e.preventDefault();let id=document.getElementById('newId').value.trim().toLowerCase(),p=document.getElementById('newPass').value,p2=document.getElementById('newPass2').value;if(p!==p2)return alert('Passwords do not match.');if(state.users.some(x=>x.id.toLowerCase()===id))return alert('Account already exists.');let ref='ASML-'+Math.random().toString(36).slice(2,8).toUpperCase();state.users.push({id,name:document.getElementById('newName').value.trim(),password:p,ref,balance:0,invitedBy:document.getElementById('invite').value.trim()});state.current=id;save();go('home')};
-document.getElementById('loginForm').onsubmit=e=>{e.preventDefault();let id=document.getElementById('loginId').value.trim().toLowerCase(),p=document.getElementById('loginPass').value,u=state.users.find(x=>x.id.toLowerCase()===id&&x.password===p);if(!u)return alert('Incorrect account or password.');state.current=u.id;save();go('home')};
-function logout(){state.current=null;save();go('auth')}
-function showPasswordForm(){document.getElementById('passwordCard').classList.remove('hidden');document.getElementById('forgotCard').classList.add('hidden')}
-function showForgot(){document.getElementById('forgotCard').classList.remove('hidden');document.getElementById('passwordCard').classList.add('hidden')}
-document.getElementById('passwordForm').onsubmit=e=>{e.preventDefault();let u=current(),old=document.getElementById('oldPassword').value,n=document.getElementById('changedPassword').value,n2=document.getElementById('changedPassword2').value;if(!u||u.password!==old)return alert('Current password is incorrect.');if(n!==n2)return alert('New passwords do not match.');u.password=n;save();e.target.reset();alert('Password updated in this local preview.')};
-function copyText(id){let el=document.getElementById(id);el.select();document.execCommand('copy');alert('Copied')}
-function receiver(){let m=document.getElementById('depositMethod').value,arr=receivers[m],idx=(Math.abs((current()?.id||'').split('').reduce((a,c)=>a+c.charCodeAt(0),0))%arr.length);document.getElementById('receiverBox').innerHTML='<b>Send payment to:</b><br>'+arr[idx].name+'<br><b>'+arr[idx].number+'</b><br><small>Verify recipient name in your wallet before sending.</small>'}
-document.getElementById('depositMethod').onchange=receiver;
-function submitDeposit(){let u=current(),amount=Number(document.getElementById('depositAmount').value),tid=document.getElementById('depositTid').value.trim(),method=document.getElementById('depositMethod').value;if(amount<500||!Number.isFinite(amount)||!tid)return alert('Enter at least Rs 500 and a transaction ID.');state.deposits.push({user:u.id,amount,tid,method,status:'Pending',date:new Date().toISOString()});save();alert('Request submitted. It is pending manual verification.')}
-function calcWithdraw(){let 
-                        u=current(),a=Number(document.getElementById('withdrawAmount').value),m=document.getElementById('withdrawMethod').value;if(a<500)return alert('Minimum withdrawal is Rs 500.');if(a>u.balance)return alert('Insufficient available balance.');let b=state.bank,holder=document.getElementById('wHolder')?.value||b?.holder||'',number=document.getElementById('wNumber')?.value||b?.number||'';if(!holder||!number)return alert('Enter or save your receiving account first.');state.withdrawals.push({user:u.id,amount:a,net:a*.9,method:m,holder,number,bank:document.getElementById('wBank')?.value||'',status:'Pending',date:new Date().toISOString()});u.balance-=a;save();alert('Withdrawal request submitted for review.')}
-document.getElementById('bankForm').onsubmit=e=>{e.preventDefault();state.bank={method:document.getElementById('bankName').value,holder:document.getElementById('bankHolder').value.trim(),number:document.getElementById('bankNumber').value.trim(),bank:document.getElementById('bankOther').value.trim()};save();alert('Account saved locally.')};
-document.getElementById('tasks').innerHTML=[1,2,3,4,5,6].map(n=>'<div class="plan"><div class="row between"><b>Task '+n+'</b><span class="pill">Not started</span></div><p class="muted small">Complete a verified platform activity. No recruitment-deposit milestone.</p><div class="progress"><span style="width:0%"></span></div><button class="secondary" disabled>Claim unavailable</button></div>').join('');
-document.getElementById('plans').innerHTML='<p class="muted">No investment products are configured. Use this area to list real goods or services with transparent pricing and fulfilment information.</p>';
-if(location.search.includes('ref='))document.getElementById('invite').value=new URLSearchParams(location.search).get('ref');
-receiver();withdrawFields();
+
+function safeSave(key, val) {
+ try {
+  localStorage.setItem(key, JSON.stringify(val));
+ } catch (e) {}
+}
+
+let db = safeLoad("ASML_GLOBAL_V2", {
+ users: [
+  {
+   contact: "Ladlawaqas527@gmail.com",
+   password: "1234",
+   balance: 40,
+   code: "ASML-ADMIN1",
+   blocked: false,
+   lastCheckin: "",
+   totalProfit: 40,
+   bank: { wallet: "EasyPaisa", holder: "Waqas Nadeem", number: "03192649784" }
+  }
+ ],
+ deposits: [],
+ withdrawals: [],
+ plans: [],
+ members: [],
+ tasks: [
+  { id: 1, title: "Daily Welcome & First Login", reward: 20, done: false },
+  { id: 2, title: "Downline Investment Rs 3,000", reward: 300, done: false },
+  { id: 3, title: "Downline Investment Rs 9,000", reward: 900, done: false },
+  { id: 4, title: "Downline Investment Rs 27,000", reward: 2700, done: false }
+ ]
+});
+ let currentUser = localStorage.getItem("ASML_CURRENT_USER_V2") || "Ladlawaqas527@gmail.com";
+let adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
+let lastPage = "homePage";
+let rotationIndex = Number(localStorage.getItem("ASML_ROTATION_IDX") || "0");
+
+function saveDB() {
+ safeSave("ASML_GLOBAL_V2", db);
+}
+
+function getUser() {
+ let u = db.users.find(x => x.contact.toLowerCase() === currentUser.toLowerCase());
+ if (!u) {
+  u = db.users[0];
+  currentUser = u.contact;
+  localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
+ }
+ return u;
+}
+
+function money(n) {
+ return "Rs " + Number(n || 0).toLocaleString("en-PK");
+}
+
+function makeCode() {
+ return "ASML-" + Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
+const planData = [
+ { price: 500,   daily: 20,   hourly: 0.83 },
+ { price: 900,   daily: 36,   hourly: 1.50 },
+ { price: 1500,  daily: 60,   hourly: 2.50 },
+ { price: 2000,  daily: 80,   hourly: 3.33 },
+ { price: 2500,  daily: 100,  hourly: 4.17 },
+ { price: 3000,  daily: 120,  hourly: 5.00 },
+ { price: 6000,  daily: 240,  hourly: 10.00 },
+ { price: 10000, daily: 400,  hourly: 16.67 },
+ { price: 20000, daily: 800,  hourly: 33.33 },
+ { price: 50000, daily: 2000, hourly: 83.33 }
+].map(p => ({ ...p, cycle: 120, total: p.daily * 120 }));
+
+function autoSelectDepositAccount() {
+ const keys = Object.keys(DEPOSIT_ACCOUNTS);
+ rotationIndex = (rotationIndex + 1) % keys.length;
+ localStorage.setItem("ASML_ROTATION_IDX", String(rotationIndex));
+ const chosen = keys[rotationIndex];
+ $("depositMethod").value = chosen;
+ updateDepositAccount();
+}
+
+function autoSelectWithdrawAccount() {
+ const u = getUser();
+ const methods = ["EasyPaisa", "JazzCash", "UPaisa", "Bank Transfer"];
+ if (u.bank && methods.includes(u.bank.wallet)) {
+  $("withdrawMethod").value = u.bank.wallet;
+  $("withdrawHolder").value = u.bank.holder || "";
+  $("withdrawAccount").value = u.bank.number || "";
+ } else {
+  $("withdrawMethod").value = methods[rotationIndex % methods.length];
+ }
+ updateWithdrawMethod();
+ calculateWithdraw();
+ }
+ function hideAll() {
+ document.querySelectorAll("main section").forEach(s => s.classList.add("hidden"));
+}
+
+function openPage(id) {
+ const cur = document.querySelector("main section:not(.hidden)");
+ if (cur && cur.id !== id) lastPage = cur.id;
+ hideAll();
+ $(id).classList.remove("hidden");
+ if (id === "depositPage") autoSelectDepositAccount();
+ if (id === "withdrawPage") autoSelectWithdrawAccount();
+ if (id === "bankPage") {
+  const u = getUser();
+  if (u.bank) {
+   $("bankWallet").value = u.bank.wallet || "EasyPaisa";
+   $("bankHolder").value = u.bank.holder || "";
+   $("bankNumber").value = u.bank.number || "";
+  }
+ }
+ if (id === "adminPage" && currentUser.toLowerCase() === ADMIN_EMAIL) {
+  adminMode = true;
+  $("adminDashboard").classList.remove("hidden");
+ }
+ window.scrollTo({ top: 0, behavior: "smooth" });
+ renderAll();
+}
+
+function goBack() {
+ openPage(lastPage || "homePage");
+}
+
+function navigate(id, btn) {
+ hideAll();
+ $(id).classList.remove("hidden");
+ document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+ if (btn) btn.classList.add("active");
+ window.scrollTo({ top: 0, behavior: "smooth" });
+ renderAll();
+}
+
+function renderPlans() {
+ $("homePlans").innerHTML = planData.map((p, i) => `
+  <div class="plan">
+   <div class="plan-top"><b>VIP ${i + 1}</b><span class="badge">120 Days · Investment cycle</span></div>
+   <div class="price">${money(p.price)}</div>
+   <div class="plan-details">
+    <div>Daily Profit<b>${money(p.daily)}</b></div>
+    <div>Hourly Income<b>${money(p.hourly.toFixed(2))}</b></div>
+    <div>Total Revenue<b>${money(p.total)}</b></div>
+    <div>Payback<b>${Math.ceil(p.price / p.daily)} Days</b></div>
+   </div>
+   <div class="progress"><div style="width:${Math.min(p.price / 50000 * 100, 100)}%"></div></div>
+   <div class="row">
+    <button class="btn secondary" onclick="planDetails(${i})">Details</button>
+    <button class="btn" onclick="buyPlan(${i})">Buy Now</button>
+   </div>
+  </div>
+ `).join("");
+ } 
+ function planDetails(i) {
+ const p = planData[i];
+ openPage("planDetailPage");
+ $("planDetailContent").innerHTML = `
+  <h2>VIP ${i + 1}</h2>
+  <div class="price">${money(p.price)}</div>
+  <div class="plan-details">
+   <div>Daily Profit<b>${money(p.daily)}</b></div>
+   <div>Hourly Income<b>${money(p.hourly.toFixed(2))}</b></div>
+   <div>Total Revenue<b>${money(p.total)}</b></div>
+   <div>Cycle<b>120 Days</b></div>
+  </div>
+  <button class="btn" onclick="buyPlan(${i})">Activate VIP ${i + 1}</button>
+ `;
+}
+
+function buyPlan(i) {
+ const u = getUser();
+ if (u.blocked) return alert("Account is blocked.");
+ const p = planData[i];
+ if (Number(u.balance) < p.price) return alert("Insufficient balance! Please Recharge/Deposit first.");
+ u.balance = Number(u.balance) - p.price;
+ db.plans.push({ id: Date.now(), user: u.contact, vip: "VIP " + (i + 1), price: p.price, daily: p.daily, cycle: 120 });
+ saveDB();
+ alert("VIP " + (i + 1) + " activated successfully!");
+ renderAll();
+}
+
+function checkin() {
+ const u = getUser();
+ if (u.blocked) return alert("Account is blocked.");
+ const today = new Date().toISOString().slice(0, 10);
+ if (u.lastCheckin === today) return alert("You already claimed today's Rs 10 check-in!");
+ u.balance = Number(u.balance) + 10;
+ u.totalProfit = Number(u.totalProfit || 0) + 10;
+ u.lastCheckin = today;
+ saveDB();
+ alert("Daily Check-in successful! +Rs 10 added.");
+ renderAll();
+ } 
+ function collectDailyProfit() {
+ const u = getUser();
+ const myPlans = db.plans.filter(p => p.user.toLowerCase() === u.contact.toLowerCase());
+ if (!myPlans.length) return alert("No active plan purchased yet.");
+ const profit = myPlans.reduce((sum, p) => sum + Number(p.daily || 0), 0);
+ u.balance = Number(u.balance) + profit;
+ u.totalProfit = Number(u.totalProfit || 0) + profit;
+ saveDB();
+ alert("Collected " + money(profit) + " profit!");
+ renderAll();
+}
+
+function authTab(tab) {
+ $("signupTab").classList.toggle("active", tab === "signup");
+ $("signinTab").classList.toggle("active", tab === "signin");
+ $("signupForm").classList.toggle("hidden", tab !== "signup");
+ $("signinForm").classList.toggle("hidden", tab !== "signin");
+ if (tab === "signup") refreshCode();
+}
+
+function refreshCode() {
+ $("verifyCode").innerText = String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function signup() {
+ const contact = $("suContact").value.trim();
+ const pw = $("suPassword").value;
+ const pw2 = $("suConfirm").value;
+ const v = $("suVerify").value.trim();
+ const ref = $("suReferral").value.trim();
+ if (!contact || pw.length < 4) return alert("Enter valid email/phone and password (min 4 chars).");
+ if (pw !== pw2) return alert("Passwords do not match.");
+ if (v !== $("verifyCode").innerText.trim()) { refreshCode(); return alert("Wrong 4-digit code."); }
+ if (db.users.some(x => x.contact.toLowerCase() === contact.toLowerCase())) return alert("Account already exists.");
+
+ db.users.push({
+  contact,
+  password: pw,
+  balance: 30,
+  code: makeCode(),
+  blocked: false,
+  lastCheckin: "",
+  totalProfit: 30,
+  bank: null
+ });
+ if (ref) db.members.push({ referrerCode: ref, member: contact });
+ currentUser = contact;
+ localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
+ adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
+ saveDB();
+ alert("Account created! Rs 30 Welcome Bonus added.");
+ openPage("homePage");
+}
+
+function signin() {
+ const contact = $("siContact").value.trim();
+ const pw = $("siPassword").value;
+ const found = db.users.find(x => x.contact.toLowerCase() === contact.toLowerCase() && x.password === pw);
+ if (!found) return alert("Invalid email/phone or password.");
+ currentUser = found.contact;
+ localStorage.setItem("ASML_CURRENT_USER_V2", currentUser);
+ adminMode = currentUser.toLowerCase() === ADMIN_EMAIL;
+ alert("Signed in as " + currentUser);
+ openPage("homePage");
+ }
+ function logout() {
+ alert("Logged out.");
+ openPage("authPage");
+}
+
+function updateDepositAccount() {
+ const acc = DEPOSIT_ACCOUNTS[$("depositMethod").value] || DEPOSIT_ACCOUNTS.EasyPaisa_1;
+ $("depositAccount").innerText = acc.number;
+ $("depositHolder").innerText = acc.holder + " · " + acc.method;
+}
+
+function copyDepositNumber() {
+ const num = $("depositAccount").innerText;
+ if (navigator.clipboard) navigator.clipboard.writeText(num).catch(() => {});
+ alert("Copied account number: " + num);
+}
+
+function submitDeposit() {
+ const u = getUser();
+ if (u.blocked) return alert("Account is blocked.");
+ const amt = Number($("depositAmount").value);
+ const tid = $("depositTID").value.trim();
+ const acc = DEPOSIT_ACCOUNTS[$("depositMethod").value] || DEPOSIT_ACCOUNTS.EasyPaisa_1;
+ if (!amt || amt < 500) return alert("Minimum deposit amount is Rs 500.");
+ if (!tid) return alert("Please enter Transaction ID (TID).");
+
+ db.deposits.push({ id: Date.now(), user: u.contact, method: acc.method, account: acc.number, amount: amt, tid, status: "Pending" });
+ $("depositAmount").value = "";
+ $("depositTID").value = "";
+ saveDB();
+ alert("Deposit request submitted! Waiting for Admin approval.");
+ renderAll();
+}
+
+function updateWithdrawMethod() {
+ $("bankNameField").classList.toggle("hidden", $("withdrawMethod").value !== "Bank Transfer");
+}
+
+function calculateWithdraw() {
+ const amt = Number($("withdrawAmount").value || 0);
+ const tax = Math.round(amt * 0.10);
+ $("taxAmount").innerText = money(tax);
+ $("netAmount").innerText = money(Math.max(0, amt - tax));
+}
+
+function submitWithdraw() {
+ const u = getUser();
+ if (u.blocked) return alert("Account is blocked.");
+ const method = $("withdrawMethod").value;
+ const holder = $("withdrawHolder").value.trim();
+ const account = $("withdrawAccount").value.trim();
+ const amt = Number($("withdrawAmount").value);
+ if (!amt || amt < 500) return alert("Minimum withdrawal is Rs 500.");
+ if (!account) return alert("Enter account/wallet number.");
+ if (Number(u.balance) < amt) return alert("Insufficient balance.");
+
+ const tax = Math.round(amt * 0.10);
+ u.balance = Number(u.balance) - amt;
+ db.withdrawals.push({ id: Date.now(), user: u.contact, method, holder, account, amount: amt, net: amt - tax, status: "Pending" });
+ $("withdrawAmount").value = "";
+ calculateWithdraw();
+ saveDB();
+ alert("Withdrawal request submitted!");
+ renderAll();
+ }
+ function saveBank() {
+ const u = getUser();
+ const wallet = $("bankWallet").value;
+ const holder = $("bankHolder").value.trim();
+ const number = $("bankNumber").value.trim();
+ if (!number) return alert("Enter account/wallet number.");
+ u.bank = { wallet, holder, number };
+ saveDB();
+ alert("Bank / Wallet account bound successfully!");
+}
+
+function copyReferral() {
+ const code = $("refCode").innerText;
+ if (navigator.clipboard) navigator.clipboard.writeText(code).catch(() => {});
+ alert("Referral Code Copied: " + code);
+}
+
+function claimTask(id) {
+ const u = getUser();
+ const t = db.tasks.find(x => x.id === id);
+ if (!t || t.done) return;
+ t.done = true;
+ u.balance = Number(u.balance) + Number(t.reward);
+ u.totalProfit = Number(u.totalProfit || 0) + Number(t.reward);
+ saveDB();
+ alert("Task reward " + money(t.reward) + " claimed!");
+ renderAll();
+}
+
+function adminLogin() {
+ const email = $("adminEmail").value.trim().toLowerCase();
+ if (email !== ADMIN_EMAIL) return alert("Only Ladlawaqas527@gmail.com can access Admin Panel.");
+ adminMode = true;
+ $("adminDashboard").classList.remove("hidden");
+ adminRefresh();
+}
+
+function adminRefresh() {
+ const sel = $("adminUserSelect");
+ const prev = sel.value;
+ sel.innerHTML = db.users.map(u => `<option value="${u.contact}">${u.contact} (${money(u.balance)})${u.blocked ? " [Blocked]" : ""}</option>`).join("");
+ if (prev && db.users.some(u => u.contact === prev)) sel.value = prev;
+ const target = db.users.find(u => u.contact === sel.value) || db.users[0];
+ $("adminBalance").innerText = money(target.balance);
+
+ $("adminDeposits").innerHTML = db.deposits.length ? db.deposits.map(d => `
+ <div class="list-item">
+   <div><b>${d.user}</b> · ${d.method} (${d.account}) · ${money(d.amount)}<br><small class="muted">TID: ${d.tid} · ${d.status}</small></div>
+   <div>${d.status === "Pending" ? `<button class="btn small" onclick="decideDeposit(${d.id},'Approved')">Approve</button> <button class="btn secondary small" onclick="decideDeposit(${d.id},'Rejected')">Reject</button>` : `<b>${d.status}</b>`}</div>
+  </div>
+ `).join("") : `<div class="empty">No deposit requests yet.</div>`;
+
+ $("adminWithdrawals").innerHTML = db.withdrawals.length ? db.withdrawals.map(w => `
+  <div class="list-item">
+   <div><b>${w.user}</b> · ${w.method} (${w.account}) · ${money(w.amount)}<br><small class="muted">Net: ${money(w.net)} · ${w.status}</small></div>
+   <div>${w.status === "Pending" ? `<button class="btn small" onclick="decideWithdraw(${w.id},'Approved')">Approve</button> <button class="btn secondary small" onclick="decideWithdraw(${w.id},'Rejected')">Reject</button>` : `<b>${w.status}</b>`}</div>
+  </div>
+ `).join("") : `<div class="empty">No withdrawal requests yet.</div>`;
+}
+
+function adminAdjust(mode) {
+ const target = db.users.find(u => u.contact === $("adminUserSelect").value);
+ const amt = Number($("adminAmount").value);
+ if (!target || isNaN(amt) || amt < 0) return alert("Enter valid amount.");
+ if (mode === "add") target.balance = Number(target.balance) + amt;
+ if (mode === "subtract") target.balance = Math.max(0, Number(target.balance) - amt);
+ if (mode === "set") target.balance = amt;
+ $("adminAmount").value = "";
+ saveDB();
+ adminRefresh();
+ renderAll();
+}
+
+function adminBlock(flag) {
+ const target = db.users.find(u => u.contact === $("adminUserSelect").value);
+ if (!target) return;
+ target.blocked = Boolean(flag);
+ saveDB();
+ adminRefresh();
+ renderAll();
+}
+
+function decideDeposit(id, status) {
+ const d = db.deposits.find(x => x.id === id);
+ if (!d || d.status !== "Pending") return;
+ d.status = status;
+ if (status === "Approved") {
+  const u = db.users.find(x => x.contact.toLowerCase() === d.user.toLowerCase());
+  if (u) u.balance = Number(u.balance) + Number(d.amount);
+ }
+ saveDB();
+ adminRefresh();
+ renderAll();
+ }
+ function decideWithdraw(id, status) {
+ const w = db.withdrawals.find(x => x.id === id);
+ if (!w || w.status !== "Pending") return;
+ w.status = status;
+ if (status === "Rejected") {
+  const u = db.users.find(x => x.contact.toLowerCase() === w.user.toLowerCase());
+  if (u) u.balance = Number(u.balance) + Number(w.amount);
+ }
+ saveDB();
+ adminRefresh();
+ renderAll();
+}
+
+function renderAll() {
+ const u = getUser();
+ const myPlans = db.plans.filter(p => p.user.toLowerCase() === u.contact.toLowerCase());
+ const activePlanName = myPlans.length ? myPlans[myPlans.length - 1].vip : "None";
+ const dailySum = myPlans.reduce((s, p) => s + Number(p.daily || 0), 0);
+
+ $("homeBalance").innerText = "Rs " + Number(u.balance || 0).toFixed(2);
+ $("mineBalance").innerText = "Rs " + Number(u.balance || 0).toFixed(2);
+ $("activeUserLabel").innerText = u.contact + (u.blocked ? " · Blocked" : " · Active");
+ $("mineUserLabel").innerText = u.contact;
+ $("mineCode").innerText = u.code;
+ $("mineStatusTag").innerText = u.blocked ? "Blocked" : "Active";
+ $("homePlanStatus").innerText = "Active Plan: " + activePlanName;
+ $("homeOrderCount").innerText = String(myPlans.length);
+ $("homeEarnings").innerText = money(u.totalProfit || 0);
+
+ $("totalProfit").innerText = money(u.totalProfit || 0);
+ $("todayProfit").innerText = money(dailySum);
+ $("productQty").innerText = String(myPlans.length);
+ $("ordersCurrentPlan").innerText = "Current Plan: " + activePlanName;
+ $("ordersList").innerHTML = myPlans.length ? myPlans.map(p => `
+  <div class="list-item"><div><b>${p.vip}</b> · ${p.cycle} Days</div><div><b>${money(p.daily)}/day</b></div></div>
+ `).join("") : `<div class="empty">No active plan purchased yet.</div>`;
+
+ $("refCode").innerText = u.code;
+ const myMembers = db.members.filter(m => m.referrerCode === u.code);
+ $("level1").innerText = myMembers.length + " Members";
+ $("membersList").innerHTML = myMembers.length ? myMembers.map(m => `
+  <div class="list-item"><span>${m.member}</span><span>Level 1 (18%)</span></div>
+ `).join("") : `<div class="empty">No referred members yet.</div>`;
+ const claimedTotal = db.tasks.filter(t => t.done).reduce((s, t) => s + t.reward, 0);
+ $("taskRewardTotal").innerText = money(claimedTotal);
+ $("tasksList").innerHTML = db.tasks.map(t => `
+  <div class="list-item">
+   <div><b>${t.title}</b><br><small class="muted">Reward: ${money(t.reward)}</small></div>
+   <button class="btn small ${t.done ? "secondary" : ""}" onclick="claimTask(${t.id})">${t.done ? "Claimed" : "Claim"}</button>
+  </div>
+ `).join("");
+
+ const myDeps = db.deposits.filter(d => d.user.toLowerCase() === u.contact.toLowerCase());
+ $("depositHistory").innerHTML = myDeps.length ? myDeps.map(d => `
+  <div class="list-item"><div><b>${d.method}</b> · ${money(d.amount)}<br><small class="muted">TID: ${d.tid}</small></div><b>${d.status}</b></div>
+ `).join("") : `<div class="empty">No deposit history yet.</div>`;
+
+ const myWds = db.withdrawals.filter(w => w.user.toLowerCase() === u.contact.toLowerCase());
+ $("withdrawHistory").innerHTML = myWds.length ? myWds.map(w => `
+  <div class="list-item"><div><b>${w.method}</b> · ${money(w.amount)}<br><small class="muted">Net: ${money(w.net)}</small></div><b>${w.status}</b></div>
+ `).join("") : `<div class="empty">No withdrawal history yet.</div>`;
+
+ if (adminMode) adminRefresh();
+}
+
+refreshCode();
+renderPlans();
+updateDepositAccount();
+updateWithdrawMethod();
+calculateWithdraw();
+renderAll();
 </script>
 </body>
 </html>
