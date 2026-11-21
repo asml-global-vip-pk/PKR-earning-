@@ -1646,6 +1646,11 @@ function syncTeamPage() {
       <h3>Referred Members (${members.length})</h3>
       ${membersHtml}
     </div>
+    const finalCode = (uObj?.code && uObj.code !== "ASML-XXXXXX" ? uObj.code : "ASML-ADMIN1");
+  const finalLink = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(finalCode)}`;
+  if ($("asmlRefLinkDisplay")) $("asmlRefLinkDisplay").textContent = finalLink;
+  if ($("refCode")) $("refCode").textContent = finalCode;
+  
   `;
        }
 
