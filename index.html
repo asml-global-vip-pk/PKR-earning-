@@ -1432,18 +1432,19 @@ if (!found) {
     }
 
     /* Private Admin Panel */
-     function openAdminGate() 
-      const currentUser = getCurrentUser();
-  const currentEmail = String(currentUser.email || "").trim().toLowerCase();
+     function openAdminGate() {
+  const currentUser = getCurrentUser();
+  const currentEmail = String((currentUser && currentUser.email) || "").trim().toLowerCase();
   if (currentEmail !== "ladlawaqas527@gmail.com") {
     alert("Admin access is restricted to ladlawaqas527@gmail.com only.");
     return;
+  }
+
+  if (db.adminUnlocked) {
+    switchPage("adminPage");
+    return;
     }
-       if (db.adminUnlocked) {
     
-        switchPage("adminPage");
-        return;
-      }
       const pin = prompt("Enter Private Admin PIN:");
       if (pin === null) return;
       if (pin.trim() === db.adminPin) {
