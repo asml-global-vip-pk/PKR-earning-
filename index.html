@@ -1335,97 +1335,129 @@
       renderApp();
     }
 
-    function getTeamLevels(user) {
-      const l1 = state.users.filter((u) => u.referredBy && u.referredBy.toLowerCase() === user.refCode.toLowerCase());
-      const l1Codes = l1.map((u) => u.refCode.toLowerCase());
-      const l2 = state.users.filter((u) => u.referredBy && l1Codes.includes(u.referredBy.toLowerCase()));
-      const l2Codes = l2.map((u) => u.refCode.toLowerCase());
-      const l3 = state.users.filter((u) => u.referredBy && l2Codes.includes(u.referredBy.toLowerCase()));
-      return { l1, l2, l3 };
+    function matchReferralCode(referredBy, ownerUser) {
+  if (!referredBy || !ownerUser) return false;
+  const r = String(referredBy).trim().toLowerCase();
+  const codes = [ownerUser.refCode, ownerUser.id]
+    .filter(Boolean)
+    .map((v) => String(v).trim().toLowerCase());
+  return codes.includes(r);
+}
+
+function getEffectiveUserDeposit(u) {
+  if (!u) return 0;
+  const directDep = Number(u.deposited || 0);
+  const deps = Array.isArray(state.deposits) ? state.deposits : [];
+  const approvedSum = deps
+    .filter((d) => d && String(d.userId) === String(u.id) && String(d.status || "").toLowerCase() === "approved")
+    .reduce((s, d) => s + Number(d.amount || 0), 0);
+  return Math.max(directDep, approvedSum);
+}
+
+function getTeamLevels(user) {
+  if (!user) return { l1: [], l2: [], l3: [] };
+  const allUsers = Array.isArray(state.users) ? state.users : [];
+  const l1 = allUsers.filter((u) => u && u.id !== user.id && matchReferralCode(u.referredBy, user));
+
+  const l2 = allUsers.filter((u) => {
+    if (!u || u.id === user.id || l1.some((x) => x.id === u.id)) return false;
+    return l1.some((parent) => matchReferralCode(u.referredBy, parent));
+  });
+
+  const l3 = allUsers.filter((u) => {
+    if (!u || u.id === user.id || l1.some((x) => x.id === u.id) || l2.some((x) => x.id === u.id)) return false;
+    return l2.some((parent) => matchReferralCode(u.referredBy, parent));
+  });
+
+  return { l1, l2, l3 };
+}
+
+function renderTeamTab() {
+  const user = getCurrentUser();
+  const tabEl = document.getElementById("tab-team");
+  if (!user || !tabEl) return;
+
+  const { l1, l2, l3 } = getTeamLevels(user);
+  const allTeam = [
+    ...l1.map((u) => ({ user: u, level: 1, rate: 0.10 })),
+    ...l2.map((u) => ({ user: u, level: 2, rate: 0.05 })),
+    ...l3.map((u) => ({ user: u, level: 3, rate: 0.01 }))
+  ];
+
+  const sumInvest = (arr) => (Array.isArray(arr) ? arr.reduce((s, u) => s + getEffectiveUserDeposit(u), 0) : 0);
+  const depositMembers = allTeam.filter((item) => getEffectiveUserDeposit(item.user) > 0);
+  const inviteUrl = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(user.refCode || "")}`;
+
+  const renderMemberItem = (item) => {
+    const u = item.user || {};
+    const contact = u.phone || u.email || "Member";
+    const dep = getEffectiveUserDeposit(u);
+    const comm = Math.round(dep * item.rate);
+    return `
+      <div class="member-row">
+        <div class="row-flex">
+          <strong>${esc(contact)} (Level ${item.level})</strong>
+          <span style="font-size:12px;font-weight:800;color:${dep > 0 ? "#16a34a" : "#6b7280"};">
+            ${dep > 0 ? "Deposit: Rs " + dep + " • Comm: Rs " + comm : "No Deposit Yet"}
+          </span>
+        </div>
+        <div style="font-size:12px;color:#4b5563;margin-top:3px;">
+          ID: <strong>${esc(u.id || "")}</strong> ${u.email && u.phone ? "• " + esc(u.email) : ""} • Ref Code: <strong>${esc(u.refCode || "")}</strong>
+        </div>
+      </div>
+    `;
+  };
+
+  tabEl.innerHTML = `
+    <div class="page-header-banner">Team</div>
+
+    <div class="balance-card">
+      <div class="bal-amount">Rs ${Number(user.referralEarnings || 0)}</div>
+      <div style="font-size:13px;opacity:0.9;">Total Team Earnings</div>
+      <div style="font-size:13px;font-weight:700;margin-top:6px;">Total Team Members: ${allTeam.length}</div>
+      <div style="display:flex;gap:8px;margin-top:12px;background:#ffffff;padding:6px 8px;border-radius:999px;align-items:center;">
+        <input id="refLinkBox" readonly value="${escAttr(inviteUrl)}" style="border:none;outline:none;width:100%;font-size:12px;color:#111827;padding-left:6px;" />
+        <button type="button" class="btn-sm" style="background:#f59e0b;color:#ffffff;border-radius:999px;padding:7px 14px;" onclick="copyReferralLink()">Copy</button>
+      </div>
+      <div style="font-size:12px;margin-top:8px;">Invite Code: <strong>${esc(user.refCode || "")}</strong></div>
+    </div>
+
+    <div class="sec-heading">Team Overview</div>
+    <div class="card-white">
+      <div class="team-table-head">
+        <span>Quantity</span>
+        <span>Invest total</span>
+        <span style="text-align:right;">Team Level</span>
+      </div>
+      <div class="team-table-row">
+        <span>${l1.length}</span>
+        <span>${sumInvest(l1).toFixed(2)}</span>
+        <span>Team Level 1 (10%)</span>
+      </div>
+      <div class="team-table-row">
+        <span>${l2.length}</span>
+        <span>${sumInvest(l2).toFixed(2)}</span>
+        <span>Team Level 2 (5%)</span>
+      </div>
+      <div class="team-table-row" style="border-bottom:none;">
+        <span>${l3.length}</span>
+        <span>${sumInvest(l3).toFixed(2)}</span>
+        <span>Team Level 3 (1%)</span>
+      </div>
+    </div>
+
+    <div class="sec-heading">All Team Members (${allTeam.length})</div>
+    <div class="card-white">
+      ${allTeam.length ? allTeam.map(renderMemberItem).join("") : `<div style="font-size:13px;color:#6b7280;">No invited members yet. Share your link to earn 10%, 5%, and 1%!</div>`}
+    </div>
+
+    <div class="sec-heading" style="color:#15803d;border-color:#16a34a;">Deposit Members (${depositMembers.length})</div>
+    <div class="card-white">
+      ${depositMembers.length ? depositMembers.map(renderMemberItem).join("") : `<div style="font-size:13px;color:#6b7280;">No deposit members yet.</div>`}
+    </div>
+  `;
     }
-
-    function renderTeamTab() {
-      const user = getCurrentUser();
-      const { l1, l2, l3 } = getTeamLevels(user);
-      const allTeam = [
-        ...l1.map((u) => ({ user: u, level: 1, rate: 0.10 })),
-        ...l2.map((u) => ({ user: u, level: 2, rate: 0.05 })),
-        ...l3.map((u) => ({ user: u, level: 3, rate: 0.01 }))
-      ];
-
-      const sumInvest = (arr) => arr.reduce((s, u) => s + Number(u.deposited || 0), 0);
-      const depositMembers = allTeam.filter((item) => Number(item.user.deposited || 0) > 0);
-
-      const inviteUrl = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(user.refCode)}`;
-
-      const renderMemberItem = (item) => {
-        const u = item.user;
-        const contact = u.phone || u.email || "Member";
-        const dep = Number(u.deposited || 0);
-        const comm = Math.round(dep * item.rate);
-        return `
-          <div class="member-row">
-            <div class="row-flex">
-              <strong>${esc(contact)} (Level ${item.level})</strong>
-              <span style="font-size:12px;font-weight:800;color:${dep > 0 ? "#16a34a" : "#6b7280"};">
-                ${dep > 0 ? "Deposit: Rs " + dep + " | Comm: Rs " + comm : "No Deposit"}
-              </span>
-            </div>
-            <div style="font-size:12px;color:#4b5563;margin-top:3px;">
-              ID: <strong>${esc(u.id)}</strong> ${u.email && u.phone ? "• " + esc(u.email) : ""}
-            </div>
-          </div>
-        `;
-      };
-    document.getElementById("tab-team").innerHTML = `
-        <div class="page-header-banner">Team</div>
-
-        <div class="balance-card">
-          <div class="bal-amount">Rs ${Number(user.referralEarnings || 0)}</div>
-          <div style="font-size:13px;opacity:0.9;">Total Team Earnings</div>
-          <div style="font-size:13px;font-weight:700;margin-top:6px;">Total Team Members: ${allTeam.length}</div>
-          <div style="display:flex;gap:8px;margin-top:12px;background:#ffffff;padding:6px 8px;border-radius:999px;align-items:center;">
-            <input id="refLinkBox" readonly value="${escAttr(inviteUrl)}" style="border:none;outline:none;width:100%;font-size:12px;color:#111827;padding-left:6px;" />
-            <button type="button" class="btn-sm" style="background:#f59e0b;color:#ffffff;border-radius:999px;padding:7px 14px;" onclick="copyReferralLink()">Copy</button>
-          </div>
-          <div style="font-size:12px;margin-top:8px;">Invite Code: <strong>${esc(user.refCode)}</strong></div>
-        </div>
-
-        <div class="sec-heading">Team Overview</div>
-        <div class="card-white">
-          <div class="team-table-head">
-            <span>Quantity</span>
-            <span>Invest total</span>
-            <span style="text-align:right;">Team Level</span>
-          </div>
-          <div class="team-table-row">
-            <span>${l1.length}</span>
-            <span>${sumInvest(l1).toFixed(2)}</span>
-            <span>Team Level 1 (10%)</span>
-          </div>
-          <div class="team-table-row">
-            <span>${l2.length}</span>
-            <span>${sumInvest(l2).toFixed(2)}</span>
-            <span>Team Level 2 (5%)</span>
-          </div>
-          <div class="team-table-row" style="border-bottom:none;">
-            <span>${l3.length}</span>
-            <span>${sumInvest(l3).toFixed(2)}</span>
-            <span>Team Level 3 (1%)</span>
-          </div>
-        </div>
-
-        <div class="sec-heading">All Team Members (${allTeam.length})</div>
-        <div class="card-white">
-          ${allTeam.length ? allTeam.map(renderMemberItem).join("") : `<div style="font-size:13px;color:#6b7280;">No invited members yet. Share your link to earn 10%, 5%, and 1%!</div>`}
-        </div>
-
-        <div class="sec-heading" style="color:#15803d;border-color:#16a34a;">Deposit Members (${depositMembers.length})</div>
-        <div class="card-white">
-          ${depositMembers.length ? depositMembers.map(renderMemberItem).join("") : `<div style="font-size:13px;color:#6b7280;">No deposit members yet.</div>`}
-        </div>
-      `;
-    }
+    
 
     function copyReferralLink() {
       const box = document.getElementById("refLinkBox");
