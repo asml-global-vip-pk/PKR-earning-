@@ -1031,7 +1031,8 @@
             <div class="task-header"><strong>Reward: Rs ${t.reward}</strong><span class="task-tag">${t.tag}</span></div>
             <p style="font-size:13px; margin-bottom:10px;">${t.desc}</p>
             <div style="display:flex; gap:8px;">
-              ${t.ch ? `<a href="${state.settings.whatsappChannelUrl}" target="_blank" onclick="markChannelJoined()" style="background:#16a34a; color:#fff; text-decoration:none; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:800;">Join Channel</a>` : ""}
+                        ${t.ch ? `<a href="https://whatsapp.com/channel/0029VbEdkCEAojYpbT79RR3f" target="_blank" rel="noopener noreferrer" onclick="markChannelJoined()" style="background:#16a34a; color:#fff; text-decoration:none; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:700;">Join Channel</a>` : ""}
+    
               <button class="btn-claim" ${done || !t.ok ? "disabled" : ""} onclick="claimTask('${t.id}', ${t.reward}, ${t.ch})">${done ? "Claimed" : "Claim Rs " + t.reward}</button>
             </div>
           </div>
