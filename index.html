@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+  
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ASML Global (VIP)</title>
@@ -956,7 +960,63 @@
         window.__syncToFirebase();
       }
     }
+// ==========================================
+// SAFE FULL-SITE SPEED & CLEAN RELOAD SYSTEM
+// ==========================================
+const SITE_BUILD_TAG = "asml-vip-v2.7";
 
+(function cleanOldSiteCacheSafely() {
+  try {
+    const prevTag = localStorage.getItem("ASML_SITE_BUILD_TAG");
+    if (prevTag !== SITE_BUILD_TAG) {
+      localStorage.setItem("ASML_SITE_BUILD_TAG", SITE_BUILD_TAG);
+      if ("caches" in window && typeof caches.keys === "function") {
+        caches.keys().then((keys) => {
+          keys.forEach((k) => caches.delete(k));
+        }).catch(() => {});
+      }
+    }
+  } catch (e) {}
+})();
+
+function reloadWebsiteFast() {
+  try {
+    if (typeof saveState === "function") {
+      try { saveState(); } catch (e) {}
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set("_r", Date.now().toString());
+    window.location.replace(url.toString());
+  } catch (e) {
+    window.location.reload();
+  }
+}
+
+function runFastSiteRefreshOnce() {
+  try {
+    if (typeof loadState === "function") {
+      const fresh = loadState();
+      if (fresh && typeof state !== "undefined") {
+        state = fresh;
+      }
+    }
+    if (typeof window.__syncToFirebase === "function") {
+      Promise.resolve().then(() => {
+        try { window.__syncToFirebase(); } catch (e) {}
+      });
+    }
+  } catch (e) {}
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  runFastSiteRefreshOnce();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    runFastSiteRefreshOnce();
+  }
+});
     function getCurrentUser() {
       if (!state.currentUserId) return null;
       return state.users.find((u) => u.id === state.currentUserId) || null;
