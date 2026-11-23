@@ -1087,13 +1087,17 @@
     function openRulesPopup() { document.getElementById("rulesModal").classList.remove("hidden"); }
     function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
-    // ADMIN PANEL
     function openAdminModal() {
-      if (!isAdminUser()) return;
-      document.getElementById("adminModal").classList.remove("hidden");
-      renderAdminBody();
+  if (!isAdminUser()) return;
+  const modal = document.getElementById("adminModal");
+  if (!modal) return;
+  modal.classList.remove("hidden");
+  modal.style.display = "flex";
+  if (typeof renderAdminBody === "function") {
+    renderAdminBody();
+  }
     }
-
+    
     function switchAdminTab(tab, el) {
       currentAdminTab = tab;
       document.querySelectorAll(".admin-tab").forEach(b => b.classList.remove("active"));
