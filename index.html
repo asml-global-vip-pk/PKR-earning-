@@ -1088,15 +1088,31 @@
     function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
     function openAdminModal() {
-  if (!isAdminUser()) return;
-  const modal = document.getElementById("adminModal");
-  if (!modal) return;
-  modal.classList.remove("hidden");
-  modal.style.display = "flex";
-  if (typeof renderAdminBody === "function") {
-    renderAdminBody();
+  try {
+    const u = getCurrentUser();
+    const isAdm = Boolean(
+      u && String(u.email || "").trim().toLowerCase() === String(ADMIN_EMAIL || "").trim().toLowerCase()
+    );
+    if (!isAdm) return;
+
+    const modal = document.getElementById("adminModal");
+    if (!modal) {
+      alert("adminModal nahi mila");
+      return;
+    }
+
+    modal.classList.remove("hidden");
+    modal.style.display = "flex";
+
+    if (typeof renderAdminBody === "function") {
+      renderAdminBody();
+    }
+  } catch (e) {
+    alert("Admin error: " + e.message);
   }
     }
+    
+    
     
     function switchAdminTab(tab, el) {
       currentAdminTab = tab;
