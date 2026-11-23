@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>ASML Global VIP</title>
 
-  <!-- Firebase Compat SDKs (Safe & Fast without breaking existing data) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 
@@ -18,7 +17,6 @@
       --red-dark: #b91c1c;
       --orange: #f97316;
       --gold: #f59e0b;
-      --cream: #fff7ed;
       --bg: #fdf6f0;
       --card: #ffffff;
       --text: #1f2937;
@@ -29,820 +27,176 @@
       --grad-btn: linear-gradient(90deg, #e11d48 0%, #f97316 100%);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 84px;
-      overflow-x: hidden;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 86px; overflow-x: hidden; }
     .hidden { display: none !important; }
 
     /* Auth Screen */
-    .auth-screen {
-      min-height: 100vh;
-      background: var(--grad-main);
-      padding: 24px 16px 40px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+    .auth-screen { min-height: 100vh; background: var(--grad-main); padding: 24px 16px 40px; display: flex; flex-direction: column; align-items: center; }
+    .brand-logo-box { background: #fff; border-radius: 18px; padding: 12px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.18); display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .brand-logo-box img { width: 44px; height: 44px; border-radius: 12px; object-fit: cover; }
+    .brand-title { font-size: 20px; font-weight: 900; color: var(--red); }
+    .brand-sub { font-size: 11px; font-weight: 700; color: var(--orange); }
 
-    .brand-logo-box {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 12px 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
+    .auth-card { width: 100%; max-width: 430px; background: #fff; border-radius: 26px; padding: 24px 20px 26px; box-shadow: 0 14px 35px rgba(0,0,0,0.16); text-align: center; }
+    .welcome-pill { display: inline-block; background: #facc15; color: #7c2d12; font-size: 11px; font-weight: 800; padding: 5px 16px; border-radius: 999px; margin-bottom: 10px; }
+    .auth-heading { font-size: 24px; font-weight: 900; color: var(--red-dark); margin-bottom: 6px; }
+    .auth-desc { font-size: 13px; color: var(--muted); margin-bottom: 18px; }
 
-    .brand-logo-box img {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      object-fit: cover;
-    }
+    .input-group { background: #f4f4f5; border-radius: 14px; padding: 11px 14px; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border: 1.5px solid transparent; }
+    .input-group:focus-within { border-color: var(--orange); background: #fff; }
+    .input-group input, .input-group select { border: none; background: transparent; outline: none; width: 100%; font-size: 14px; color: var(--text); }
 
-    .brand-title {
-      font-size: 20px;
-      font-weight: 900;
-      color: var(--red);
-      letter-spacing: 0.4px;
-    }
+    .captcha-box { background: #e5e7eb; color: #1e3a8a; font-weight: 900; font-size: 18px; letter-spacing: 4px; padding: 6px 12px; border-radius: 10px; user-select: none; cursor: pointer; text-decoration: line-through; }
 
-    .brand-sub {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--orange);
-      text-transform: uppercase;
-    }
+    .btn-primary { width: 100%; border: none; border-radius: 999px; padding: 14px; background: var(--grad-btn); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 8px 18px rgba(225, 29, 72, 0.28); margin-top: 6px; }
+    .btn-outline { width: 100%; border: 1.5px solid var(--red); border-radius: 999px; padding: 12px; background: #fff; color: var(--red); font-size: 15px; font-weight: 800; cursor: pointer; }
+    .divider-text { font-size: 12px; color: var(--muted); margin: 14px 0 10px; }
+    .auth-footer { color: rgba(255,255,255,0.9); font-size: 12px; margin-top: 18px; text-align: center; }
 
-    .auth-card {
-      width: 100%;
-      max-width: 430px;
-      background: #ffffff;
-      border-radius: 26px;
-      padding: 24px 20px 26px;
-      box-shadow: 0 14px 35px rgba(0,0,0,0.16);
-      text-align: center;
-    }
+    /* Main App */
+    .app-wrap { max-width: 480px; margin: 0 auto; }
+    .top-red-zone { background: var(--grad-main); padding: 12px 14px 20px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
 
-    .welcome-pill {
-      display: inline-block;
-      background: #facc15;
-      color: #7c2d12;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 5px 16px;
-      border-radius: 999px;
-      letter-spacing: 0.8px;
-      margin-bottom: 10px;
-    }
+    .ticker-pill { background: #fff; border-radius: 999px; padding: 8px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); margin-bottom: 12px; }
+    .ticker-badge { font-weight: 900; color: var(--red-dark); font-size: 14px; white-space: nowrap; }
+    .ticker-text { font-size: 12px; color: #374151; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; flex: 1; font-weight: 600; }
 
-    .auth-heading {
-      font-size: 24px;
-      font-weight: 900;
-      color: var(--red-dark);
-      margin-bottom: 6px;
+    /* Small Moving Image Banners */
+    .banner-card { position: relative; width: 100%; height: 145px; border-radius: 18px; overflow: hidden; box-shadow: 0 10px 22px rgba(0,0,0,0.18); background: #7c2d12; }
+    .banner-card img { width: 100%; height: 100%; object-fit: cover; display: block; animation: bannerUpSlide 0.55s ease; }
+    @keyframes bannerUpSlide {
+      0% { transform: translateY(18px); opacity: 0.65; }
+      100% { transform: translateY(0); opacity: 1; }
     }
-
-    .auth-desc {
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 18px;
-    }
-
-    .input-group {
-      background: #f4f4f5;
-      border-radius: 14px;
-      padding: 11px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-      border: 1.5px solid transparent;
-    }
-
-    .input-group:focus-within {
-      border-color: var(--orange);
-      background: #fff;
-    }
-
-    .input-group input {
-      border: none;
-      background: transparent;
-      outline: none;
-      width: 100%;
-      font-size: 14px;
-      color: var(--text);
-    }
-  .captcha-box {
-      background: #e5e7eb;
-      color: #1e3a8a;
-      font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 4px;
-      padding: 6px 12px;
-      border-radius: 10px;
-      user-select: none;
-      cursor: pointer;
-      white-space: nowrap;
-      text-decoration: line-through;
-    }
-
-    .btn-primary {
-      width: 100%;
-      border: none;
-      border-radius: 999px;
-      padding: 14px;
-      background: var(--grad-btn);
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 8px 18px rgba(225, 29, 72, 0.28);
-      margin-top: 6px;
-    }
-
-    .btn-primary:active { transform: scale(0.99); }
-
-    .btn-outline {
-      width: 100%;
-      border: 1.5px solid var(--red);
-      border-radius: 999px;
-      padding: 12px;
-      background: #ffffff;
-      color: var(--red);
-      font-size: 15px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-
-    .divider-text {
-      font-size: 12px;
-      color: var(--muted);
-      margin: 14px 0 10px;
-    }
-
-    .auth-footer {
-      color: rgba(255,255,255,0.9);
-      font-size: 12px;
-      margin-top: 18px;
-      text-align: center;
-    }
-
-    /* Main App Container */
-    .app-wrap {
-      max-width: 480px;
-      margin: 0 auto;
-    }
-
-    /* Top Header & Ticker */
-    .top-red-zone {
-      background: var(--grad-main);
-      padding: 12px 14px 20px;
-      border-bottom-left-radius: 24px;
-      border-bottom-right-radius: 24px;
-    }
-
-    .ticker-pill {
-      background: #ffffff;
-      border-radius: 999px;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      margin-bottom: 12px;
-    }
-
-    .ticker-badge {
-      font-weight: 900;
-      color: var(--red-dark);
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .ticker-text {
-      font-size: 12px;
-      color: #374151;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      flex: 1;
-      font-weight: 600;
-    }
-
-    /* Top Image Banner Slider */
-    .banner-card {
-      position: relative;
-      width: 100%;
-      height: 165px;
-      border-radius: 18px;
-      overflow: hidden;
-      box-shadow: 0 10px 22px rgba(0,0,0,0.18);
-      background: #7c2d12;
-    }
-
-    .banner-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: opacity 0.35s ease;
-    }
-
-    .banner-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.68) 100%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 14px;
-      color: #fff;
-    }
-
-    .banner-tag {
-      display: inline-block;
-      background: #facc15;
-      color: #7c2d12;
-      font-size: 10px;
-      font-weight: 900;
-      padding: 3px 9px;
-      border-radius: 999px;
-      width: fit-content;
-      margin-bottom: 5px;
-    }
-
-    .banner-caption {
-      font-size: 14px;
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .banner-dots {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      display: flex;
-      gap: 5px;
-    }
-
-    .banner-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.45);
-    }
-
-    .banner-dot.active {
-      background: #facc15;
-      width: 16px;
-      border-radius: 999px;
-    }
+    .banner-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.72) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 12px 14px; color: #fff; }
+    .banner-tag { display: inline-block; background: #facc15; color: #7c2d12; font-size: 10px; font-weight: 900; padding: 2px 9px; border-radius: 999px; width: fit-content; margin-bottom: 4px; }
+    .banner-caption { font-size: 13px; font-weight: 800; line-height: 1.3; }
+    .banner-dots { position: absolute; top: 10px; right: 12px; display: flex; gap: 5px; }
+    .banner-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.45); }
+    .banner-dot.active { background: #facc15; width: 16px; border-radius: 999px; }
 
     /* Quick Actions */
-    .quick-grid {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 14px 8px;
-      margin: -10px 14px 14px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 6px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
-      position: relative;
-      z-index: 2;
-    } 
-     .quick-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .quick-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 15px;
-    }
+    .quick-grid { background: #fff; border-radius: 18px; padding: 14px 8px; margin: -10px 14px 14px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; box-shadow: 0 8px 20px rgba(0,0,0,0.06); position: relative; z-index: 2; }
+    .quick-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; font-weight: 700; color: var(--text); }
+    .quick-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; }
 
     /* Balance Card */
-    .balance-card {
-      margin: 0 14px 16px;
-      background: var(--grad-main);
-      border-radius: 20px;
-      padding: 18px;
-      color: #ffffff;
-      box-shadow: 0 10px 24px rgba(217, 38, 28, 0.22);
-    }
+    .balance-card { margin: 0 14px 16px; background: var(--grad-main); border-radius: 20px; padding: 18px; color: #fff; box-shadow: 0 10px 24px rgba(217, 38, 28, 0.22); }
+    .bal-amount { font-size: 30px; font-weight: 900; margin-bottom: 2px; }
+    .bal-label { font-size: 13px; opacity: 0.92; margin-bottom: 14px; }
+    .bal-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .bal-stat-box { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.22); border-radius: 14px; padding: 12px 10px; text-align: center; }
+    .bal-stat-val { font-size: 17px; font-weight: 900; margin-bottom: 2px; }
+    .bal-stat-lbl { font-size: 11px; opacity: 0.9; }
 
-    .bal-amount {
-      font-size: 30px;
-      font-weight: 900;
-      margin-bottom: 2px;
-    }
+    .sec-title { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 900; color: var(--red-dark); margin: 8px 14px 12px; }
+    .sec-bar { width: 4px; height: 18px; background: var(--orange); border-radius: 4px; }
 
-    .bal-label {
-      font-size: 13px;
-      opacity: 0.92;
-      margin-bottom: 14px;
-    }
+    .plan-card { background: #fff; border-radius: 20px; margin: 0 14px 14px; padding: 16px; box-shadow: 0 6px 18px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+    .plan-top-strip { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .plan-name { font-size: 19px; font-weight: 900; }
+    .plan-badge { background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
+    .plan-cycle { font-size: 13px; color: var(--orange); font-weight: 700; margin-bottom: 10px; }
+    .plan-pill { display: inline-block; border: 1px solid #e5e7eb; border-radius: 999px; padding: 6px 14px; font-size: 13px; font-weight: 700; margin-bottom: 8px; margin-right: 6px; background: #fafafa; }
+    .plan-pill span { color: var(--red-dark); font-weight: 900; }
 
-    .bal-stats {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .sub-header { background: var(--grad-main); color: #fff; padding: 16px; text-align: center; font-size: 19px; font-weight: 900; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; margin-bottom: 14px; }
 
-    .bal-stat-box {
-      background: rgba(255,255,255,0.16);
-      border: 1px solid rgba(255,255,255,0.22);
-      border-radius: 14px;
-      padding: 12px 10px;
-      text-align: center;
-    }
+    .white-card { background: #fff; border-radius: 18px; padding: 16px; margin: 0 14px 14px; box-shadow: 0 6px 16px rgba(0,0,0,0.05); border: 1px solid var(--border); }
+    .table-wrap { width: 100%; overflow-x: auto; margin-top: 8px; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid #f3f4f6; white-space: nowrap; }
+    th { background: #fff7ed; color: var(--red-dark); font-weight: 800; }
 
-    .bal-stat-val {
-      font-size: 17px;
-      font-weight: 900;
-      margin-bottom: 2px;
-    }
+    .task-card { background: #fff; border-radius: 18px; padding: 16px; margin: 0 14px 12px; border-left: 4px solid var(--orange); box-shadow: 0 6px 16px rgba(0,0,0,0.05); }
+    .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .task-tag { background: #fee2e2; color: var(--red-dark); font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 999px; }
+    .btn-claim { border: none; border-radius: 999px; padding: 9px 18px; font-size: 13px; font-weight: 800; cursor: pointer; background: var(--grad-btn); color: #fff; }
+    .btn-claim:disabled { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; }
+    mine-hero { background: var(--grad-main); padding: 24px 16px 36px; text-align: center; color: #fff; border-bottom-left-radius: 26px; border-bottom-right-radius: 26px; }
+    .mine-avatar { width: 68px; height: 68px; border-radius: 50%; border: 3px solid #fff; margin: 0 auto 8px; background: #fff; overflow: hidden; }
+    .mine-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .mine-bal-card { background: #fff; border-radius: 18px; margin: -22px 14px 14px; padding: 16px; display: grid; grid-template-columns: 1fr 1fr; text-align: center; box-shadow: 0 8px 20px rgba(0,0,0,0.07); }
+    .mine-menu-item { background: #fff; border-radius: 16px; padding: 14px 16px; margin: 0 14px 10px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
 
-    .bal-stat-lbl {
-      font-size: 11px;
-      opacity: 0.9;
-    }
+    .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background: #fff; border-top: 1px solid #f3f4f6; display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 4px 10px; z-index: 40; box-shadow: 0 -4px 16px rgba(0,0,0,0.05); }
+    .nav-btn { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: #6b7280; cursor: pointer; border: none; background: transparent; }
+    .nav-btn.active { color: var(--red); }
 
-    /* Section Title */
-    .sec-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--red-dark);
-      margin: 8px 14px 12px;
-    }
+    .floating-support { position: fixed; right: 14px; bottom: 78px; width: 54px; height: 54px; border-radius: 50%; background: var(--grad-main); border: 2.5px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.22); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 24px; cursor: pointer; z-index: 45; }
 
-    .sec-bar {
-      width: 4px;
-      height: 18px;
-      background: var(--orange);
-      border-radius: 4px;
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.65); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 60; }
+    .modal-box { background: #fff; border-radius: 22px; width: 100%; max-width: 430px; max-height: 88vh; overflow-y: auto; padding: 20px; box-shadow: 0 18px 40px rgba(0,0,0,0.25); }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #f3f4f6; padding-bottom: 10px; }
+    .close-btn { background: #fee2e2; color: var(--red-dark); border: none; border-radius: 50%; width: 30px; height: 30px; font-weight: 900; cursor: pointer; }
 
-    /* VIP Product Cards */
-    .plan-card {
-      background: #ffffff;
-      border-radius: 20px;
-      margin: 0 14px 14px;
-      padding: 16px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
-      border: 1px solid var(--border);
-      position: relative;
-      overflow: hidden;
-    }
+    .admin-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; }
+    .admin-tab { border: 1px solid #e5e7eb; background: #f9fafb; padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; white-space: nowrap; cursor: pointer; }
+    .admin-tab.active { background: var(--red); color: #fff; border-color: var(--red); }
 
-    .plan-top-strip {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .plan-name {
-      font-size: 19px;
-      font-weight: 900;
-      color: var(--text);
-    }
-
-    .plan-badge {
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 999px;
-    }
-
-    .plan-cycle {
-      font-size: 13px;
-      color: var(--orange);
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .plan-pill {
-      display: inline-block;
-      border: 1px solid #e5e7eb;
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      margin-right: 6px;
-      background: #fafafa;
-    }
-
-    .plan-pill span {
-      color: var(--red-dark);
-      font-weight: 900;
-    }
-
-    /* Page Headers for Sub Tabs */
-    .sub-header {
-      background: var(--grad-main);
-      color: #fff;
-      padding: 16px;
-      text-align: center;
-      font-size: 19px;
-      font-weight: 900;
-      border-bottom-left-radius: 20px;
-      border-bottom-right-radius: 20px;
-      margin-bottom: 14px;
-    }
-
-    /* Cards & Tables */
-    .white-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 16px;
-      margin: 0 14px 14px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-      border: 1px solid var(--border);
-    }
-
-    .table-wrap {
-      width: 100%;
-      overflow-x: auto;
-      margin-top: 8px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 12px;
-    }
-
-    th, td {
-      padding: 9px 8px;
-      text-align: left;
-      border-bottom: 1px solid #f3f4f6;
-      white-space: nowrap;
-    }
-
-    th {
-      background: #fff7ed;
-      color: var(--red-dark);
-      font-weight: 800;
-    }
-
-    /* Task Card */
-    .task-card {
-      background: #ffffff;
-      border-radius: 18px;
-      padding: 16px;
-      margin: 0 14px 12px;
-      border-left: 4px solid var(--orange);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-    }
-
-    .task-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-
-    .task-tag {
-      background: #fee2e2;
-      color: var(--red-dark);
-      font-size: 11px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 999px;
-    }
-
-    .btn-claim {
-      border: none;
-      border-radius: 999px;
-      padding: 9px 18px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      background: var(--grad-btn);
-      color: #fff;
-  } 
-    btn-claim:disabled {
-      background: #e5e7eb;
-      color: #9ca3af;
-      cursor: not-allowed;
-    }
-
-    /* Mine / Profile */
-    .mine-hero {
-      background: var(--grad-main);
-      padding: 24px 16px 36px;
-      text-align: center;
-      color: #fff;
-      border-bottom-left-radius: 26px;
-      border-bottom-right-radius: 26px;
-    }
-
-    .mine-avatar {
-      width: 68px;
-      height: 68px;
-      border-radius: 50%;
-      border: 3px solid #fff;
-      margin: 0 auto 8px;
-      background: #fff;
-      overflow: hidden;
-    }
-
-    .mine-avatar img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .mine-bal-card {
-      background: #fff;
-      border-radius: 18px;
-      margin: -22px 14px 14px;
-      padding: 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      text-align: center;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.07);
-    }
-
-    .mine-menu-item {
-      background: #ffffff;
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin: 0 14px 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
-    }
-
-    /* Bottom Navigation */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #ffffff;
-      border-top: 1px solid #f3f4f6;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      padding: 8px 4px 10px;
-      z-index: 40;
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.05);
-    }
-
-    .nav-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #6b7280;
-      cursor: pointer;
-      border: none;
-      background: transparent;
-    }
-
-    .nav-btn.active {
-      color: var(--red);
-    }
-
-    /* Floating Support Button */
-    .floating-support {
-      position: fixed;
-      right: 14px;
-      bottom: 78px;
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: var(--grad-main);
-      border: 2.5px solid #fff;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.22);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 45;
-    }
-
-    /* Modals */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.65);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 60;
-    }
-
-    .modal-box {
-      background: #ffffff;
-      border-radius: 22px;
-      width: 100%;
-      max-width: 430px;
-      max-height: 88vh;
-      overflow-y: auto;
-      padding: 20px;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.25);
-    }
-
-    .modal-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      border-bottom: 1px solid #f3f4f6;
-      padding-bottom: 10px;
-    }
-
-    .close-btn {
-      background: #fee2e2;
-      color: var(--red-dark);
-      border: none;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-weight: 900;
-      cursor: pointer;
-    }
-
-    /* Admin Panel Tabs */
-    .admin-tabs {
-      display: flex;
-      gap: 6px;
-      overflow-x: auto;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
-    }
-
-    .admin-tab {
-      border: 1px solid #e5e7eb;
-      background: #f9fafb;
-      padding: 7px 12px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .admin-tab.active {
-      background: var(--red);
-      color: #fff;
-      border-color: var(--red);
-    }
-
-    .badge-status {
-      padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-      font-weight: 800;
-    }
+    .badge-status { padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 800; }
     .st-pending { background: #fef3c7; color: #b45309; }
     .st-approved { background: #dcfce7; color: #15803d; }
     .st-rejected { background: #fee2e2; color: #b91c1c; }
 
-    /* AI Chat Box */
-    .ai-chat-log {
-      background: #f9fafb;
-      border-radius: 14px;
-      padding: 12px;
-      height: 210px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      font-size: 13px;
-    }
-    .ai-msg {
-      padding: 8px 12px;
-      border-radius: 12px;
-      max-width: 85%;
-      line-height: 1.4;
-    }
+    .ai-chat-log { background: #f9fafb; border-radius: 14px; padding: 12px; height: 200px; overflow-y: auto; margin-bottom: 10px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; }
+    .ai-msg { padding: 8px 12px; border-radius: 12px; max-width: 85%; line-height: 1.4; }
     .ai-msg.bot { background: #fff7ed; border: 1px solid #fed7aa; align-self: flex-start; }
     .ai-msg.user { background: var(--red); color: #fff; align-self: flex-end; }
   </style>
 </head>
-<body> 
-  <!-- ==================== AUTH SCREEN ==================== -->
+<body>
+
+  <!-- AUTH SCREEN -->
   <div id="authSection" class="auth-screen">
     <div class="brand-logo-box">
       <img id="authLogoImg" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=200&q=80" alt="ASML Logo" />
       <div>
-        <div class="brand-title" id="authSiteName">ASML Global VIP</div>
+        <div class="brand-title">ASML Global VIP</div>
         <div class="brand-sub">Official Earning & Investment</div>
       </div>
     </div>
 
-    <!-- REGISTER CARD -->
     <div id="registerCard" class="auth-card">
       <div class="welcome-pill">WELCOME BONUS RS 100</div>
       <div class="auth-heading">CREATE ACCOUNT</div>
       <div class="auth-desc">Join us, register and start your investment journey</div>
 
-      <div class="input-group">
-        <span>👤</span>
-        <input type="text" id="regName" placeholder="Enter your full name" />
-      </div>
-
-      <div class="input-group">
-        <span>📱</span>
-        <input type="text" id="regPhone" placeholder="Phone (+923001234567) or Email" />
-      </div>
-
-      <div class="input-group">
-        <span>✉️</span>
-        <input type="email" id="regEmail" placeholder="Enter your email address" />
-      </div>
-
-      <div class="input-group">
-        <span>🔒</span>
-        <input type="password" id="regPass" placeholder="Enter your password" />
-      </div>
-
-      <div class="input-group">
-        <span>🔒</span>
-        <input type="password" id="regPass2" placeholder="Re-enter your password" />
-      </div>
-
+      <div class="input-group"><span>👤</span><input type="text" id="regName" placeholder="Enter your full name" /></div>
+      <div class="input-group"><span>📱</span><input type="text" id="regPhone" placeholder="Phone (+923001234567)" /></div>
+      <div class="input-group"><span>✉️</span><input type="email" id="regEmail" placeholder="Email address (optional if phone given)" /></div>
+      <div class="input-group"><span>🔒</span><input type="password" id="regPass" placeholder="Enter your password" /></div>
+      <div class="input-group"><span>🔒</span><input type="password" id="regPass2" placeholder="Re-enter your password" /></div>
       <div class="input-group">
         <span>🛡️</span>
         <input type="text" id="regCaptchaInput" placeholder="Enter verification code" />
         <div id="captchaDisplay" class="captcha-box" onclick="generateCaptcha()">7769</div>
       </div>
-
-      <div class="input-group">
-        <span>🏷️</span>
-        <input type="text" id="regInviteCode" placeholder="Invitation code (Optional)" />
-      </div>
+      <div class="input-group"><span>🏷️</span><input type="text" id="regInviteCode" placeholder="Invitation code (Optional)" /></div>
 
       <button class="btn-primary" onclick="handleRegister()">Sign Up</button>
       <div class="divider-text">Already have an account?</div>
       <button class="btn-outline" onclick="toggleAuthMode('login')">Sign In</button>
     </div>
 
-    <!-- LOGIN CARD -->
     <div id="loginCard" class="auth-card hidden">
       <div class="welcome-pill">WELCOME BACK</div>
       <div class="auth-heading">SIGN IN</div>
-      <div class="auth-desc">Sign in with your Phone Number or Email</div>
+      <div class="auth-desc">Sign in with Phone Number or Email</div>
 
-      <div class="input-group">
-        <span>👤</span>
-        <input type="text" id="loginIdentifier" placeholder="Enter phone number or email" />
-      </div>
+      <div class="input-group"><span>👤</span><input type="text" id="loginIdentifier" placeholder="Phone number or email" /></div>
+      <div class="input-group"><span>🔒</span><input type="password" id="loginPass" placeholder="Enter your password" /></div>
 
-      <div class="input-group">
-        <span>🔒</span>
-        <input type="password" id="loginPass" placeholder="Enter your password" />
+      <button class="btn-primary" onclick="handleLogin()">Sign In</button>
+      <div class="divider-text">Don't have an account?</div>
+      <button class="btn-outline" onclick="toggleAuthMode('register')">Register</button>
+    </div>
+
+    <div class="auth-footer">© ASML Global VIP — All Rights Reserved</div>
   </div>
-  <div class="auth-footer">© ASML Global VIP — Trusted Platform</div>
-  </div>
 
-  <!-- ==================== MAIN APP ==================== -->
+  <!-- MAIN APP -->
   <div id="mainApp" class="app-wrap hidden">
 
     <!-- TAB 1: HOME -->
@@ -850,178 +204,111 @@
       <div class="top-red-zone">
         <div class="ticker-pill">
           <div class="ticker-badge">Home</div>
-          <div class="ticker-text" id="liveTicker">🎉 Congratulations! Member 0319***784 withdrew Rs 2,500.00 • Welcome to ASML Global VIP</div>
+          <div class="ticker-text" id="liveTicker">🎉 Congratulations! Member 0319***784 withdrew Rs 2,500.00 • ASML Global VIP</div>
         </div>
 
-        <!-- TOP IMAGE BANNER SLIDER -->
+        <!-- SMALL MOVING IMAGE BANNERS -->
         <div class="banner-card">
-          <img id="topBannerImg" src="" alt="Featured Banner" />
+          <img id="topBannerImg" src="" alt="Banner" />
           <div class="banner-overlay">
-            <span class="banner-tag" id="topBannerTag">ASML SPECIAL</span>
-            <div class="banner-caption" id="topBannerText">Premium Tea, Chicken & Friendship Rewards — Earn Daily Profit!</div>
+            <span class="banner-tag" id="topBannerTag">ASML VIP</span>
+            <div class="banner-caption" id="topBannerText">Tea, Chicken & Friendship Rewards</div>
           </div>
           <div class="banner-dots" id="bannerDots"></div>
         </div>
       </div>
 
-      <!-- QUICK ACTIONS -->
       <div class="quick-grid">
-        <div class="quick-item" onclick="openRechargeModal()">
-          <div class="quick-icon" style="background:#dcfce7; color:#15803d;">Rs</div>
-          <span>Recharge</span>
-        </div>
-        <div class="quick-item" onclick="openWithdrawModal()">
-          <div class="quick-icon" style="background:#fee2e2; color:#b91c1c;">Rs</div>
-          <span>Withdraw</span>
-        </div>
-        <div class="quick-item" onclick="switchTab('task')">
-          <div class="quick-icon" style="background:#ffedd5; color:#c2410c;">📋</div>
-          <span>Task</span>
-        </div>
-        <div class="quick-item" onclick="handleDailyCheckIn()">
-          <div class="quick-icon" style="background:#fef9c3; color:#a16207;">📅</div>
-          <span>Check-in</span>
-        </div>
+        <div class="quick-item" onclick="openRechargeModal()"><div class="quick-icon" style="background:#dcfce7; color:#15803d;">Rs</div><span>Recharge</span></div>
+        <div class="quick-item" onclick="openWithdrawModal()"><div class="quick-icon" style="background:#fee2e2; color:#b91c1c;">Rs</div><span>Withdraw</span></div>
+        <div class="quick-item" onclick="switchTab('task')"><div class="quick-icon" style="background:#ffedd5; color:#c2410c;">📋</div><span>Task</span></div>
+        <div class="quick-item" onclick="handleDailyCheckIn()"><div class="quick-icon" style="background:#fef9c3; color:#a16207;">📅</div><span>Check-in</span></div>
       </div>
-
-      <!-- BALANCE CARD -->
-      <div class="balance-card">
+              <div class="balance-card">
         <div class="bal-amount">Rs <span id="homeBalance">0.00</span></div>
         <div class="bal-label">Account Balance (Rs) • User: <strong id="homeUserName">Member</strong></div>
         <div class="bal-stats">
-          <div class="bal-stat-box">
-            <div class="bal-stat-val" id="homeOrdersCount">0</div>
-            <div class="bal-stat-lbl">Number of Orders</div>
-          </div>
-          <div class="bal-stat-box">
-            <div class="bal-stat-val">Rs <span id="homeTotalEarnings">0</span></div>
-            <div class="bal-stat-lbl">Total Earnings</div>
-          </div>
+          <div class="bal-stat-box"><div class="bal-stat-val" id="homeOrdersCount">0</div><div class="bal-stat-lbl">Number of Orders</div></div>
+          <div class="bal-stat-box"><div class="bal-stat-val">Rs <span id="homeTotalEarnings">0</span></div><div class="bal-stat-lbl">Total Earnings</div></div>
         </div>
       </div>
 
-      <!-- FEATURED PRODUCTS / VIP PLANS -->
-      <div class="sec-title">
-        <div class="sec-bar"></div>
-        <span>Featured Products (VIP Plans)</span>
-      </div>
+      <div class="sec-title"><div class="sec-bar"></div><span>Featured Products (VIP Plans)</span></div>
       <div id="plansContainer"></div>
     </div>
 
-    <!-- TAB 2: ORDERS (24-HOUR CLAIM SYSTEM) -->
+    <!-- TAB 2: ORDERS -->
     <div id="tabOrders" class="hidden">
-      <div class="sub-header">Orders (24-Hour Cycle)</div>
+      <div class="sub-header">Orders (24-Hour Claim)</div>
       <div class="balance-card">
         <div class="bal-stats" style="grid-template-columns: repeat(3, 1fr);">
-          <div class="bal-stat-box">
-            <div class="bal-stat-val">Rs <span id="ordTotalProfit">0</span></div>
-            <div class="bal-stat-lbl">Total Profit</div>
-          </div>
-          <div class="bal-stat-box">
-            <div class="bal-stat-val">Rs <span id="ordTodayProfit">0</span></div>
-            <div class="bal-stat-lbl">Claimable Now</div>
-          </div>
-          <div class="bal-stat-box">
-            <div class="bal-stat-val" id="ordQty">0</div>
-            <div class="bal-stat-lbl">Active Plans</div>
-          </div>
+          <div class="bal-stat-box"><div class="bal-stat-val">Rs <span id="ordTotalProfit">0</span></div><div class="bal-stat-lbl">Total Profit</div></div>
+          <div class="bal-stat-box"><div class="bal-stat-val">Rs <span id="ordTodayProfit">0</span></div><div class="bal-stat-lbl">Claimable Now</div></div>
+          <div class="bal-stat-box"><div class="bal-stat-val" id="ordQty">0</div><div class="bal-stat-lbl">Active Plans</div></div>
         </div>
       </div>
-      <div class="sec-title">
-        <div class="sec-bar"></div>
-        <span>Running Plans (Claim After Exact 24 Hours)</span>
-      </div>
+      <div class="sec-title"><div class="sec-bar"></div><span>Running Plans (Exact 24h Timer)</span></div>
       <div id="ordersListContainer"></div>
     </div>
 
-    <!-- TAB 3: TEAM & REFERRALS (TWO SEPARATE TABLES + AUTO COMMISSION) -->
+    <!-- TAB 3: TEAM & REFERRALS -->
     <div id="tabTeam" class="hidden">
       <div class="sub-header">Team & Referral Commission</div>
 
-      <!-- TOP REFERRAL EARNINGS SUMMARY -->
       <div class="balance-card">
         <div class="bal-amount">Rs <span id="teamTotalEarnings">0.00</span></div>
-        <div class="bal-label">Total Referral Commission (Auto: L1 10% • L2 5% • L3 1%)</div>
-        <div style="font-size:13px; margin-bottom:10px;">Total Team Members: <strong id="teamTotalMembers">0</strong> | Invite Code: <strong id="myInviteCode">-</strong></div>
+        <div class="bal-label">Referral Earnings (Auto: L1 10% • L2 5% • L3 1%)</div>
+        <div style="font-size:13px; margin-bottom:10px;">All Team Members: <strong id="teamTotalMembers">0</strong> | Invite Code: <strong id="myInviteCode">-</strong></div>
         <div style="display:flex; gap:8px;">
           <input type="text" id="myReferralLinkInput" readonly style="flex:1; padding:10px 12px; border-radius:999px; border:none; font-size:12px;" />
           <button onclick="copyReferralLink()" style="background:#facc15; color:#7c2d12; border:none; border-radius:999px; padding:0 18px; font-weight:900; cursor:pointer;">Copy</button>
         </div>
       </div>
 
-      <!-- LEVEL OVERVIEW -->
+      <!-- 1. REFERRAL / ALL TEAM TABLE -->
       <div class="white-card">
-        <div style="font-weight:900; color:var(--red-dark); margin-bottom:8px;">Team Commission Structure</div>
+        <div style="font-weight:900; color:var(--red-dark); margin-bottom:4px;">Referral & All Team Members</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">ID, Name, Phone & Level of all referred members</div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>Level</th>
-                <th>Commission</th>
-                <th>Members</th>
-                <th>Team Deposit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Level 1</strong></td>
-                <td><span style="color:var(--green); font-weight:800;">10% Auto</span></td>
-                <td id="lvl1Count">0</td>
-                <td id="lvl1Dep">Rs 0</td>
-              </tr>
-              <tr>
-                <td><strong>Level 2</strong></td>
-                <td><span style="color:var(--green); font-weight:800;">5% Auto</span></td>
-                <td id="lvl2Count">0</td>
-                <td id="lvl2Dep">Rs 0</td>
-              </tr>
-              <tr>
-                <td><strong>Level 3</strong></td>
-                <td><span style="color:var(--green); font-weight:800;">1% Auto</span></td>
-                <td id="lvl3Count">0</td>
-                <td id="lvl3Dep">Rs 0</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- TABLE 1: ALL REFERRED TEAM MEMBERS -->
-      <div class="white-card">
-        <div style="font-weight:900; color:var(--red-dark); margin-bottom:4px;">1. Referral Team Members List</div>
-        <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">All members who joined via your link/code</div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Phone / Email</th>
-                <th>Level</th>
-              </tr>
+              <tr><th>ID</th><th>Name</th><th>Phone</th><th>Level</th></tr>
             </thead>
             <tbody id="teamMembersTableBody">
               <tr><td colspan="4" style="text-align:center; color:#6b7280;">No team members yet</td></tr>
             </tbody>
           </table>
         </div>
-        </div>
-     <!-- TABLE 2: TEAM DEPOSIT & COMMISSION DETAILS -->
+      </div>
+
+      <!-- 2. DEPOSIT TABLE (0 IF NOT DEPOSITED) -->
       <div class="white-card">
-        <div style="font-weight:900; color:var(--red-dark); margin-bottom:4px;">2. Team Deposit & Commission Table</div>
-        <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">Approved deposits (0 if not deposited) & your commission</div>
+        <div style="font-weight:900; color:var(--red-dark); margin-bottom:4px;">Team Deposit Status Table</div>
+        <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">Approved deposit amount (0 if no deposit)</div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>Member Name</th>
-                <th>Phone</th>
-                <th>Total Deposit</th>
-                <th>Your Commission</th>
-              </tr>
+              <tr><th>Name</th><th>Phone</th><th>Deposit</th><th>Status</th></tr>
             </thead>
             <tbody id="teamDepositsTableBody">
               <tr><td colspan="4" style="text-align:center; color:#6b7280;">No deposit records yet</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. FULL TEAM COMMISSION SUMMARY -->
+      <div class="white-card">
+        <div style="font-weight:900; color:var(--red-dark); margin-bottom:6px;">Complete Team & Commission Breakdown</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Level</th><th>Rate</th><th>Members</th><th>Commission Earned</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Level 1</strong></td><td>10%</td><td id="lvl1Count">0</td><td id="lvl1Comm">Rs 0</td></tr>
+              <tr><td><strong>Level 2</strong></td><td>5%</td><td id="lvl2Count">0</td><td id="lvl2Comm">Rs 0</td></tr>
+              <tr><td><strong>Level 3</strong></td><td>1%</td><td id="lvl3Count">0</td><td id="lvl3Comm">Rs 0</td></tr>
             </tbody>
           </table>
         </div>
@@ -1038,12 +325,10 @@
       <div id="tasksContainer"></div>
     </div>
 
-    <!-- TAB 5: MINE / PROFILE -->
+    <!-- TAB 5: MINE -->
     <div id="tabMine" class="hidden">
       <div class="mine-hero">
-        <div class="mine-avatar">
-          <img id="mineLogoImg" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=200&q=80" alt="Profile" />
-        </div>
+        <div class="mine-avatar"><img id="mineLogoImg" src="https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=200&q=80" alt="Profile" /></div>
         <div style="font-size:18px; font-weight:900;" id="mineName">Member</div>
         <div style="font-size:13px; opacity:0.9;" id="minePhoneEmail">-</div>
         <div style="font-size:12px; margin-top:4px; background:rgba(0,0,0,0.2); display:inline-block; padding:3px 12px; border-radius:999px;">ID: <span id="mineUserId">-</span></div>
@@ -1061,42 +346,19 @@
       </div>
 
       <div class="quick-grid" style="margin-top:0; grid-template-columns: repeat(3, 1fr);">
-        <div class="quick-item" onclick="openRechargeModal()">
-          <div class="quick-icon" style="background:var(--red); color:#fff;">📥</div>
-          <span>Recharge</span>
-        </div>
-        <div class="quick-item" onclick="openWithdrawModal()">
-          <div class="quick-icon" style="background:var(--orange); color:#fff;">💳</div>
-          <span>Withdraw</span>
-        </div>
-        <div class="quick-item" onclick="openTransactionsModal()">
-          <div class="quick-icon" style="background:#f59e0b; color:#fff;">📜</div>
-          <span>Records</span>
-        </div>
+        <div class="quick-item" onclick="openRechargeModal()"><div class="quick-icon" style="background:var(--red); color:#fff;">📥</div><span>Recharge</span></div>
+        <div class="quick-item" onclick="openWithdrawModal()"><div class="quick-icon" style="background:var(--orange); color:#fff;">💳</div><span>Withdraw</span></div>
+        <div class="quick-item" onclick="openTransactionsModal()"><div class="quick-icon" style="background:#f59e0b; color:#fff;">📜</div><span>Records</span></div>
       </div>
 
-      <div class="mine-menu-item" onclick="openTransactionsModal()">
-        <span>📄 Transactions (Deposit & Withdraw Status)</span>
-        <span>›</span>
-      </div>
-      <div class="mine-menu-item" onclick="openSupportModal()">
-        <span>🎧 Customer Support & AI Assistant</span>
-        <span>›</span>
-      </div>
-      <div class="mine-menu-item" onclick="openRulesPopup()">
-        <span>📢 Platform Rules & Official Channel</span>
-        <span>›</span>
-      </div>
-      <div id="adminAccessMenu" class="mine-menu-item hidden" style="background:#fef2f2; border:1.5px solid var(--red); color:var(--red-dark);" onclick="openAdminModal()">
-        <span>🛡️ Private Admin Panel (Full Control)</span>
-        <span>›</span>
-      </div>
-      <div class="mine-menu-item" style="color:var(--red-dark);" onclick="handleLogout()">
-        <span>🚪 Logout</span>
-        <span>›</span>
-      </div>
-          </div>
-           <!-- BOTTOM NAVIGATION -->
+      <div class="mine-menu-item" onclick="openTransactionsModal()"><span>📄 Transactions Status</span><span>›</span></div>
+      <div class="mine-menu-item" onclick="openSupportModal()"><span>🎧 Customer Support & AI</span><span>›</span></div>
+      <div class="mine-menu-item" onclick="openRulesPopup()"><span>📢 Rules & WhatsApp Channel</span><span>›</span></div>
+      <div id="adminAccessMenu" class="mine-menu-item hidden" style="background:#fef2f2; border:1.5px solid var(--red); color:var(--red-dark);" onclick="openAdminModal()"><span>🛡️ Private Admin Panel</span><span>›</span></div>
+      <div class="mine-menu-item" style="color:var(--red-dark);" onclick="handleLogout()"><span>🚪 Logout</span><span>›</span></div>
+    </div>
+
+    <!-- BOTTOM NAV -->
     <div class="bottom-nav">
       <button class="nav-btn active" id="navHome" onclick="switchTab('home')">🏠<span>Home</span></button>
       <button class="nav-btn" id="navOrders" onclick="switchTab('orders')">📦<span>Orders</span></button>
@@ -1105,167 +367,111 @@
       <button class="nav-btn" id="navMine" onclick="switchTab('mine')">👤<span>Mine</span></button>
     </div>
 
-    <!-- FLOATING CUSTOMER SUPPORT -->
-    <div class="floating-support" onclick="openSupportModal()" title="Customer Support & AI">🎧</div>
+    <div class="floating-support" onclick="openSupportModal()">🎧</div>
   </div>
 
-  <!-- ==================== MODALS ==================== -->
-
-  <!-- 1. PLAN DETAIL & BUY MODAL -->
+  <!-- MODALS -->
   <div id="planDetailModal" class="modal-backdrop hidden">
     <div class="modal-box">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);" id="pdTitle">VIP Plan Details</strong>
-        <button class="close-btn" onclick="closeModal('planDetailModal')">✕</button>
-      </div>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);" id="pdTitle">Plan Details</strong><button class="close-btn" onclick="closeModal('planDetailModal')">✕</button></div>
       <div id="pdBody" style="font-size:14px; line-height:1.6;"></div>
-      <button class="btn-primary" id="pdConfirmBtn" style="margin-top:14px;">Confirm & Buy Plan</button>
+      <button class="btn-primary" id="pdConfirmBtn" style="margin-top:14px;">Buy Plan</button>
     </div>
   </div>
 
-  <!-- 2. RECHARGE / DEPOSIT MODAL (AUTO-SELECTED SINGLE ACCOUNT) -->
   <div id="rechargeModal" class="modal-backdrop hidden">
     <div class="modal-box">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">Deposit / Recharge</strong>
-        <button class="close-btn" onclick="closeModal('rechargeModal')">✕</button>
-      </div>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">Deposit / Recharge</strong><button class="close-btn" onclick="closeModal('rechargeModal')">✕</button></div>
       <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:14px; padding:12px; margin-bottom:12px; font-size:13px;">
-        <div style="font-weight:800; color:var(--red-dark); margin-bottom:4px;">Assigned Payment Account (Auto-Selected):</div>
+        <div style="font-weight:800; color:var(--red-dark); margin-bottom:4px;">Selected Deposit Account:</div>
         <div>Method: <strong id="assignedPayMethod">Easypaisa</strong></div>
-        <div>Account Number: <strong id="assignedPayNumber" style="font-size:16px; color:#111;">03192649784</strong></div>
-        <div>Account Title: <strong id="assignedPayTitle">Waqas Nadeem</strong></div>
-        <button onclick="copyAssignedNumber()" style="margin-top:8px; background:var(--orange); color:#fff; border:none; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:800; cursor:pointer;">Copy Account Number</button>
+        <div>Number: <strong id="assignedPayNumber" style="font-size:16px;">03192649784</strong></div>
+        <div>Name: <strong id="assignedPayTitle">Waqas Nadeem</strong></div>
+        <button onclick="copyAssignedNumber()" style="margin-top:8px; background:var(--orange); color:#fff; border:none; padding:6px 14px; border-radius:999px; font-size:12px; font-weight:800; cursor:pointer;">Copy Number</button>
       </div>
-
-      <div class="input-group">
-        <span>💰</span>
-        <input type="number" id="depAmount" placeholder="Enter deposit amount (Min Rs 500)" />
-      </div>
-      <div class="input-group">
-        <span>🧾</span>
-        <input type="text" id="depTrxId" placeholder="Enter Transaction ID (TID)" />
-      </div>
-      <div class="input-group">
-        <span>📱</span>
-        <input type="text" id="depSender" placeholder="Your sender account number" />
-      </div>
-      <button class="btn-primary" onclick="submitDepositRequest()">Submit Deposit Request</button>
+      <div class="input-group"><span>💰</span><input type="number" id="depAmount" placeholder="Deposit amount (Rs)" /></div>
+      <div class="input-group"><span>🧾</span><input type="text" id="depTrxId" placeholder="Transaction ID (TID)" /></div>
+      <div class="input-group"><span>📱</span><input type="text" id="depSender" placeholder="Sender number" /></div>
+      <button class="btn-primary" onclick="submitDepositRequest()">Submit Deposit</button>
     </div>
   </div>
 
-  <!-- 3. WITHDRAW MODAL -->
   <div id="withdrawModal" class="modal-backdrop hidden">
     <div class="modal-box">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">Withdraw Funds</strong>
-        <button class="close-btn" onclick="closeModal('withdrawModal')">✕</button>
-      </div>
-      <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Minimum Withdrawal: <strong>Rs 400</strong> • Available: <strong>Rs <span id="wdAvailBal">0</span></strong></div>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">Withdraw</strong><button class="close-btn" onclick="closeModal('withdrawModal')">✕</button></div>
+      <div style="font-size:12px; color:var(--muted); margin-bottom:10px;">Min Withdraw: <strong>Rs 400</strong> • Balance: <strong>Rs <span id="wdAvailBal">0</span></strong></div>
       <div class="input-group">
         <span>🏦</span>
-        <select id="wdMethod" style="border:none; background:transparent; width:100%; font-size:14px; outline:none;">
+        <select id="wdMethod">
           <option value="Easypaisa">Easypaisa</option>
           <option value="JazzCash">JazzCash</option>
-          <option value="Bank Transfer">Bank Transfer</option>
+          <option value="Bank">Bank</option>
         </select>
       </div>
-      <div class="input-group">
-        <span>👤</span>
-        <input type="text" id="wdAccName" placeholder="Account holder name" />
-      </div>
-      <div class="input-group">
-        <span>🔢</span>
-        <input type="text" id="wdAccNum" placeholder="Account / IBAN number" />
-      </div>
-      <div class="input-group">
-        <span>💸</span>
-        <input type="number" id="wdAmount" placeholder="Enter withdrawal amount" />
-      </div>
-      <button class="btn-primary" onclick="submitWithdrawRequest()">Submit Withdraw Request</button>
+      <div class="input-group"><span>👤</span><input type="text" id="wdAccName" placeholder="Account holder name" /></div>
+      <div class="input-group"><span>🔢</span><input type="text" id="wdAccNum" placeholder="Account / Bank number" /></div>
+      <div class="input-group"><span>💸</span><input type="number" id="wdAmount" placeholder="Amount (Rs)" /></div>
+      <button class="btn-primary" onclick="submitWithdrawRequest()">Submit Withdraw</button>
     </div>
   </div>
-
-  <!-- 4. TRANSACTIONS HISTORY MODAL -->
+  
   <div id="transactionsModal" class="modal-backdrop hidden">
     <div class="modal-box">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">My Transactions</strong>
-        <button class="close-btn" onclick="closeModal('transactionsModal')">✕</button>
-      </div>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">Transactions</strong><button class="close-btn" onclick="closeModal('transactionsModal')">✕</button></div>
       <div id="userTxHistoryList" style="font-size:13px;"></div>
     </div>
   </div>
-   <!-- 5. CUSTOMER SUPPORT & AI ASSISTANT MODAL -->
+
   <div id="supportModal" class="modal-backdrop hidden">
     <div class="modal-box">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">Helpcentre14 & AI Support</strong>
-        <button class="close-btn" onclick="closeModal('supportModal')">✕</button>
-      </div>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">Helpcentre14 & AI Support</strong><button class="close-btn" onclick="closeModal('supportModal')">✕</button></div>
       <div style="background:#fff7ed; padding:10px 12px; border-radius:12px; font-size:13px; margin-bottom:10px;">
-        <div><strong>Support ID:</strong> Helpcentre14</div>
-        <div><strong>Official Number:</strong> +923295412047</div>
+        <div><strong>Helpcentre14</strong> • <strong>+923295412047</strong></div>
         <div style="display:flex; gap:8px; margin-top:8px;">
           <a href="https://wa.me/923295412047" target="_blank" style="flex:1; text-align:center; background:#16a34a; color:#fff; text-decoration:none; padding:8px; border-radius:999px; font-weight:800; font-size:12px;">WhatsApp</a>
           <a href="https://t.me/+923295412047" target="_blank" style="flex:1; text-align:center; background:#0284c7; color:#fff; text-decoration:none; padding:8px; border-radius:999px; font-weight:800; font-size:12px;">Telegram</a>
         </div>
       </div>
-
-      <div style="font-weight:800; font-size:13px; margin-bottom:6px;">🤖 ASML AI Support Assistant</div>
       <div class="ai-chat-log" id="aiChatLog">
-        <div class="ai-msg bot">Assalam-o-Alaikum! Main ASML Global VIP AI Assistant hoon. Deposit, Withdraw, VIP 24-hour claim, ya Referral ke baray mein poochein.</div>
+        <div class="ai-msg bot">Assalam-o-Alaikum! ASML Global VIP AI Assistant hazir hai. Koi sawal poochein.</div>
       </div>
       <div style="display:flex; gap:6px;">
-        <input type="text" id="aiUserInput" placeholder="Apna sawal likhein..." style="flex:1; padding:10px 12px; border-radius:999px; border:1px solid #d1d5db; font-size:13px;" />
+        <input type="text" id="aiUserInput" placeholder="Sawal likhein..." style="flex:1; padding:10px 12px; border-radius:999px; border:1px solid #d1d5db; font-size:13px;" />
         <button onclick="sendAiQuestion()" style="background:var(--red); color:#fff; border:none; border-radius:999px; padding:0 16px; font-weight:800; cursor:pointer;">Send</button>
       </div>
     </div>
   </div>
 
-  <!-- 6. RULES & WHATSAPP POPUP -->
   <div id="rulesModal" class="modal-backdrop hidden">
     <div class="modal-box" style="text-align:center;">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">ASML Global VIP Rules</strong>
-        <button class="close-btn" onclick="closeModal('rulesModal')">✕</button>
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">ASML Global VIP Rules</strong><button class="close-btn" onclick="closeModal('rulesModal')">✕</button></div>
+      <div style="text-align:left; font-size:13px; line-height:1.7;">
+        <p><strong>1. Welcome Bonus:</strong> Rs 100</p>
+        <p><strong>2. Daily Check-in:</strong> Rs 10</p>
+        <p><strong>3. Min Withdraw:</strong> Rs 400 (JazzCash, Easypaisa, Bank)</p>
+        <p><strong>4. 24h Claim Rule:</strong> Claim 24 hours after buying plan at same time.</p>
+        <p><strong>5. Team Commission:</strong> Level 1 (10%), Level 2 (5%), Level 3 (1%).</p>
       </div>
-      <div style="text-align:left; font-size:13px; line-height:1.7; color:#374151;">
-        <p><strong>1. New User Bonus:</strong> Rs 100</p>
-        <p><strong>2. Daily Check-in Bonus:</strong> Rs 10</p>
-        <p><strong>3. Minimum Withdrawal:</strong> Rs 400 (Easypaisa, JazzCash, Bank)</p>
-        <p><strong>4. VIP Plan Cycle:</strong> Claim profit exactly 24 hours after purchase time.</p>
-        <p><strong>5. Referral Commission:</strong> Level 1 (10%), Level 2 (5%), Level 3 (1%) automatic on deposit.</p>
-      </div>
-      <a href="https://whatsapp.com/channel/0029Vb6" target="_blank" onclick="markChannelJoined()" class="btn-primary" style="display:block; text-decoration:none; margin-top:14px;">Join WhatsApp Channel</a>
+      <a href="https://whatsapp.com/channel/0029VbEdkCEAojYpbT79RR3f" target="_blank" onclick="markChannelJoined()" class="btn-primary" style="display:block; text-decoration:none; margin-top:14px;">Follow WhatsApp Channel</a>
     </div>
   </div>
 
-  <!-- 7. PRIVATE ADMIN PANEL MODAL -->
   <div id="adminModal" class="modal-backdrop hidden">
     <div class="modal-box" style="max-width:460px;">
-      <div class="modal-head">
-        <strong style="font-size:17px; color:var(--red-dark);">🛡️ ASML Admin Control Panel</strong>
-        <button class="close-btn" onclick="closeModal('adminModal')">✕</button>
-      </div>
-
+      <div class="modal-head"><strong style="font-size:17px; color:var(--red-dark);">🛡️ ASML Admin Panel</strong><button class="close-btn" onclick="closeModal('adminModal')">✕</button></div>
       <div class="admin-tabs">
         <button class="admin-tab active" onclick="switchAdminTab('deposits', this)">Deposits</button>
         <button class="admin-tab" onclick="switchAdminTab('withdraws', this)">Withdraws</button>
         <button class="admin-tab" onclick="switchAdminTab('users', this)">Users & Passwords</button>
         <button class="admin-tab" onclick="switchAdminTab('plans', this)">Plans & Free VIP</button>
-        <button class="admin-tab" onclick="switchAdminTab('accounts', this)">Payment Accounts</button>
+        <button class="admin-tab" onclick="switchAdminTab('accounts', this)">Deposit Accounts</button>
         <button class="admin-tab" onclick="switchAdminTab('branding', this)">Logo & Banners</button>
       </div>
-
       <div id="adminBody"></div>
     </div>
   </div>
 
   <script>
-    // =========================================================
-    // 1. FIREBASE CONFIGURATION (pkr-earning-f15bd)
-    // =========================================================
     const firebaseConfig = {
       apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
       authDomain: "pkr-earning-f15bd.firebaseapp.com",
@@ -1278,67 +484,35 @@
 
     let db = null;
     try {
-      if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-      }
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
-    } catch (err) {
-      console.warn("Firebase init fallback:", err);
-    }
+    } catch (e) {}
 
-    // =========================================================
-    // 2. CONSTANTS & CLEAN STATE MANAGEMENT (NO DATA WIPE)
-    // =========================================================
     const ADMIN_EMAIL = "waqasjatt8846@gmail.com";
     const ADMIN_PASS = "2649";
-    const LOCAL_DB_KEY = "ASML_GLOBAL_VIP_STATE_V3";
-    const BUILD_VERSION = "asml-v3.2-fast";
+    const LOCAL_DB_KEY = "ASML_GLOBAL_VIP_STATE_V4";
 
-    // Clean old stale browser cache safely without deleting user accounts
-    (function ensureFreshBuild() {
-      try {
-        if (localStorage.getItem("ASML_BUILD_VER") !== BUILD_VERSION) {
-          localStorage.setItem("ASML_BUILD_VER", BUILD_VERSION);
-          if ("caches" in window) {
-            caches.keys().then(keys => keys.forEach(k => caches.delete(k))).catch(() => {});
-          }
-        }
-      } catch (e) {}
-    })();
-  function getDefaultState() {
+    function getDefaultState() {
       return {
         settings: {
           siteName: "ASML Global VIP",
           logoUrl: "https://images.unsplash.com/photo-1614850523459-c2f4c699c52e?auto=format&fit=crop&w=200&q=80",
-          whatsappChannelUrl: "https://whatsapp.com/channel/0029Vb6",
+          whatsappChannelUrl: "https://whatsapp.com/channel/0029VbEdkCEAojYpbT79RR3f",
           banners: [
-            {
-              tag: "TEA & REFRESHMENT",
-              text: "Premium Tea Partner Rewards — Earn Daily Profit with ASML Global VIP",
-              img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=900&q=80"
-            },
-            {
-              tag: "CHICKEN & FOOD SUPPLY",
-              text: "Commercial Poultry & Food Supply Investments — Safe 24h Returns",
-              img: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=900&q=80"
-            },
-            {
-              tag: "FRIENDSHIP BONUS",
-              text: "Invite Friends & Earn Up to 16% Team Commission (10% + 5% + 1%)",
-              img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=900&q=80"
-            }
+            { tag: "TEA PARTNER", text: "Tea Partner Plan — Daily Profit Every 24 Hours", img: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=800&q=75" },
+            { tag: "CHICKEN SUPPLY", text: "Chicken & Food Supply — Trusted Earning", img: "https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?auto=format&fit=crop&w=800&q=75" },
+            { tag: "FRIENDSHIP TEAM", text: "Friendship Referral Rewards — 10% • 5% • 1%", img: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=75" }
           ]
         },
         paymentAccounts: [
-          { id: "acc_1", method: "Easypaisa", number: "03192649784", title: "Waqas Nadeem", active: true },
-          { id: "acc_2", method: "UPaisa", number: "03324232482", title: "Tasleem Khatoon", active: true }
+          { id: "acc_1", method: "Easypaisa", number: "03192649784", title: "Waqas Nadeem" },
+          { id: "acc_2", method: "UPaisa", number: "03324232482", title: "Tasleem Khatoon" }
         ],
         plans: [
           { id: "vip1", name: "VIP 1", price: 500, dailyProfit: 50, days: 120, comingSoon: false },
           { id: "vip2", name: "VIP 2", price: 900, dailyProfit: 200, days: 120, comingSoon: false },
           { id: "vip3", name: "VIP 3", price: 2500, dailyProfit: 624, days: 120, comingSoon: false },
-          { id: "vip4", name: "VIP 4", price: 6000, dailyProfit: 1581, days: 120, comingSoon: false },
-          { id: "vip5", name: "VIP 5", price: 15000, dailyProfit: 4000, days: 120, comingSoon: true }
+          { id: "vip4", name: "VIP 4", price: 6000, dailyProfit: 1581, days: 120, comingSoon: false }
         ],
         users: [],
         orders: [],
@@ -1358,16 +532,16 @@
         const raw = localStorage.getItem(LOCAL_DB_KEY);
         const def = getDefaultState();
         if (!raw) return def;
-        const parsed = JSON.parse(raw);
+        const p = JSON.parse(raw);
         return {
-          settings: Object.assign({}, def.settings, parsed.settings || {}),
-          paymentAccounts: Array.isArray(parsed.paymentAccounts) && parsed.paymentAccounts.length ? parsed.paymentAccounts : def.paymentAccounts,
-          plans: Array.isArray(parsed.plans) && parsed.plans.length ? parsed.plans : def.plans,
-          users: Array.isArray(parsed.users) ? parsed.users : [],
-          orders: Array.isArray(parsed.orders) ? parsed.orders : [],
-          deposits: Array.isArray(parsed.deposits) ? parsed.deposits : [],
-          withdrawals: Array.isArray(parsed.withdrawals) ? parsed.withdrawals : [],
-          currentUserId: parsed.currentUserId || null
+          settings: Object.assign({}, def.settings, p.settings || {}),
+          paymentAccounts: Array.isArray(p.paymentAccounts) && p.paymentAccounts.length ? p.paymentAccounts : def.paymentAccounts,
+          plans: Array.isArray(p.plans) && p.plans.length ? p.plans : def.plans,
+          users: Array.isArray(p.users) ? p.users : [],
+          orders: Array.isArray(p.orders) ? p.orders : [],
+          deposits: Array.isArray(p.deposits) ? p.deposits : [],
+          withdrawals: Array.isArray(p.withdrawals) ? p.withdrawals : [],
+          currentUserId: p.currentUserId || null
         };
       } catch (e) {
         return getDefaultState();
@@ -1375,16 +549,9 @@
     }
 
     function saveState() {
-      try {
-        localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(state));
-      } catch (e) {}
-      syncToFirebase();
-    }
-
-    async function syncToFirebase() {
-      if (!db) return;
-      try {
-        await db.collection("asml_global_vip").doc("main_state").set({
+      try { localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(state)); } catch (e) {}
+      if (db) {
+        db.collection("asml_global_vip").doc("main_state").set({
           settings: state.settings,
           paymentAccounts: state.paymentAccounts,
           plans: state.plans,
@@ -1393,46 +560,24 @@
           deposits: state.deposits,
           withdrawals: state.withdrawals,
           updatedAt: Date.now()
-        }, { merge: true });
-      } catch (e) {}
+        }, { merge: true }).catch(() => {});
+      }
     }
 
-    async function pullFromFirebaseFast() {
-      if (!db) return;
-      try {
-        const snap = await db.collection("asml_global_vip").doc("main_state").get();
-        if (snap.exists) {
-          const remote = snap.data();
-          const keepUserId = state.currentUserId;
-          if (remote.settings) state.settings = Object.assign({}, state.settings, remote.settings);
-          if (Array.isArray(remote.paymentAccounts) && remote.paymentAccounts.length) state.paymentAccounts = remote.paymentAccounts;
-          if (Array.isArray(remote.plans) && remote.plans.length) state.plans = remote.plans;
-          if (Array.isArray(remote.users) && remote.users.length) state.users = remote.users;
-          if (Array.isArray(remote.orders)) state.orders = remote.orders;
-          if (Array.isArray(remote.deposits)) state.deposits = remote.deposits;
-          if (Array.isArray(remote.withdrawals)) state.withdrawals = remote.withdrawals;
-          state.currentUserId = keepUserId;
-          localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(state));
-          renderAll();
-        }
-      } catch (e) {}
-    }
-
-    // Listen in real-time so Admin Approve/Reject updates immediately without manual reload!
     if (db) {
       db.collection("asml_global_vip").doc("main_state").onSnapshot((doc) => {
         if (!doc.exists) return;
-        const remote = doc.data();
-        const keepUserId = state.currentUserId;
-        if (remote.settings) state.settings = Object.assign({}, state.settings, remote.settings);
-        if (Array.isArray(remote.paymentAccounts) && remote.paymentAccounts.length) state.paymentAccounts = remote.paymentAccounts;
-        if (Array.isArray(remote.plans) && remote.plans.length) state.plans = remote.plans;
-        if (Array.isArray(remote.users) && remote.users.length) state.users = remote.users;
-        if (Array.isArray(remote.orders)) state.orders = remote.orders;
-        if (Array.isArray(remote.deposits)) state.deposits = remote.deposits;
-        if (Array.isArray(remote.withdrawals)) state.withdrawals = remote.withdrawals;
-        state.currentUserId = keepUserId;
-        localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(state));
+        const r = doc.data();
+        const keepId = state.currentUserId;
+        if (r.settings) state.settings = Object.assign({}, state.settings, r.settings);
+        if (Array.isArray(r.paymentAccounts) && r.paymentAccounts.length) state.paymentAccounts = r.paymentAccounts;
+        if (Array.isArray(r.plans) && r.plans.length) state.plans = r.plans;
+        if (Array.isArray(r.users) && r.users.length) state.users = r.users;
+        if (Array.isArray(r.orders)) state.orders = r.orders;
+        if (Array.isArray(r.deposits)) state.deposits = r.deposits;
+        if (Array.isArray(r.withdrawals)) state.withdrawals = r.withdrawals;
+        state.currentUserId = keepId;
+        try { localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(state)); } catch (e) {}
         renderAll();
       });
     }
@@ -1442,15 +587,11 @@
       return state.users.find(u => String(u.id) === String(state.currentUserId)) || null;
     }
 
-    function isAdminUser(user) {
-      const u = user || getCurrentUser();
-      if (!u) return false;
-      return String(u.email || "").trim().toLowerCase() === ADMIN_EMAIL;
+    function isAdminUser(u) {
+      const user = u || getCurrentUser();
+      return Boolean(user && String(user.email || "").toLowerCase() === ADMIN_EMAIL);
     }
 
-    // =========================================================
-    // 3. AUTHENTICATION (PHONE + EMAIL + NAME + REFERRAL)
-    // =========================================================
     function generateCaptcha() {
       currentCaptcha = String(Math.floor(1000 + Math.random() * 9000));
       const el = document.getElementById("captchaDisplay");
@@ -1458,25 +599,17 @@
     }
 
     function toggleAuthMode(mode) {
-      if (mode === "login") {
-        document.getElementById("registerCard").classList.add("hidden");
-        document.getElementById("loginCard").classList.remove("hidden");
-      } else {
-        document.getElementById("loginCard").classList.add("hidden");
-        document.getElementById("registerCard").classList.remove("hidden");
-        generateCaptcha();
-      }
-  }
-    function captureInviteFromUrl() {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const ref = params.get("ref") || params.get("invite") || "";
-        if (ref) {
-          document.getElementById("regInviteCode").value = ref.trim();
-        }
-      } catch (e) {}
+      document.getElementById("registerCard").classList.toggle("hidden", mode === "login");
+      document.getElementById("loginCard").classList.toggle("hidden", mode !== "login");
+      if (mode !== "login") generateCaptcha();
     }
 
+    function captureInviteFromUrl() {
+      try {
+        const ref = new URLSearchParams(window.location.search).get("ref") || "";
+        if (ref) document.getElementById("regInviteCode").value = ref.trim();
+      } catch (e) {}
+    } 
     function handleRegister() {
       const name = document.getElementById("regName").value.trim();
       const phone = document.getElementById("regPhone").value.trim();
@@ -1486,39 +619,32 @@
       const cap = document.getElementById("regCaptchaInput").value.trim();
       const inviteCode = document.getElementById("regInviteCode").value.trim();
 
-      if (!name) return alert("Please enter your full name.");
-      if (!phone && !email) return alert("Please enter phone number or email.");
-      if (!pass || pass.length < 4) return alert("Password must be at least 4 characters.");
+      if (!name) return alert("Enter full name.");
+      if (!phone && !email) return alert("Enter phone number or email.");
+      if (!pass || pass.length < 4) return alert("Password min 4 chars.");
       if (pass !== pass2) return alert("Passwords do not match.");
-      if (cap !== currentCaptcha) {
-        generateCaptcha();
-        return alert("Verification code is incorrect.");
+      if (cap !== currentCaptcha) { generateCaptcha(); return alert("Wrong verification code."); }
+
+      if (state.users.some(u => (phone && u.phone === phone) || (email && u.email === email))) {
+        return alert("Account already exists. Please Sign In.");
       }
 
-      const exists = state.users.find(u =>
-        (phone && u.phone === phone) || (email && u.email === email)
-      );
-      if (exists) return alert("This phone or email is already registered. Please Sign In.");
-
-      const newId = String(Math.floor(10000000 + Math.random() * 90000000));
-      const myRefCode = "ASML" + newId.slice(-5);
-
+      const id = String(Math.floor(10000000 + Math.random() * 90000000));
       const newUser = {
-        id: newId,
-        name: name,
+        id,
+        name,
         phone: phone || "N/A",
         email: email || "",
-        password: pass, // Stored so admin can assist if user forgets password
-        inviteCode: myRefCode,
+        password: pass,
+        inviteCode: "ASML" + id.slice(-5),
         invitedBy: inviteCode,
-        balance: 100, // Welcome bonus Rs 100
+        balance: 100,
         totalEarnings: 100,
         referralEarnings: 0,
         lastCheckIn: "",
         joinedChannel: false,
         claimedTasks: [],
-        assignedAccountIndex: state.users.length % Math.max(1, state.paymentAccounts.length),
-        createdAt: Date.now()
+        assignedAccountIndex: state.users.length % Math.max(1, state.paymentAccounts.length)
       };
 
       state.users.push(newUser);
@@ -1529,47 +655,31 @@
     }
 
     function handleLogin() {
-      const idInput = document.getElementById("loginIdentifier").value.trim().toLowerCase();
-      const passInput = document.getElementById("loginPass").value.trim();
+      const idVal = document.getElementById("loginIdentifier").value.trim().toLowerCase();
+      const passVal = document.getElementById("loginPass").value.trim();
 
-      if (!idInput || !passInput) return alert("Enter phone/email and password.");
-
-      // Direct Admin Login Check
-      if (idInput === ADMIN_EMAIL && passInput === ADMIN_PASS) {
-        let adminUser = state.users.find(u => String(u.email).toLowerCase() === ADMIN_EMAIL);
-        if (!adminUser) {
-          adminUser = {
-            id: "ADMIN001",
-            name: "Waqas Nadeem (Admin)",
-            phone: "03192649784",
-            email: ADMIN_EMAIL,
-            password: ADMIN_PASS,
-            inviteCode: "ASMLADMIN",
-            invitedBy: "",
-            balance: 0,
-            totalEarnings: 0,
-            referralEarnings: 0,
-            lastCheckIn: "",
-            joinedChannel: true,
-            claimedTasks: [],
-            assignedAccountIndex: 0,
-            createdAt: Date.now()
+      if (idVal === ADMIN_EMAIL && passVal === ADMIN_PASS) {
+        let admin = state.users.find(u => String(u.email).toLowerCase() === ADMIN_EMAIL);
+        if (!admin) {
+          admin = {
+            id: "ADMIN01", name: "Waqas Nadeem", phone: "03192649784", email: ADMIN_EMAIL,
+            password: ADMIN_PASS, inviteCode: "ASMLADMIN", invitedBy: "",
+            balance: 0, totalEarnings: 0, referralEarnings: 0, lastCheckIn: "",
+            joinedChannel: true, claimedTasks: [], assignedAccountIndex: 0
           };
-          state.users.push(adminUser);
+          state.users.push(admin);
         }
-        state.currentUserId = adminUser.id;
+        state.currentUserId = admin.id;
         saveState();
         renderAll();
         return;
       }
 
       const user = state.users.find(u =>
-        (String(u.email || "").toLowerCase() === idInput || String(u.phone || "").toLowerCase() === idInput) &&
-        String(u.password) === passInput
+        ((u.email && u.email.toLowerCase() === idVal) || (u.phone && u.phone.toLowerCase() === idVal)) &&
+        String(u.password) === passVal
       );
-
-      if (!user) return alert("Invalid phone/email or password.");
-
+      if (!user) return alert("Invalid login details.");
       state.currentUserId = user.id;
       saveState();
       renderAll();
@@ -1579,38 +689,37 @@
       state.currentUserId = null;
       saveState();
       renderAll();
-    } 
-     // =========================================================
-    // 4. TOP BANNER SLIDER & NAVIGATION
-    // =========================================================
+    }
+
     function startBannerAutoSlide() {
       setInterval(() => {
-        const banners = state.settings.banners || [];
-        if (!banners.length) return;
-        bannerIndex = (bannerIndex + 1) % banners.length;
+        if (!state.settings.banners.length) return;
+        bannerIndex = (bannerIndex + 1) % state.settings.banners.length;
         renderBanner();
-      }, 3500);
+      }, 3200);
     }
 
     function renderBanner() {
-      const banners = state.settings.banners || [];
-      if (!banners.length) return;
-      if (bannerIndex >= banners.length) bannerIndex = 0;
-      const b = banners[bannerIndex];
-      document.getElementById("topBannerImg").src = b.img;
+      const list = state.settings.banners;
+      if (!list.length) return;
+      if (bannerIndex >= list.length) bannerIndex = 0;
+      const b = list[bannerIndex];
+      const imgEl = document.getElementById("topBannerImg");
+      imgEl.style.animation = "none";
+      void imgEl.offsetWidth;
+      imgEl.style.animation = "bannerUpSlide 0.55s ease";
+      imgEl.src = b.img;
       document.getElementById("topBannerTag").innerText = b.tag;
       document.getElementById("topBannerText").innerText = b.text;
-
-      const dotsHtml = banners.map((_, idx) =>
-        `<div class="banner-dot ${idx === bannerIndex ? "active" : ""}"></div>`
+      document.getElementById("bannerDots").innerHTML = list.map((_, i) =>
+        `<div class="banner-dot ${i === bannerIndex ? "active" : ""}"></div>`
       ).join("");
-      document.getElementById("bannerDots").innerHTML = dotsHtml;
     }
 
     function switchTab(tab) {
-      ["Home", "Orders", "Team", "Task", "Mine"].forEach(name => {
-        document.getElementById("tab" + name).classList.add("hidden");
-        document.getElementById("nav" + name).classList.remove("active");
+      ["Home", "Orders", "Team", "Task", "Mine"].forEach(t => {
+        document.getElementById("tab" + t).classList.add("hidden");
+        document.getElementById("nav" + t).classList.remove("active");
       });
       const cap = tab.charAt(0).toUpperCase() + tab.slice(1);
       document.getElementById("tab" + cap).classList.remove("hidden");
@@ -1618,168 +727,127 @@
       renderAll();
     }
 
-    // =========================================================
-    // 5. VIP PLANS & 24-HOUR EXACT CLAIM SYSTEM
-    // =========================================================
     function renderPlans() {
-      const container = document.getElementById("plansContainer");
-      container.innerHTML = state.plans.map(p => {
-        const totalRev = p.dailyProfit * p.days;
-        return `
-          <div class="plan-card">
-            <div class="plan-top-strip">
-              <div class="plan-name">${p.name}</div>
-              <div class="plan-badge">${p.comingSoon ? "Coming Soon" : "24h Cycle"}</div>
-            </div>
-            <div class="plan-cycle">${p.days} Days • Investment cycle</div>
-            <div>
-              <div class="plan-pill"><span>Rs ${p.dailyProfit}</span> Daily profit</div>
-              <div class="plan-pill"><span>Rs ${totalRev}</span> Total revenue</div>
-            </div>
-            <button class="btn-primary" style="margin-top:10px; ${p.comingSoon ? "opacity:0.6;" : ""}" onclick="openPlanDetail('${p.id}')">
-              ${p.comingSoon ? "Coming Soon" : "Buy Now / Rs " + p.price}
-            </button>
+      document.getElementById("plansContainer").innerHTML = state.plans.map(p => `
+        <div class="plan-card">
+          <div class="plan-top-strip">
+            <div class="plan-name">${p.name}</div>
+            <div class="plan-badge">${p.comingSoon ? "Coming Soon" : "24h Cycle"}</div>
           </div>
-        `;
-      }).join("");
-    }
-    function openPlanDetail(planId) {
-      const plan = state.plans.find(p => p.id === planId);
-      if (!plan) return;
-      if (plan.comingSoon) return alert("This VIP plan is Coming Soon!");
-
-      const user = getCurrentUser();
-      document.getElementById("pdTitle").innerText = plan.name + " — Full Plan Details";
-      document.getElementById("pdBody").innerHTML = `
-        <p><strong>Plan Name:</strong> ${plan.name}</p>
-        <p><strong>Investment Price:</strong> Rs ${plan.price}</p>
-        <p><strong>Daily Profit (Every 24 Hours):</strong> Rs ${plan.dailyProfit}</p>
-        <p><strong>Total Cycle:</strong> ${plan.days} Days</p>
-        <p><strong>Total Return:</strong> Rs ${plan.dailyProfit * plan.days}</p>
-        <div style="background:#fff7ed; padding:10px; border-radius:12px; margin-top:10px; font-size:12px; color:#9a3412;">
-          <strong>24-Hour Rule:</strong> Aaj jis time aap yeh plan buy karenge, kal theek usi time (24 ghante baad) aap apna pehla profit claim kar sakenge.
+          <div class="plan-cycle">${p.days} Days • Investment cycle</div>
+          <div>
+            <div class="plan-pill"><span>Rs ${p.dailyProfit}</span> Daily profit</div>
+            <div class="plan-pill"><span>Rs ${p.dailyProfit * p.days}</span> Total revenue</div>
+          </div>
+          <button class="btn-primary" style="margin-top:10px; ${p.comingSoon ? "opacity:0.6;" : ""}" onclick="openPlanDetail('${p.id}')">
+            ${p.comingSoon ? "Coming Soon" : "Buy Now / Rs " + p.price}
+          </button>
         </div>
-        <p style="margin-top:10px;"><strong>Your Balance:</strong> Rs ${user ? user.balance : 0}</p>
+      `).join("");
+    }
+
+    function openPlanDetail(id) {
+      const p = state.plans.find(x => x.id === id);
+      if (!p) return;
+      if (p.comingSoon) return alert("Coming Soon!");
+      const u = getCurrentUser();
+      document.getElementById("pdTitle").innerText = p.name + " Details";
+      document.getElementById("pdBody").innerHTML = `
+        <p><strong>Plan:</strong> ${p.name}</p>
+        <p><strong>Price:</strong> Rs ${p.price}</p>
+        <p><strong>Daily Profit (Every 24h):</strong> Rs ${p.dailyProfit}</p>
+        <p><strong>Cycle:</strong> ${p.days} Days (Total: Rs ${p.dailyProfit * p.days})</p>
+        <p style="margin-top:8px; color:#9a3412;"><strong>24h Rule:</strong> Aaj jis waqt buy karenge, kal usi waqt 24 hours baad claim open hoga.</p>
+        <p style="margin-top:6px;"><strong>Your Balance:</strong> Rs ${u ? u.balance : 0}</p>
       `;
-      document.getElementById("pdConfirmBtn").onclick = () => confirmBuyPlan(plan.id);
+      document.getElementById("pdConfirmBtn").onclick = () => confirmBuyPlan(p.id);
       document.getElementById("planDetailModal").classList.remove("hidden");
     }
 
-    function confirmBuyPlan(planId) {
-      const user = getCurrentUser();
-      const plan = state.plans.find(p => p.id === planId);
-      if (!user || !plan) return;
-
-      if (Number(user.balance) < Number(plan.price)) {
+    function confirmBuyPlan(id) {
+      const u = getCurrentUser();
+      const p = state.plans.find(x => x.id === id);
+      if (!u || !p) return;
+      if (Number(u.balance) < Number(p.price)) {
         closeModal("planDetailModal");
-        alert("Insufficient balance! Please Recharge first.");
+        alert("Insufficient balance! Please Recharge.");
         openRechargeModal();
         return;
       }
-
-      user.balance = Number(user.balance) - Number(plan.price);
+      u.balance = Number(u.balance) - Number(p.price);
       const now = Date.now();
       state.orders.push({
-        id: "ORD_" + now,
-        userId: user.id,
-        planId: plan.id,
-        planName: plan.name,
-        price: plan.price,
-        dailyProfit: plan.dailyProfit,
-        daysLeft: plan.days,
-        purchasedAt: now,
-        nextClaimAt: now + (24 * 60 * 60 * 1000), // Exact 24 hours later
-        totalClaimed: 0
+        id: "ORD_" + now, userId: u.id, planId: p.id, planName: p.name,
+        price: p.price, dailyProfit: p.dailyProfit, daysLeft: p.days,
+        purchasedAt: now, nextClaimAt: now + 86400000, totalClaimed: 0
       });
-
       saveState();
       closeModal("planDetailModal");
-      alert(plan.name + " activated! You can claim Rs " + plan.dailyProfit + " after 24 hours at this exact time.");
+      alert(p.name + " activated! Claim after 24 hours at the exact purchase time.");
       switchTab("orders");
     }
 
     function renderOrders() {
-      const user = getCurrentUser();
-      if (!user) return;
-      const myOrders = state.orders.filter(o => String(o.userId) === String(user.id));
+      const u = getCurrentUser();
+      if (!u) return;
+      const mine = state.orders.filter(o => String(o.userId) === String(u.id));
       const now = Date.now();
-
-      let totalProfit = 0;
-      let claimableSum = 0;
-      myOrders.forEach(o => {
-        totalProfit += Number(o.totalClaimed || 0);
-        if (now >= Number(o.nextClaimAt) && o.daysLeft > 0) {
-          claimableSum += Number(o.dailyProfit);
-        }
+      let totalP = 0, claimable = 0;
+      mine.forEach(o => {
+        totalP += Number(o.totalClaimed || 0);
+        if (now >= Number(o.nextClaimAt) && o.daysLeft > 0) claimable += Number(o.dailyProfit);
       });
+      document.getElementById("ordTotalProfit").innerText = totalP;
+      document.getElementById("ordTodayProfit").innerText = claimable;
+      document.getElementById("ordQty").innerText = mine.length;
 
-      document.getElementById("ordTotalProfit").innerText = totalProfit;
-      document.getElementById("ordTodayProfit").innerText = claimableSum;
-      document.getElementById("ordQty").innerText = myOrders.length;
-
-      const container = document.getElementById("ordersListContainer");
-      if (!myOrders.length) {
-        container.innerHTML = `<div class="white-card" style="text-align:center; color:var(--muted);">No active VIP plans yet. Go to Home to buy a plan.</div>`;
+      const box = document.getElementById("ordersListContainer");
+      if (!mine.length) {
+        box.innerHTML = `<div class="white-card" style="text-align:center; color:var(--muted);">No active VIP plans yet.</div>`;
         return;
       }
-
-      container.innerHTML = myOrders.map(o => {
+      box.innerHTML = mine.map(o => {
         const diff = Number(o.nextClaimAt) - now;
         const ready = diff <= 0 && o.daysLeft > 0;
-        const hrs = Math.max(0, Math.floor(diff / (1000 * 60 * 60)));
-        const mins = Math.max(0, Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)));
-        const buyTimeStr = new Date(o.purchasedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
+        const h = Math.max(0, Math.floor(diff / 3600000));
+        const m = Math.max(0, Math.floor((diff % 3600000) / 60000));
+        const tStr = new Date(o.purchasedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
         return `
           <div class="plan-card">
-            <div class="plan-top-strip">
-              <div class="plan-name">${o.planName}</div>
-              <div class="plan-badge">${o.daysLeft} Days Left</div>
-            </div>
-            <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">Purchased Time: <strong>${buyTimeStr}</strong> • Daily Profit: <strong>Rs ${o.dailyProfit}</strong></div>
+            <div class="plan-top-strip"><div class="plan-name">${o.planName}</div><div class="plan-badge">${o.daysLeft}d Left</div></div>
+            <div style="font-size:12px; color:var(--muted); margin-bottom:6px;">Buy Time: <strong>${tStr}</strong> • Profit: <strong>Rs ${o.dailyProfit}</strong></div>
             <div style="font-size:13px; color:${ready ? "var(--green)" : "var(--orange)"}; font-weight:800; margin-bottom:10px;">
-              ${ready ? "✅ 24 Hours Completed! Ready to Claim" : `⏳ Next Claim in ${hrs}h ${mins}m (at ${buyTimeStr})`}
+              ${ready ? "✅ Ready to Claim (24h Done)" : `⏳ Claim in ${h}h ${m}m (at ${tStr})`}
             </div>
             <button class="btn-claim" style="width:100%;" ${ready ? "" : "disabled"} onclick="claimOrderProfit('${o.id}')">
-              ${ready ? `Claim Rs ${o.dailyProfit} Now` : "Locked Until 24h Complete"}
+              ${ready ? "Claim Rs " + o.dailyProfit : "Locked (24h Required)"}
             </button>
           </div>
         `;
       }).join("");
     }
 
-    function claimOrderProfit(orderId) {
-      const user = getCurrentUser();
-      const order = state.orders.find(o => o.id === orderId);
-      if (!user || !order) return;
-
-      if (Date.now() < Number(order.nextClaimAt)) {
-        return alert("24 hours have not completed yet!");
-      }
-
-      user.balance = Number(user.balance) + Number(order.dailyProfit);
-      user.totalEarnings = Number(user.totalEarnings || 0) + Number(order.dailyProfit);
-      order.totalClaimed = Number(order.totalClaimed || 0) + Number(order.dailyProfit);
-      order.daysLeft = Math.max(0, Number(order.daysLeft) - 1);
-      order.nextClaimAt = Number(order.nextClaimAt) + (24 * 60 * 60 * 1000);
-
+    function claimOrderProfit(oid) {
+      const u = getCurrentUser();
+      const o = state.orders.find(x => x.id === oid);
+      if (!u || !o || Date.now() < Number(o.nextClaimAt)) return alert("24 hours not completed yet.");
+      u.balance = Number(u.balance) + Number(o.dailyProfit);
+      u.totalEarnings = Number(u.totalEarnings || 0) + Number(o.dailyProfit);
+      o.totalClaimed = Number(o.totalClaimed || 0) + Number(o.dailyProfit);
+      o.daysLeft = Math.max(0, Number(o.daysLeft) - 1);
+      o.nextClaimAt = Number(o.nextClaimAt) + 86400000;
       saveState();
       renderAll();
-      alert("Success! Rs " + order.dailyProfit + " added to your Account Balance.");
+      alert("Claimed Rs " + o.dailyProfit + "!");
+    } 
+    function getAssignedAccount(u) {
+      const list = state.paymentAccounts.length ? state.paymentAccounts : getDefaultState().paymentAccounts;
+      const idx = (u && typeof u.assignedAccountIndex === "number" ? u.assignedAccountIndex : 0) % list.length;
+      return list[idx];
     }
 
-    // =========================================================
-    // 6. DEPOSIT, WITHDRAW, & AUTO REFERRAL COMMISSION (10%, 5%, 1%)
-    // =========================================================
-    function getAssignedPaymentAccount(user) {
-      const activeList = state.paymentAccounts.filter(a => a.active !== false);
-      const list = activeList.length ? activeList : state.paymentAccounts;
-      const idx = (user && typeof user.assignedAccountIndex === "number" ? user.assignedAccountIndex : 0) % list.length;
-      return list[idx];
-  } 
     function openRechargeModal() {
-      const user = getCurrentUser();
-      const acc = getAssignedPaymentAccount(user);
+      const acc = getAssignedAccount(getCurrentUser());
       document.getElementById("assignedPayMethod").innerText = acc.method;
       document.getElementById("assignedPayNumber").innerText = acc.number;
       document.getElementById("assignedPayTitle").innerText = acc.title;
@@ -1787,309 +855,202 @@
     }
 
     function copyAssignedNumber() {
-      const num = document.getElementById("assignedPayNumber").innerText;
-      navigator.clipboard?.writeText(num);
-      alert("Account number copied: " + num);
+      navigator.clipboard?.writeText(document.getElementById("assignedPayNumber").innerText);
+      alert("Number copied!");
     }
 
     function submitDepositRequest() {
-      const user = getCurrentUser();
-      const amount = Number(document.getElementById("depAmount").value);
-      const trxId = document.getElementById("depTrxId").value.trim();
-      const sender = document.getElementById("depSender").value.trim();
-      const acc = getAssignedPaymentAccount(user);
-
-      if (!amount || amount < 100) return alert("Enter a valid deposit amount.");
-      if (!trxId) return alert("Please enter Transaction ID (TID).");
-
+      const u = getCurrentUser();
+      const amt = Number(document.getElementById("depAmount").value);
+      const tid = document.getElementById("depTrxId").value.trim();
+      const snd = document.getElementById("depSender").value.trim();
+      const acc = getAssignedAccount(u);
+      if (!amt || amt < 100 || !tid) return alert("Enter amount and Transaction ID.");
       state.deposits.unshift({
-        id: "DEP_" + Date.now(),
-        userId: user.id,
-        userName: user.name,
-        userPhone: user.phone,
-        method: acc.method,
-        toAccount: acc.number + " (" + acc.title + ")",
-        amount: amount,
-        trxId: trxId,
-        sender: sender,
-        status: "pending",
-        createdAt: Date.now()
+        id: "DEP_" + Date.now(), userId: u.id, userName: u.name, userPhone: u.phone,
+        method: acc.method, toAccount: acc.number + " (" + acc.title + ")",
+        amount: amt, trxId: tid, sender: snd, status: "pending"
       });
-
       saveState();
       closeModal("rechargeModal");
       document.getElementById("depAmount").value = "";
       document.getElementById("depTrxId").value = "";
-      alert("Deposit request submitted! Once Admin approves, balance will update immediately.");
+      alert("Deposit submitted!");
     }
 
-    // Automatic 3-Level Commission: L1 = 10%, L2 = 5%, L3 = 1%
-    function distributeReferralCommission(depositorUser, depositAmount) {
-      if (!depositorUser || !depositorUser.invitedBy) return;
+    function distributeReferralCommission(depositor, amount) {
+      if (!depositor || !depositor.invitedBy) return;
+      const l1 = state.users.find(u => u.inviteCode === depositor.invitedBy || u.id === depositor.invitedBy);
+      if (!l1) return;
+      const c1 = Math.round(amount * 0.10);
+      l1.balance = Number(l1.balance || 0) + c1;
+      l1.totalEarnings = Number(l1.totalEarnings || 0) + c1;
+      l1.referralEarnings = Number(l1.referralEarnings || 0) + c1;
 
-      const l1User = state.users.find(u => u.inviteCode === depositorUser.invitedBy || u.id === depositorUser.invitedBy);
-      if (l1User) {
-        const c1 = Math.round(depositAmount * 0.10);
-        l1User.balance = Number(l1User.balance || 0) + c1;
-        l1User.totalEarnings = Number(l1User.totalEarnings || 0) + c1;
-        l1User.referralEarnings = Number(l1User.referralEarnings || 0) + c1;
+      if (!l1.invitedBy) return;
+      const l2 = state.users.find(u => u.inviteCode === l1.invitedBy || u.id === l1.invitedBy);
+      if (!l2) return;
+      const c2 = Math.round(amount * 0.05);
+      l2.balance = Number(l2.balance || 0) + c2;
+      l2.totalEarnings = Number(l2.totalEarnings || 0) + c2;
+      l2.referralEarnings = Number(l2.referralEarnings || 0) + c2;
 
-        if (l1User.invitedBy) {
-          const l2User = state.users.find(u => u.inviteCode === l1User.invitedBy || u.id === l1User.invitedBy);
-          if (l2User) {
-            const c2 = Math.round(depositAmount * 0.05);
-            l2User.balance = Number(l2User.balance || 0) + c2;
-            l2User.totalEarnings = Number(l2User.totalEarnings || 0) + c2;
-            l2User.referralEarnings = Number(l2User.referralEarnings || 0) + c2;
-
-            if (l2User.invitedBy) {
-              const l3User = state.users.find(u => u.inviteCode === l2User.invitedBy || u.id === l2User.invitedBy);
-              if (l3User) {
-                const c3 = Math.round(depositAmount * 0.01);
-                l3User.balance = Number(l3User.balance || 0) + c3;
-                l3User.totalEarnings = Number(l3User.totalEarnings || 0) + c3;
-                l3User.referralEarnings = Number(l3User.referralEarnings || 0) + c3;
-              }
-            }
-          }
-        }
-      }
+      if (!l2.invitedBy) return;
+      const l3 = state.users.find(u => u.inviteCode === l2.invitedBy || u.id === l2.invitedBy);
+      if (!l3) return;
+      const c3 = Math.round(amount * 0.01);
+      l3.balance = Number(l3.balance || 0) + c3;
+      l3.totalEarnings = Number(l3.totalEarnings || 0) + c3;
+      l3.referralEarnings = Number(l3.referralEarnings || 0) + c3;
     }
 
     function openWithdrawModal() {
-      const user = getCurrentUser();
-      document.getElementById("wdAvailBal").innerText = user ? user.balance : 0;
+      const u = getCurrentUser();
+      document.getElementById("wdAvailBal").innerText = u ? u.balance : 0;
       document.getElementById("withdrawModal").classList.remove("hidden");
     }
 
     function submitWithdrawRequest() {
-      const user = getCurrentUser();
+      const u = getCurrentUser();
       const method = document.getElementById("wdMethod").value;
       const accName = document.getElementById("wdAccName").value.trim();
       const accNum = document.getElementById("wdAccNum").value.trim();
-      const amount = Number(document.getElementById("wdAmount").value);
-
-      if (!accName || !accNum) return alert("Enter account title and number.");
-      if (!amount || amount < 400) return alert("Minimum withdrawal is Rs 400.");
-      if (amount > Number(user.balance)) return alert("Insufficient balance.");
-
-      user.balance = Number(user.balance) - amount;
+      const amt = Number(document.getElementById("wdAmount").value);
+      if (!accName || !accNum || !amt || amt < 400) return alert("Min withdraw Rs 400 with account details.");
+      if (amt > Number(u.balance)) return alert("Insufficient balance.");
+      u.balance = Number(u.balance) - amt;
       state.withdrawals.unshift({
-        id: "WD_" + Date.now(),
-        userId: user.id,
-        userName: user.name,
-        userPhone: user.phone,
-        method: method,
-        accName: accName,
-        accNum: accNum,
-        amount: amount,
-        status: "pending",
-        createdAt: Date.now()
+        id: "WD_" + Date.now(), userId: u.id, userName: u.name, userPhone: u.phone,
+        method, accName, accNum, amount: amt, status: "pending"
       });
-
       saveState();
       closeModal("withdrawModal");
       renderAll();
-      alert("Withdrawal request submitted!");
+      alert("Withdraw request submitted!");
     }
 
     function handleDailyCheckIn() {
-      const user = getCurrentUser();
-      if (!user) return;
+      const u = getCurrentUser();
       const today = new Date().toISOString().slice(0, 10);
-      if (user.lastCheckIn === today) {
-        return alert("You have already claimed today's Rs 10 Check-in bonus!");
-      }
-      user.lastCheckIn = today;
-      user.balance = Number(user.balance || 0) + 10;
-      user.totalEarnings = Number(user.totalEarnings || 0) + 10;
+      if (u.lastCheckIn === today) return alert("Already checked in today!");
+      u.lastCheckIn = today;
+      u.balance = Number(u.balance || 0) + 10;
+      u.totalEarnings = Number(u.totalEarnings || 0) + 10;
       saveState();
       renderAll();
-      alert("Daily Check-in successful! Rs 10 added to your balance.");
+      alert("Rs 10 Check-in bonus added!");
     }
 
-    // =========================================================
-    // 7. TEAM & REFERRAL RENDERING (TWO SEPARATE TABLES)
-    // =========================================================
     function renderTeam() {
-      const user = getCurrentUser();
-      if (!user) return;
+      const u = getCurrentUser();
+      if (!u) return 0;
+      const link = `${window.location.origin}${window.location.pathname}?ref=${u.inviteCode}`;
+      document.getElementById("myInviteCode").innerText = u.inviteCode;
+      document.getElementById("myReferralLinkInput").value = link;
+      document.getElementById("teamTotalEarnings").innerText = Number(u.referralEarnings || 0).toFixed(2);
 
-      const baseUrl = window.location.origin + window.location.pathname;
-      const refLink = `${baseUrl}?ref=${user.inviteCode}`;
-      document.getElementById("myInviteCode").innerText = user.inviteCode;
-      document.getElementById("myReferralLinkInput").value = refLink;
-      document.getElementById("teamTotalEarnings").innerText = Number(user.referralEarnings || 0).toFixed(2);
-
-      // Find Level 1, 2, 3 members
-      const l1 = state.users.filter(u => u.invitedBy === user.inviteCode || u.invitedBy === user.id);
-      const l1Codes = l1.map(u => u.inviteCode);
-      const l2 = state.users.filter(u => l1Codes.includes(u.invitedBy));
-      const l2Codes = l2.map(u => u.inviteCode);
-      const l3 = state.users.filter(u => l2Codes.includes(u.invitedBy));
+      const l1 = state.users.filter(x => x.invitedBy === u.inviteCode || x.invitedBy === u.id);
+      const l1c = l1.map(x => x.inviteCode);
+      const l2 = state.users.filter(x => l1c.includes(x.invitedBy));
+      const l2c = l2.map(x => x.inviteCode);
+      const l3 = state.users.filter(x => l2c.includes(x.invitedBy));
 
       const allTeam = [
-        ...l1.map(u => ({ ...u, level: 1, rate: 0.10 })),
-        ...l2.map(u => ({ ...u, level: 2, rate: 0.05 })),
-        ...l3.map(u => ({ ...u, level: 3, rate: 0.01 }))
+        ...l1.map(x => ({ ...x, lvl: 1, rate: 0.10 })),
+        ...l2.map(x => ({ ...x, lvl: 2, rate: 0.05 })),
+        ...l3.map(x => ({ ...x, lvl: 3, rate: 0.01 }))
       ];
-
       document.getElementById("teamTotalMembers").innerText = allTeam.length;
 
-      const getApprovedDepositSum = (uid) =>
-        state.deposits
-          .filter(d => String(d.userId) === String(uid) && d.status === "approved")
-          .reduce((sum, d) => sum + Number(d.amount || 0), 0);
+      const depSum = (uid) => state.deposits
+        .filter(d => String(d.userId) === String(uid) && d.status === "approved")
+        .reduce((s, d) => s + Number(d.amount || 0), 0);
 
-      const l1DepSum = l1.reduce((s, u) => s + getApprovedDepositSum(u.id), 0);
-      const l2DepSum = l2.reduce((s, u) => s + getApprovedDepositSum(u.id), 0);
-      const l3DepSum = l3.reduce((s, u) => s + getApprovedDepositSum(u.id), 0);
+      const d1 = l1.reduce((s, x) => s + depSum(x.id), 0);
+      const d2 = l2.reduce((s, x) => s + depSum(x.id), 0);
+      const d3 = l3.reduce((s, x) => s + depSum(x.id), 0);
 
       document.getElementById("lvl1Count").innerText = l1.length;
-      document.getElementById("lvl1Dep").innerText = "Rs " + l1DepSum;
+      document.getElementById("lvl1Comm").innerText = "Rs " + Math.round(d1 * 0.10);
       document.getElementById("lvl2Count").innerText = l2.length;
-      document.getElementById("lvl2Dep").innerText = "Rs " + l2DepSum;
+      document.getElementById("lvl2Comm").innerText = "Rs " + Math.round(d2 * 0.05);
       document.getElementById("lvl3Count").innerText = l3.length;
-      document.getElementById("lvl3Dep").innerText = "Rs " + l3DepSum;
+      document.getElementById("lvl3Comm").innerText = "Rs " + Math.round(d3 * 0.01);
 
-      // Table 1: Referral Members List
-      const membersTbody = document.getElementById("teamMembersTableBody");
+      const mBody = document.getElementById("teamMembersTableBody");
+      const depBody = document.getElementById("teamDepositsTableBody");
+
       if (!allTeam.length) {
-        membersTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#6b7280;">No team members yet</td></tr>`;
-      } else {
-        membersTbody.innerHTML = allTeam.map(m => `
-          <tr>
-            <td>${m.id}</td>
-            <td><strong>${m.name}</strong></td>
-            <td>${m.phone !== "N/A" ? m.phone : m.email}</td>
-            <td>Level ${m.level}</td>
-          </tr>
-        `).join("");
-      }
-   // Table 2: Deposit & Commission Table (Shows 0 if not deposited)
-      const depTbody = document.getElementById("teamDepositsTableBody");
-      if (!allTeam.length) {
-        depTbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#6b7280;">No deposit records yet</td></tr>`;
-      } else {
-        depTbody.innerHTML = allTeam.map(m => {
-          const depAmt = getApprovedDepositSum(m.id);
-          const comm = Math.round(depAmt * m.rate);
-          return `
-            <tr>
-              <td><strong>${m.name}</strong></td>
-              <td>${m.phone !== "N/A" ? m.phone : m.email}</td>
-              <td style="font-weight:800; color:${depAmt > 0 ? "var(--green)" : "#6b7280"};">Rs ${depAmt}</td>
-              <td style="font-weight:800; color:var(--red-dark);">Rs ${comm}</td>
-            </tr>
-          `;
-        }).join("");
+        mBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#6b7280;">No team members yet</td></tr>`;
+        depBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#6b7280;">No deposit records yet</td></tr>`;
+        return 0;
       }
 
-      return l1DepSum + l2DepSum + l3DepSum;
+      mBody.innerHTML = allTeam.map(m => `
+        <tr><td>${m.id}</td><td><strong>${m.name}</strong></td><td>${m.phone}</td><td>Level ${m.lvl}</td></tr>
+      `).join("");
+
+      depBody.innerHTML = allTeam.map(m => {
+        const amt = depSum(m.id);
+        return `<tr><td><strong>${m.name}</strong></td><td>${m.phone}</td><td><strong>Rs ${amt}</strong></td><td>${amt > 0 ? "Deposited" : "0 (None)"}</td></tr>`;
+      }).join("");
+
+      return d1 + d2 + d3;
     }
 
     function copyReferralLink() {
-      const inp = document.getElementById("myReferralLinkInput");
-      inp.select();
-      navigator.clipboard?.writeText(inp.value);
+      const el = document.getElementById("myReferralLinkInput");
+      el.select();
+      navigator.clipboard?.writeText(el.value);
       alert("Referral link copied!");
     }
 
-    // =========================================================
-    // 8. TASK CENTER (FIRST TASK: WHATSAPP CHANNEL RS 30)
-    // =========================================================
     function markChannelJoined() {
-      const user = getCurrentUser();
-      if (user) {
-        user.joinedChannel = true;
-        saveState();
-        renderTasks();
-      }
+      const u = getCurrentUser();
+      if (u) { u.joinedChannel = true; saveState(); renderTasks(); }
     }
 
     function renderTasks() {
-      const user = getCurrentUser();
-      if (!user) return;
-      const teamInvest = renderTeam() || 0;
-      document.getElementById("taskTeamInvest").innerText = teamInvest;
+      const u = getCurrentUser();
+      if (!u) return;
+      const inv = renderTeam() || 0;
+      document.getElementById("taskTeamInvest").innerText = inv;
+      const claimed = Array.isArray(u.claimedTasks) ? u.claimedTasks : [];
 
-      const claimed = Array.isArray(user.claimedTasks) ? user.claimedTasks : [];
-
-      const taskList = [
-        {
-          id: "task_wa_channel",
-          tag: "Task 1 (Channel Bonus)",
-          desc: "Join our official WhatsApp Channel first to unlock and claim Rs 30 reward.",
-          reward: 30,
-          isChannelTask: true,
-          eligible: Boolean(user.joinedChannel)
-        },
-        {
-          id: "task_inv_3000",
-          tag: "Task 2",
-          desc: "Level 1 downline members reach a total investment of Rs 3,000 active investors.",
-          reward: 300,
-          eligible: teamInvest >= 3000
-        },
-        {
-          id: "task_inv_9000",
-          tag: "Task 3",
-          desc: "Level 1 downline members reach a total investment of Rs 9,000 active investors.",
-          reward: 900,
-          eligible: teamInvest >= 9000
-        },
-        {
-          id: "task_inv_27000",
-          tag: "Task 4",
-          desc: "Level 1 downline members reach a total investment of Rs 27,000 active investors.",
-          reward: 2700,
-          eligible: teamInvest >= 27000
-        }
+      const tasks = [
+        { id: "wa_30", tag: "Task 1", desc: "Join ASML Global (VIP) WhatsApp Channel & claim Rs 30 bonus.", reward: 30, ch: true, ok: Boolean(u.joinedChannel) },
+        { id: "t2", tag: "Task 2", desc: "Team investment reaches Rs 3,000 for Rs 300 reward.", reward: 300, ch: false, ok: inv >= 3000 },
+        { id: "t3", tag: "Task 3", desc: "Team investment reaches Rs 9,000 for Rs 900 reward.", reward: 900, ch: false, ok: inv >= 9000 }
       ];
 
-      document.getElementById("tasksContainer").innerHTML = taskList.map(t => {
-        const isDone = claimed.includes(t.id);
+      document.getElementById("tasksContainer").innerHTML = tasks.map(t => {
+        const done = claimed.includes(t.id);
         return `
           <div class="task-card">
-            <div class="task-header">
-              <strong>Reward: Rs ${t.reward}</strong>
-              <span class="task-tag">${t.tag}</span>
-            </div>
-            <p style="font-size:13px; color:#374151; margin-bottom:10px;">${t.desc}</p>
-            <div style="display:flex; gap:8px; align-items:center;">
-              ${t.isChannelTask ? `<a href="${state.settings.whatsappChannelUrl}" target="_blank" onclick="markChannelJoined()" style="background:#16a34a; color:#fff; text-decoration:none; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:800;">Open Channel</a>` : ""}
-              <button class="btn-claim" ${isDone || !t.eligible ? "disabled" : ""} onclick="claimTaskReward('${t.id}', ${t.reward}, ${Boolean(t.isChannelTask)})">
-                ${isDone ? "Claimed" : "Claim Rs " + t.reward}
-              </button>
+            <div class="task-header"><strong>Reward: Rs ${t.reward}</strong><span class="task-tag">${t.tag}</span></div>
+            <p style="font-size:13px; margin-bottom:10px;">${t.desc}</p>
+            <div style="display:flex; gap:8px;">
+              ${t.ch ? `<a href="${state.settings.whatsappChannelUrl}" target="_blank" onclick="markChannelJoined()" style="background:#16a34a; color:#fff; text-decoration:none; padding:8px 14px; border-radius:999px; font-size:12px; font-weight:800;">Join Channel</a>` : ""}
+              <button class="btn-claim" ${done || !t.ok ? "disabled" : ""} onclick="claimTask('${t.id}', ${t.reward}, ${t.ch})">${done ? "Claimed" : "Claim Rs " + t.reward}</button>
             </div>
           </div>
         `;
       }).join("");
-    }
-
-    function claimTaskReward(taskId, reward, isChannelTask) {
-      const user = getCurrentUser();
-      if (!user) return;
-      if (isChannelTask && !user.joinedChannel) {
-        return alert("Please join the WhatsApp Channel first before claiming Rs 30!");
-      }
-      if (!Array.isArray(user.claimedTasks)) user.claimedTasks = [];
-      if (user.claimedTasks.includes(taskId)) return;
-
-      user.claimedTasks.push(taskId);
-      user.balance = Number(user.balance || 0) + reward;
-      user.totalEarnings = Number(user.totalEarnings || 0) + reward;
+  } 
+    function claimTask(tid, reward, isCh) {
+      const u = getCurrentUser();
+      if (isCh && !u.joinedChannel) return alert("Please join WhatsApp channel first to claim Rs 30!");
+      if (!Array.isArray(u.claimedTasks)) u.claimedTasks = [];
+      if (u.claimedTasks.includes(tid)) return;
+      u.claimedTasks.push(tid);
+      u.balance = Number(u.balance || 0) + reward;
+      u.totalEarnings = Number(u.totalEarnings || 0) + reward;
       saveState();
       renderAll();
-      alert("Congratulations! Rs " + reward + " claimed.");
+      alert("Rs " + reward + " claimed!");
     }
 
-    // =========================================================
-    // 9. SUPPORT, AI ASSISTANT, & TRANSACTIONS
-    // =========================================================
-    function openSupportModal() {
-      document.getElementById("supportModal").classList.remove("hidden");
-    }
+    function openSupportModal() { document.getElementById("supportModal").classList.remove("hidden"); }
 
     function sendAiQuestion() {
       const inp = document.getElementById("aiUserInput");
@@ -2098,417 +1059,260 @@
       const log = document.getElementById("aiChatLog");
       log.innerHTML += `<div class="ai-msg user">${q}</div>`;
       inp.value = "";
-
-      const lower = q.toLowerCase();
-      let ans = "Aapki madad ke liye Helpcentre14 (+923295412047) aur WhatsApp/Telegram support 24/7 mojood hai.";
-      if (lower.includes("deposit") || lower.includes("recharge")) {
-        ans = "Deposit karne ke liye Home ya Mine par 'Recharge' dabayein, screen par diye gaye number par payment bhej kar Transaction ID (TID) submit karein.";
-      } else if (lower.includes("withdraw")) {
-        ans = "Minimum withdraw Rs 400 hai. Easypaisa, JazzCash, ya Bank account ke zariye Withdraw request bhej sakte hain.";
-      } else if (lower.includes("plan") || lower.includes("vip") || lower.includes("24")) {
-        ans = "VIP plan kharidne ke theek 24 ghante baad usi time 'Orders' section mein Claim button khul jata hai.";
-      } else if (lower.includes("password")) {
-        ans = "Agar aap password bhool gaye hain to Helpcentre14 (+923295412047) par rabta karein, Admin aapka password check kar ke madad kar dega.";
-    }
-    setTimeout(() => {
-        log.innerHTML += `<div class="ai-msg bot">${ans}</div>`;
-        log.scrollTop = log.scrollHeight;
-      }, 300);
+      let reply = "Helpcentre14 (+923295412047) aur WhatsApp/Telegram par rabta karein.";
+      const l = q.toLowerCase();
+      if (l.includes("deposit") || l.includes("recharge")) reply = "Recharge button par click kar ke assigned number par payment bhejein aur TID submit karein.";
+      else if (l.includes("withdraw")) reply = "Minimum withdraw Rs 400 hai. JazzCash, Easypaisa, ya Bank select karein.";
+      else if (l.includes("24") || l.includes("plan") || l.includes("vip")) reply = "Plan lene ke 24 ghante baad usi waqt Orders mein Claim open hoga.";
+      else if (l.includes("password")) reply = "Password bhool gaye hain to Helpcentre14 (+923295412047) se rabta karein.";
+      setTimeout(() => { log.innerHTML += `<div class="ai-msg bot">${reply}</div>`; log.scrollTop = log.scrollHeight; }, 250);
     }
 
     function openTransactionsModal() {
-      const user = getCurrentUser();
-      const myDeps = state.deposits.filter(d => String(d.userId) === String(user.id));
-      const myWds = state.withdrawals.filter(w => String(w.userId) === String(user.id));
-
-      let html = `<h4 style="margin-bottom:6px; color:var(--red-dark);">Deposits</h4>`;
-      html += myDeps.length ? myDeps.map(d => `
-        <div style="border-bottom:1px solid #f3f4f6; padding:8px 0; display:flex; justify-content:space-between;">
-          <div><strong>Rs ${d.amount}</strong> (${d.method})<br><small>TID: ${d.trxId}</small></div>
-          <span class="badge-status st-${d.status}">${d.status.toUpperCase()}</span>
-        </div>
-      `).join("") : `<p style="color:#6b7280; margin-bottom:10px;">No deposits yet.</p>`;
-
-      html += `<h4 style="margin:12px 0 6px; color:var(--red-dark);">Withdrawals</h4>`;
-      html += myWds.length ? myWds.map(w => `
-        <div style="border-bottom:1px solid #f3f4f6; padding:8px 0; display:flex; justify-content:space-between;">
-          <div><strong>Rs ${w.amount}</strong> (${w.method})<br><small>${w.accNum}</small></div>
-          <span class="badge-status st-${w.status}">${w.status.toUpperCase()}</span>
-        </div>
-      `).join("") : `<p style="color:#6b7280;">No withdrawals yet.</p>`;
-
-      document.getElementById("userTxHistoryList").innerHTML = html;
+      const u = getCurrentUser();
+      const deps = state.deposits.filter(d => String(d.userId) === String(u.id));
+      const wds = state.withdrawals.filter(w => String(w.userId) === String(u.id));
+      document.getElementById("userTxHistoryList").innerHTML = `
+        <h4 style="color:var(--red-dark); margin-bottom:6px;">Deposits</h4>
+        ${deps.length ? deps.map(d => `<div style="padding:6px 0; border-bottom:1px solid #f3f4f6; display:flex; justify-content:space-between;"><span>Rs ${d.amount} (${d.method})</span><span class="badge-status st-${d.status}">${d.status}</span></div>`).join("") : "<p style='color:#6b7280;'>None</p>"}
+        <h4 style="color:var(--red-dark); margin:10px 0 6px;">Withdrawals</h4>
+        ${wds.length ? wds.map(w => `<div style="padding:6px 0; border-bottom:1px solid #f3f4f6; display:flex; justify-content:space-between;"><span>Rs ${w.amount} (${w.method})</span><span class="badge-status st-${w.status}">${w.status}</span></div>`).join("") : "<p style='color:#6b7280;'>None</p>"}
+      `;
       document.getElementById("transactionsModal").classList.remove("hidden");
     }
 
-    function openRulesPopup() {
-      document.getElementById("rulesModal").classList.remove("hidden");
-    }
+    function openRulesPopup() { document.getElementById("rulesModal").classList.remove("hidden"); }
+    function closeModal(id) { document.getElementById(id).classList.add("hidden"); }
 
-    function closeModal(id) {
-      document.getElementById(id).classList.add("hidden");
-    }
-
-    // =========================================================
-    // 10. PRIVATE FULL-CONTROL ADMIN PANEL
-    // =========================================================
+    // ADMIN PANEL
     function openAdminModal() {
-      if (!isAdminUser()) return alert("Unauthorized!");
+      if (!isAdminUser()) return;
       document.getElementById("adminModal").classList.remove("hidden");
       renderAdminBody();
     }
 
-    function switchAdminTab(tab, btnEl) {
+    function switchAdminTab(tab, el) {
       currentAdminTab = tab;
       document.querySelectorAll(".admin-tab").forEach(b => b.classList.remove("active"));
-      if (btnEl) btnEl.classList.add("active");
+      if (el) el.classList.add("active");
       renderAdminBody();
     }
 
     function renderAdminBody() {
       const box = document.getElementById("adminBody");
-
-      // 1. DEPOSIT REQUESTS
       if (currentAdminTab === "deposits") {
         box.innerHTML = state.deposits.length ? state.deposits.map(d => `
           <div style="border:1px solid #e5e7eb; border-radius:12px; padding:10px; margin-bottom:8px; font-size:12px;">
-            <div style="display:flex; justify-content:space-between;">
-              <strong>${d.userName} (${d.userPhone})</strong>
-              <span class="badge-status st-${d.status}">${d.status.toUpperCase()}</span>
-            </div>
-            <div>Amount: <strong>Rs ${d.amount}</strong> • Method: ${d.method}</div>
-            <div>TID: <strong>${d.trxId}</strong> | To: ${d.toAccount}</div>
-            ${d.status === "pending" ? `
-              <div style="display:flex; gap:8px; margin-top:8px;">
-                <button onclick="adminApproveDeposit('${d.id}')" style="flex:1; background:#16a34a; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Approve</button>
-                <button onclick="adminRejectDeposit('${d.id}')" style="flex:1; background:#dc2626; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Reject</button>
-              </div>
-            ` : ""}
+            <div style="display:flex; justify-content:space-between;"><strong>${d.userName} (${d.userPhone})</strong><span class="badge-status st-${d.status}">${d.status}</span></div>
+            <div>Amount: <strong>Rs ${d.amount}</strong> • TID: <strong>${d.trxId}</strong></div>
+            ${d.status === "pending" ? `<div style="display:flex; gap:8px; margin-top:8px;">
+              <button onclick="adminApproveDep('${d.id}')" style="flex:1; background:#16a34a; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Approve</button>
+              <button onclick="adminRejectDep('${d.id}')" style="flex:1; background:#dc2626; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Reject</button>
+            </div>` : ""}
           </div>
-        `).join("") : `<p style="text-align:center; color:#6b7280;">No deposit requests.</p>`;
-      }
-
-      // 2. WITHDRAWAL REQUESTS
-      else if (currentAdminTab === "withdraws") {
+        `).join("") : `<p style="color:#6b7280; text-align:center;">No deposit requests.</p>`;
+      } else if (currentAdminTab === "withdraws") {
         box.innerHTML = state.withdrawals.length ? state.withdrawals.map(w => `
           <div style="border:1px solid #e5e7eb; border-radius:12px; padding:10px; margin-bottom:8px; font-size:12px;">
-            <div style="display:flex; justify-content:space-between;">
-              <strong>${w.userName} (${w.userPhone})</strong>
-              <span class="badge-status st-${w.status}">${w.status.toUpperCase()}</span>
-            </div>
-            <div>Amount: <strong>Rs ${w.amount}</strong> • ${w.method}</div>
-            <div>Account: <strong>${w.accName} — ${w.accNum}</strong></div>
-            ${w.status === "pending" ? `
-              <div style="display:flex; gap:8px; margin-top:8px;">
-                <button onclick="adminApproveWithdraw('${w.id}')" style="flex:1; background:#16a34a; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Approve</button>
-                <button onclick="adminRejectWithdraw('${w.id}')" style="flex:1; background:#dc2626; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Reject</button>
-              </div>
-            ` : ""}
+            <div style="display:flex; justify-content:space-between;"><strong>${w.userName} (${w.userPhone})</strong><span class="badge-status st-${w.status}">${w.status}</span></div>
+            <div>Amount: <strong>Rs ${w.amount}</strong> • ${w.method}: <strong>${w.accNum}</strong></div>
+            ${w.status === "pending" ? `<div style="display:flex; gap:8px; margin-top:8px;">
+              <button onclick="adminApproveWd('${w.id}')" style="flex:1; background:#16a34a; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Approve</button>
+              <button onclick="adminRejectWd('${w.id}')" style="flex:1; background:#dc2626; color:#fff; border:none; padding:7px; border-radius:8px; font-weight:800; cursor:pointer;">Reject</button>
+            </div>` : ""}
           </div>
-        `).join("") : `<p style="text-align:center; color:#6b7280;">No withdrawal requests.</p>`;
-      }
-
-      // 3. ALL USERS + NUMBERS + EMAILS + PASSWORDS
-      else if (currentAdminTab === "users") {
+        `).join("") : `<p style="color:#6b7280; text-align:center;">No withdrawal requests.</p>`;
+      } else if (currentAdminTab === "users") {
+        box.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Name</th><th>Phone/Email</th><th>Password</th></tr></thead><tbody>
+          ${state.users.map(u => `<tr><td><strong>${u.name}</strong></td><td>${u.phone}<br><small>${u.email || "-"}</small></td><td><strong style="color:var(--red-dark);">${u.password}</strong></td></tr>`).join("")}
+        </tbody></table></div>`;
+      } else if (currentAdminTab === "plans") {
         box.innerHTML = `
-          <div style="font-size:12px; margin-bottom:8px;">Total Registered Users: <strong>${state.users.length}</strong></div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Phone / Email</th>
-                  <th>Password</th>
-                  <th>Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${state.users.map(u => `
-                  <tr>
-                    <td><strong>${u.name}</strong><br><small>ID: ${u.id}</small></td>
-                    <td>${u.phone}<br><small>${u.email || "-"}</small></td>
-                    <td><strong style="color:var(--red-dark);">${u.password}</strong></td>
-                    <td>Rs ${u.balance}</td>
-                  </tr>
-                `).join("")}
-              </tbody>
-            </table>
-          </div>
-        `;
-      }
-
-      // 4. PLANS EDIT / ADD / COMING SOON / FREE VIP TO PROMOTER
-      else if (currentAdminTab === "plans") {
-        box.innerHTML = `
-          <div style="background:#fff7ed; padding:10px; border-radius:12px; margin-bottom:12px; font-size:12px;">
+          <div style="background:#fff7ed; padding:10px; border-radius:12px; margin-bottom:10px; font-size:12px;">
             <strong>🎁 Give Free VIP Plan to Promoter</strong>
-            <input type="text" id="admFreeUserPhone" placeholder="Enter user phone or ID" style="width:100%; padding:7px; margin:6px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <select id="admFreePlanId" style="width:100%; padding:7px; margin-bottom:6px; border-radius:8px; border:1px solid #d1d5db;">
-              ${state.plans.map(p => `<option value="${p.id}">${p.name} (Rs ${p.price} / Daily Rs ${p.dailyProfit})</option>`).join("")}
+            <input type="text" id="admFreePhone" placeholder="User phone or ID" style="width:100%; padding:7px; margin:6px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <select id="admFreePlan" style="width:100%; padding:7px; margin-bottom:6px; border-radius:8px; border:1px solid #d1d5db;">
+              ${state.plans.map(p => `<option value="${p.id}">${p.name} (Daily Rs ${p.dailyProfit})</option>`).join("")}
             </select>
-            <button onclick="adminGiveFreePlan()" style="width:100%; background:var(--green); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; cursor:pointer;">Activate Free VIP</button>
-          </div> 
-    <div style="background:#f9fafb; padding:10px; border-radius:12px; margin-bottom:12px; font-size:12px;">
-            <strong>➕ Add New VIP Plan</strong>
-            <input type="text" id="newPlanName" placeholder="Plan Name (e.g. VIP 6)" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <input type="number" id="newPlanPrice" placeholder="Price (Rs)" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <input type="number" id="newPlanDaily" placeholder="Daily Profit (Rs)" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <label style="display:block; margin:4px 0;"><input type="checkbox" id="newPlanComing" /> Mark as Coming Soon</label>
-            <button onclick="adminAddNewPlan()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; cursor:pointer;">Add Plan</button>
+            <button onclick="adminGiveFree()" style="width:100%; background:var(--green); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; cursor:pointer;">Activate Free VIP</button>
           </div>
-
-          <strong>Edit Existing Plans:</strong>
+          <div style="background:#f9fafb; padding:10px; border-radius:12px; margin-bottom:10px; font-size:12px;">
+            <strong>➕ Add Plan</strong>
+            <input type="text" id="npName" placeholder="Plan Name" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <input type="number" id="npPrice" placeholder="Price" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <input type="number" id="npDaily" placeholder="Daily Profit" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <label><input type="checkbox" id="npSoon" /> Coming Soon</label>
+            <button onclick="adminAddPlan()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; margin-top:6px; cursor:pointer;">Save Plan</button>
+          </div>
           ${state.plans.map((p, i) => `
             <div style="border:1px solid #e5e7eb; padding:8px; border-radius:10px; margin-top:6px; font-size:12px;">
-              <strong>${p.name}</strong> — Price: Rs ${p.price}, Daily: Rs ${p.dailyProfit}
+              <strong>${p.name}</strong> (Rs ${p.price} / Daily Rs ${p.dailyProfit})
               <div style="display:flex; gap:6px; margin-top:6px;">
-                <button onclick="adminToggleComingSoon(${i})" style="padding:5px 8px; border-radius:6px; border:1px solid #d1d5db; cursor:pointer;">${p.comingSoon ? "Set Live" : "Set Coming Soon"}</button>
-                <button onclick="adminEditPlanPrice(${i})" style="padding:5px 8px; border-radius:6px; border:1px solid #d1d5db; cursor:pointer;">Edit Price/Profit</button>
+                <button onclick="adminToggleSoon(${i})" style="padding:5px 8px; border-radius:6px; border:1px solid #d1d5db;">${p.comingSoon ? "Set Live" : "Coming Soon"}</button>
+                <button onclick="adminEditPlan(${i})" style="padding:5px 8px; border-radius:6px; border:1px solid #d1d5db;">Edit</button>
               </div>
             </div>
           `).join("")}
-        `;
-      }
-
-      // 5. PAYMENT ACCOUNTS (ADD OR REMOVE WHEN LIMIT REACHED)
-      else if (currentAdminTab === "accounts") {
+        `; 
+    } else if (currentAdminTab === "accounts") {
         box.innerHTML = `
           <div style="background:#f9fafb; padding:10px; border-radius:12px; margin-bottom:10px; font-size:12px;">
-            <strong>➕ Add New Deposit Account</strong>
-            <select id="admNewAccMethod" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;">
-              <option value="Easypaisa">Easypaisa</option>
-              <option value="JazzCash">JazzCash</option>
-              <option value="UPaisa">UPaisa</option>
-              <option value="Bank">Bank</option>
+            <strong>➕ Add Deposit Account</strong>
+            <select id="naMethod" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;">
+              <option value="Easypaisa">Easypaisa</option><option value="UPaisa">UPaisa</option><option value="JazzCash">JazzCash</option><option value="Bank">Bank</option>
             </select>
-            <input type="text" id="admNewAccNum" placeholder="Account Number" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <input type="text" id="admNewAccTitle" placeholder="Account Holder Name" style="width:100%; padding:7px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <button onclick="adminAddPaymentAccount()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; cursor:pointer;">Save Account</button>
+            <input type="text" id="naNum" placeholder="Account Number" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <input type="text" id="naTitle" placeholder="Account Holder Name" style="width:100%; padding:6px; margin:4px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <button onclick="adminAddAcc()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; cursor:pointer;">Add Account</button>
           </div>
-
-          <strong>Active Deposit Accounts (Auto-Rotated to Users):</strong>
-          ${state.paymentAccounts.map((a, idx) => `
+          ${state.paymentAccounts.map((a, i) => `
             <div style="border:1px solid #e5e7eb; padding:8px; border-radius:10px; margin-top:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
               <div><strong>${a.method}:</strong> ${a.number}<br><small>${a.title}</small></div>
-              <button onclick="adminRemovePaymentAccount(${idx})" style="background:#fee2e2; color:#b91c1c; border:none; padding:6px 10px; border-radius:8px; font-weight:800; cursor:pointer;">Remove</button>
+              <button onclick="adminDelAcc(${i})" style="background:#fee2e2; color:#b91c1c; border:none; padding:6px 10px; border-radius:8px; font-weight:800; cursor:pointer;">Remove</button>
             </div>
           `).join("")}
         `;
-      }
-
-      // 6. LOGO & TOP BANNERS MANAGEMENT
-      else if (currentAdminTab === "branding") {
+      } else if (currentAdminTab === "branding") {
         box.innerHTML = `
           <div style="font-size:12px;">
-            <strong>Update Site Logo URL:</strong>
-            <input type="text" id="admLogoUrl" value="${state.settings.logoUrl}" style="width:100%; padding:7px; margin:6px 0; border-radius:8px; border:1px solid #d1d5db;" />
-            <button onclick="adminSaveLogo()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; margin-bottom:12px; cursor:pointer;">Update Logo</button>
-
-            <strong>Update Top Image Banners:</strong>
+            <strong>Logo Image URL:</strong>
+            <input type="text" id="admLogoInp" value="${state.settings.logoUrl}" style="width:100%; padding:6px; margin:6px 0; border-radius:8px; border:1px solid #d1d5db;" />
+            <button onclick="adminSaveLogo()" style="width:100%; background:var(--red); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; margin-bottom:10px; cursor:pointer;">Save Logo</button>
             ${state.settings.banners.map((b, i) => `
-              <div style="border:1px solid #e5e7eb; padding:8px; border-radius:10px; margin-top:8px;">
+              <div style="border:1px solid #e5e7eb; padding:8px; border-radius:10px; margin-top:6px;">
                 <div>Banner ${i + 1} Image URL:</div>
-                <input type="text" id="admBanImg_${i}" value="${b.img}" style="width:100%; padding:6px; margin:4px 0; border-radius:6px; border:1px solid #d1d5db;" />
-                <div>Banner ${i + 1} Caption:</div>
-                <input type="text" id="admBanTxt_${i}" value="${b.text}" style="width:100%; padding:6px; margin:4px 0; border-radius:6px; border:1px solid #d1d5db;" />
+                <input type="text" id="bImg_${i}" value="${b.img}" style="width:100%; padding:5px; margin:4px 0; border-radius:6px; border:1px solid #d1d5db;" />
+                <div>Banner ${i + 1} Text:</div>
+                <input type="text" id="bTxt_${i}" value="${b.text}" style="width:100%; padding:5px; margin:4px 0; border-radius:6px; border:1px solid #d1d5db;" />
               </div>
             `).join("")}
-            <button onclick="adminSaveBanners()" style="width:100%; background:var(--green); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; margin-top:10px; cursor:pointer;">Save All Banners</button>
+            <button onclick="adminSaveBanners()" style="width:100%; background:var(--green); color:#fff; border:none; padding:8px; border-radius:8px; font-weight:800; margin-top:8px; cursor:pointer;">Save Banners</button>
           </div>
         `;
       }
     }
 
-    function adminApproveDeposit(depId) {
-      const dep = state.deposits.find(d => d.id === depId);
-      if (!dep || dep.status !== "pending") return;
-      dep.status = "approved";
-
-      const user = state.users.find(u => String(u.id) === String(dep.userId));
-      if (user) {
-        user.balance = Number(user.balance || 0) + Number(dep.amount);
-        distributeReferralCommission(user, Number(dep.amount));
-      }
-      saveState();
-      renderAdminBody();
-      renderAll();
-  } 
-    function adminRejectDeposit(depId) {
-      const dep = state.deposits.find(d => d.id === depId);
-      if (!dep || dep.status !== "pending") return;
-      dep.status = "rejected";
-      saveState();
-      renderAdminBody();
-      renderAll();
+    function adminApproveDep(id) {
+      const d = state.deposits.find(x => x.id === id);
+      if (!d || d.status !== "pending") return;
+      d.status = "approved";
+      const u = state.users.find(x => String(x.id) === String(d.userId));
+      if (u) { u.balance = Number(u.balance || 0) + Number(d.amount); distributeReferralCommission(u, Number(d.amount)); }
+      saveState(); renderAdminBody(); renderAll();
     }
 
-    function adminApproveWithdraw(wdId) {
-      const wd = state.withdrawals.find(w => w.id === wdId);
-      if (!wd || wd.status !== "pending") return;
-      wd.status = "approved";
-      saveState();
-      renderAdminBody();
-      renderAll();
+    function adminRejectDep(id) {
+      const d = state.deposits.find(x => x.id === id);
+      if (!d || d.status !== "pending") return;
+      d.status = "rejected";
+      saveState(); renderAdminBody(); renderAll();
     }
 
-    function adminRejectWithdraw(wdId) {
-      const wd = state.withdrawals.find(w => w.id === wdId);
-      if (!wd || wd.status !== "pending") return;
-      wd.status = "rejected";
-      const user = state.users.find(u => String(u.id) === String(wd.userId));
-      if (user) {
-        user.balance = Number(user.balance || 0) + Number(wd.amount);
-      }
-      saveState();
-      renderAdminBody();
-      renderAll();
+    function adminApproveWd(id) {
+      const w = state.withdrawals.find(x => x.id === id);
+      if (!w || w.status !== "pending") return;
+      w.status = "approved";
+      saveState(); renderAdminBody(); renderAll();
     }
 
-    function adminGiveFreePlan() {
-      const query = document.getElementById("admFreeUserPhone").value.trim();
-      const planId = document.getElementById("admFreePlanId").value;
-      const user = state.users.find(u => u.phone === query || u.id === query || u.email === query.toLowerCase());
-      const plan = state.plans.find(p => p.id === planId);
-      if (!user || !plan) return alert("User or Plan not found!");
+    function adminRejectWd(id) {
+      const w = state.withdrawals.find(x => x.id === id);
+      if (!w || w.status !== "pending") return;
+      w.status = "rejected";
+      const u = state.users.find(x => String(x.id) === String(w.userId));
+      if (u) u.balance = Number(u.balance || 0) + Number(w.amount);
+      saveState(); renderAdminBody(); renderAll();
+    }
 
+    function adminGiveFree() {
+      const q = document.getElementById("admFreePhone").value.trim();
+      const pid = document.getElementById("admFreePlan").value;
+      const u = state.users.find(x => x.phone === q || x.id === q || x.email === q.toLowerCase());
+      const p = state.plans.find(x => x.id === pid);
+      if (!u || !p) return alert("User or Plan not found.");
       const now = Date.now();
       state.orders.push({
-        id: "ORD_FREE_" + now,
-        userId: user.id,
-        planId: plan.id,
-        planName: plan.name + " (VIP Gift)",
-        price: 0,
-        dailyProfit: plan.dailyProfit,
-        daysLeft: plan.days,
-        purchasedAt: now,
-        nextClaimAt: now + (24 * 60 * 60 * 1000),
-        totalClaimed: 0
+        id: "ORD_FREE_" + now, userId: u.id, planId: p.id, planName: p.name + " (Free VIP)",
+        price: 0, dailyProfit: p.dailyProfit, daysLeft: p.days,
+        purchasedAt: now, nextClaimAt: now + 86400000, totalClaimed: 0
       });
       saveState();
-      alert("Free " + plan.name + " activated for " + user.name + "!");
+      alert("Free VIP given to " + u.name + "!");
     }
 
-    function adminAddNewPlan() {
-      const name = document.getElementById("newPlanName").value.trim();
-      const price = Number(document.getElementById("newPlanPrice").value);
-      const daily = Number(document.getElementById("newPlanDaily").value);
-      const coming = document.getElementById("newPlanComing").checked;
-      if (!name || !price || !daily) return alert("Fill all plan fields.");
-
-      state.plans.push({
-        id: "vip_" + Date.now(),
-        name: name,
-        price: price,
-        dailyProfit: daily,
-        days: 120,
-        comingSoon: coming
-      });
-      saveState();
-      renderAdminBody();
-      renderPlans();
+    function adminAddPlan() {
+      const name = document.getElementById("npName").value.trim();
+      const price = Number(document.getElementById("npPrice").value);
+      const daily = Number(document.getElementById("npDaily").value);
+      const soon = document.getElementById("npSoon").checked;
+      if (!name || !price || !daily) return alert("Fill all fields.");
+      state.plans.push({ id: "vip_" + Date.now(), name, price, dailyProfit: daily, days: 120, comingSoon: soon });
+      saveState(); renderAdminBody(); renderPlans();
     }
 
-    function adminToggleComingSoon(idx) {
-      state.plans[idx].comingSoon = !state.plans[idx].comingSoon;
-      saveState();
-      renderAdminBody();
-      renderPlans();
+    function adminToggleSoon(i) { state.plans[i].comingSoon = !state.plans[i].comingSoon; saveState(); renderAdminBody(); renderPlans(); }
+    function adminEditPlan(i) {
+      const p = state.plans[i];
+      const np = prompt("New price:", p.price);
+      const nd = prompt("New daily profit:", p.dailyProfit);
+      if (np && nd) { p.price = Number(np); p.dailyProfit = Number(nd); saveState(); renderAdminBody(); renderPlans(); }
     }
 
-    function adminEditPlanPrice(idx) {
-      const p = state.plans[idx];
-      const newP = prompt("Enter new price (Rs):", p.price);
-      const newD = prompt("Enter new daily profit (Rs):", p.dailyProfit);
-      if (newP && newD) {
-        p.price = Number(newP);
-        p.dailyProfit = Number(newD);
-        saveState();
-        renderAdminBody();
-        renderPlans();
-      }
+    function adminAddAcc() {
+      const method = document.getElementById("naMethod").value;
+      const number = document.getElementById("naNum").value.trim();
+      const title = document.getElementById("naTitle").value.trim();
+      if (!number || !title) return alert("Enter number and name.");
+      state.paymentAccounts.push({ id: "acc_" + Date.now(), method, number, title });
+      saveState(); renderAdminBody();
     }
 
-    function adminAddPaymentAccount() {
-      const method = document.getElementById("admNewAccMethod").value;
-      const number = document.getElementById("admNewAccNum").value.trim();
-      const title = document.getElementById("admNewAccTitle").value.trim();
-      if (!number || !title) return alert("Enter account number and title.");
-      state.paymentAccounts.push({
-        id: "acc_" + Date.now(),
-        method,
-        number,
-        title,
-        active: true
-      });
-      saveState();
-      renderAdminBody();
-    }
-
-    function adminRemovePaymentAccount(idx) {
-      if (state.paymentAccounts.length <= 1) return alert("At least one deposit account must remain.");
-      state.paymentAccounts.splice(idx, 1);
-      saveState();
-      renderAdminBody();
+    function adminDelAcc(i) {
+      if (state.paymentAccounts.length <= 1) return alert("Keep at least 1 account.");
+      state.paymentAccounts.splice(i, 1);
+      saveState(); renderAdminBody();
     }
 
     function adminSaveLogo() {
-      const url = document.getElementById("admLogoUrl").value.trim();
-      if (!url) return;
-      state.settings.logoUrl = url;
-      saveState();
-      renderAll();
-      alert("Logo updated!");
+      const u = document.getElementById("admLogoInp").value.trim();
+      if (u) { state.settings.logoUrl = u; saveState(); renderAll(); alert("Logo updated!"); }
     }
 
     function adminSaveBanners() {
       state.settings.banners.forEach((b, i) => {
-        const imgInp = document.getElementById("admBanImg_" + i);
-        const txtInp = document.getElementById("admBanTxt_" + i);
-        if (imgInp && imgInp.value.trim()) b.img = imgInp.value.trim();
-        if (txtInp && txtInp.value.trim()) b.text = txtInp.value.trim();
+        const im = document.getElementById("bImg_" + i)?.value.trim();
+        const tx = document.getElementById("bTxt_" + i)?.value.trim();
+        if (im) b.img = im;
+        if (tx) b.text = tx;
       });
-      saveState();
-      renderBanner();
-      alert("Banners updated!");
+      saveState(); renderBanner(); alert("Banners updated!");
     }
 
-    // =========================================================
-    // 11. MAIN RENDER & INITIALIZATION
-    // =========================================================
     function renderAll() {
-      const user = getCurrentUser();
+      const u = getCurrentUser();
       document.getElementById("authLogoImg").src = state.settings.logoUrl;
       document.getElementById("mineLogoImg").src = state.settings.logoUrl;
 
-      if (!user) {
+      if (!u) {
         document.getElementById("authSection").classList.remove("hidden");
         document.getElementById("mainApp").classList.add("hidden");
         return;
-      }
-
-      document.getElementById("authSection").classList.add("hidden");
+      } 
+    document.getElementById("authSection").classList.add("hidden");
       document.getElementById("mainApp").classList.remove("hidden");
 
-      // Home stats
-      document.getElementById("homeUserName").innerText = user.name;
-      document.getElementById("homeBalance").innerText = Number(user.balance || 0).toFixed(2);
-      document.getElementById("homeTotalEarnings").innerText = Number(user.totalEarnings || 0);
-      const myOrders = state.orders.filter(o => String(o.userId) === String(user.id));
-      document.getElementById("homeOrdersCount").innerText = myOrders.length;
+      document.getElementById("homeUserName").innerText = u.name;
+      document.getElementById("homeBalance").innerText = Number(u.balance || 0).toFixed(2);
+      document.getElementById("homeTotalEarnings").innerText = Number(u.totalEarnings || 0);
+      document.getElementById("homeOrdersCount").innerText = state.orders.filter(o => String(o.userId) === String(u.id)).length;
 
-      // Mine profile
-      document.getElementById("mineName").innerText = user.name;
-      document.getElementById("minePhoneEmail").innerText = (user.phone !== "N/A" ? user.phone : "") + (user.email ? " • " + user.email : "");
-      document.getElementById("mineUserId").innerText = user.id;
-      document.getElementById("mineBalance").innerText = Number(user.balance || 0).toFixed(2);
-      document.getElementById("mineEarnings").innerText = Number(user.totalEarnings || 0);
+      document.getElementById("mineName").innerText = u.name;
+      document.getElementById("minePhoneEmail").innerText = (u.phone !== "N/A" ? u.phone : "") + (u.email ? " • " + u.email : "");
+      document.getElementById("mineUserId").innerText = u.id;
+      document.getElementById("mineBalance").innerText = Number(u.balance || 0).toFixed(2);
+      document.getElementById("mineEarnings").innerText = Number(u.totalEarnings || 0);
 
-      // Show Private Admin Menu only for waqasjatt8846@gmail.com
-      if (isAdminUser(user)) {
-        document.getElementById("adminAccessMenu").classList.remove("hidden");
-      } else {
-        document.getElementById("adminAccessMenu").classList.add("hidden");
-      }
+      document.getElementById("adminAccessMenu").classList.toggle("hidden", !isAdminUser(u));
 
       renderBanner();
       renderPlans();
@@ -2516,12 +1320,11 @@
       renderTeam();
       renderTasks();
     }
-   // Boot
+
     generateCaptcha();
     captureInviteFromUrl();
     startBannerAutoSlide();
     renderAll();
-    pullFromFirebaseFast();
   </script>
 </body>
 </html>
