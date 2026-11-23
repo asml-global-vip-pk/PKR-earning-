@@ -589,9 +589,10 @@
     }
 
     function isAdminUser(u) {
-      const user = u || getCurrentUser();
-      return Boolean(user && String(user.email || "").toLowerCase() === ADMIN_EMAIL);
-    }
+  const user = u || getCurrentUser();
+  return Boolean(user && String(user.email || "").trim().toLowerCase() === String(ADMIN_EMAIL || "").trim().toLowerCase());
+}
+
 
     function generateCaptcha() {
       currentCaptcha = String(Math.floor(1000 + Math.random() * 9000));
