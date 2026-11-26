@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>AK Trading — Official Investment & Trading Platform</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #071324;
+      --primary-blue: #0f294a;
+      --accent-blue: #1d4ed8;
+      --highlight-cyan: #0ea5e9;
+    }
+    body {
+      background-color: #f1f5f9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      padding-bottom: 80px;
+      user-select: none;
+    }
+    .blue-gradient {
+      background: linear-gradient(135deg, #09192f 0%, #1e3a8a 60%, #0284c7 100%);
+    }
+    .card-shadow {
+      box-shadow: 0 4px 20px rgba(15, 41, 74, 0.08);
+    }
+    .nav-active {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+<body class="text-slate-800">
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 hidden bg-slate-900 text-white px-5 py-3 rounded-full text-sm font-medium shadow-xl transition-all"></div>
+
+  <!-- AUTH SCREEN (LOGIN / REGISTER) -->
+  <div id="auth-screen" class="min-h-screen blue-gradient flex flex-col justify-center items-center p-4">
+    <div class="bg-white rounded-2xl px-6 py-4 mb-5 flex items-center gap-3 shadow-lg w-full max-w-md">
+      <div class="w-12 h-12 rounded-xl blue-gradient flex items-center justify-center text-white font-bold text-xl">
+        <i class="fa-solid fa-chart-line"></i>
+      </div>
+      <div>
+        <h1 class="text-xl font-extrabold text-blue-950">AK Trading</h1>
+        <p class="text-xs text-slate-500">Official Trading & Smart Investment</p>
+      </div>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="login-box" class="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl">
+      <div class="text-center mb-5">
+        <span class="bg-amber-400 text-slate-900 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase">Welcome Back</span>
+        <h2 class="text-2xl font-extrabold text-blue-950 mt-2">SIGN IN</h2>
+        <p class="text-xs text-slate-500 mt-1">Sign in with Phone Number or Email</p>
+      </div>
+
+      <div class="space-y-3">
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-3">
+          <i class="fa-solid fa-user text-blue-700 mr-3"></i>
+          <input id="login-identifier" type="text" placeholder="Phone Number or Email" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-3">
+          <i class="fa-solid fa-lock text-amber-500 mr-3"></i>
+          <input id="login-password" type="password" placeholder="Password" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <button onclick="handleLogin()" class="w-full blue-gradient text-white font-bold py-3.5 rounded-full shadow-lg active:scale-95 transition">
+          Sign In
+        </button>
+      </div>
+
+      <div class="text-center mt-5">
+        <p class="text-xs text-slate-500 mb-2">Don't have an account?</p>
+        <button onclick="toggleAuth('register')" class="w-full border-2 border-blue-800 text-blue-900 font-bold py-3 rounded-full hover:bg-blue-50 transition">
+          Register
+        </button>
+      </div>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="register-box" class="hidden bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl">
+      <div class="text-center mb-4">
+        <span class="bg-amber-400 text-slate-900 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase">Welcome Bonus Rs 100</span>
+        <h2 class="text-2xl font-extrabold text-blue-950 mt-2">CREATE ACCOUNT</h2>
+        <p class="text-xs text-slate-500">Join AK Trading and start your journey</p>
+      </div>
+
+      <div class="space-y-2.5">
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-user text-blue-700 mr-3"></i>
+          <input id="reg-name" type="text" placeholder="Enter your full name" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-mobile-screen text-slate-700 mr-3"></i>
+          <input id="reg-phone" type="text" placeholder="Phone (03001234567)" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-envelope text-blue-600 mr-3"></i>
+          <input id="reg-email" type="email" placeholder="Email address" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-lock text-amber-500 mr-3"></i>
+          <input id="reg-pass" type="password" placeholder="Enter your password" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-lock text-amber-500 mr-3"></i>
+          <input id="reg-pass2" type="password" placeholder="Re-enter your password" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <div class="flex items-center justify-between bg-slate-100 rounded-xl px-4 py-2">
+          <div class="flex items-center">
+            <i class="fa-solid fa-shield-halved text-blue-700 mr-3"></i>
+            <input id="reg-captcha" type="text" placeholder="Code" class="bg-transparent w-24 text-sm outline-none" />
+          </div>
+          <span id="captcha-display" onclick="generateCaptcha()" class="bg-blue-100 text-blue-900 font-extrabold px-3 py-1 rounded-lg tracking-widest line-through cursor-pointer">8935</span>
+        </div>
+        <div class="flex items-center bg-slate-100 rounded-xl px-4 py-2.5">
+          <i class="fa-solid fa-tag text-amber-600 mr-3"></i>
+          <input id="reg-invite" type="text" placeholder="Invite Code (Optional)" class="bg-transparent w-full text-sm outline-none" />
+        </div>
+        <button onclick="handleRegister()" class="w-full blue-gradient text-white font-bold py-3 rounded-full shadow-lg mt-2">
+          Sign Up
+        </button>
+           <p onclick="toggleAuth('login')" class="text-center text-xs text-blue-800 font-semibold mt-4 cursor-pointer">
+        Already have an account? Sign In
+      </p>
+    </div>
+
+    <p class="text-white/80 text-xs mt-5">© AK Trading — All Rights Reserved</p>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="app-screen" class="hidden max-w-md mx-auto min-h-screen bg-slate-50 relative">
+
+    <!-- TAB 1: HOME (MEGA SPECIAL PLANS) -->
+    <div id="tab-home" class="tab-content">
+      <div class="blue-gradient pt-4 pb-10 px-4 rounded-b-3xl">
+        <!-- Ticker -->
+        <div class="bg-white/95 rounded-full px-3 py-1.5 flex items-center gap-2 text-xs mb-3 shadow">
+          <span class="font-bold text-blue-900">AK Live</span>
+          <marquee class="text-slate-700 font-medium">🎉 Member 0319***784 withdrew Rs 25,000 via Easypaisa • Member 0301***786 earned Rs 45,000 from Mega Plan 2!</marquee>
+        </div>
+
+        <!-- Trading Banner Slider -->
+        <div class="relative rounded-2xl overflow-hidden h-40 shadow-lg border border-blue-400/30">
+          <img id="home-banner-img" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-900/30 to-transparent flex flex-col justify-end p-4">
+            <span class="bg-sky-500 text-white text-[10px] font-bold px-2 py-0.5 rounded w-fit mb-1">LIVE FOREX & CRYPTO</span>
+            <p id="home-banner-text" class="text-white font-bold text-sm">AK Trading Global — High-Speed 24h Returns</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Action Bar -->
+      <div class="px-4 -mt-6">
+        <div class="bg-white rounded-2xl p-4 card-shadow grid grid-cols-4 gap-2 text-center">
+          <div onclick="openModal('recharge-modal')" class="cursor-pointer">
+            <div class="w-11 h-11 mx-auto rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-sm">Rs</div>
+            <p class="text-xs font-semibold mt-1.5">Recharge</p>
+          </div>
+          <div onclick="openModal('withdraw-modal')" class="cursor-pointer">
+            <div class="w-11 h-11 mx-auto rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-sm">Rs</div>
+            <p class="text-xs font-semibold mt-1.5">Withdraw</p>
+          </div>
+          <div onclick="switchTab('plans')" class="cursor-pointer">
+            <div class="w-11 h-11 mx-auto rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center text-base"><i class="fa-solid fa-layer-group"></i></div>
+            <p class="text-xs font-semibold mt-1.5">Basic Plans</p>
+          </div>
+          <div onclick="openWhatsAppSupport()" class="cursor-pointer">
+            <div class="w-11 h-11 mx-auto rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center text-base"><i class="fa-brands fa-whatsapp"></i></div>
+            <p class="text-xs font-semibold mt-1.5">Support</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Balance Card -->
+      <div class="px-4 mt-4">
+        <div class="blue-gradient rounded-2xl p-5 text-white shadow-lg">
+          <h3 id="home-balance" class="text-3xl font-extrabold">Rs 0.00</h3>
+          <p class="text-xs text-blue-200 mt-1">Account Balance (Rs) • User: <span id="home-username" class="font-bold text-white">User</span></p>
+          <div class="grid grid-cols-2 gap-3 mt-4">
+            <div class="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+              <p id="home-orders-count" class="text-lg font-extrabold">0</p>
+              <p class="text-[11px] text-blue-200">Active Orders</p>
+            </div>
+            <div class="bg-white/10 rounded-xl p-3 text-center backdrop-blur-sm">
+              <p id="home-total-earnings" class="text-lg font-extrabold">Rs 0</p>
+              <p class="text-[11px] text-blue-200">Total Earnings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEGA SPECIAL PLANS (24H CYCLE) -->
+      <div class="px-4 mt-5">
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="font-extrabold text-blue-950 border-l-4 border-blue-700 pl-2">Mega Special Plans (24h)</h4>
+          <span class="text-[11px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">Hot Offers</span>
+        </div>
+        <div id="mega-plans-container" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- TAB 2: ORDERS (ACTIVE PLANS) -->
+    <div id="tab-orders" class="tab-content hidden">
+      <div class="blue-gradient text-white text-center py-4 font-extrabold text-lg rounded-b-2xl shadow">
+        Orders (Active Plans)
+      </div>
+      <div class="p-4">
+        <div class="blue-gradient rounded-2xl p-4 text-white grid grid-cols-3 gap-2 text-center shadow-lg">
+          <div class="bg-white/10 rounded-xl p-3">
+            <p id="ord-total-profit" class="font-extrabold text-base">Rs 0</p>
+            <p class="text-[11px] text-blue-200">Total Profit</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3">
+            <p id="ord-claimable" class="font-extrabold text-base">Rs 0</p>
+            <p class="text-[11px] text-blue-200">Claimable Now</p>
+          </div>
+          <div class="bg-white/10 rounded-xl p-3">
+            <p id="ord-active-count" class="font-extrabold text-base">0</p>
+            <p class="text-[11px] text-blue-200">Active Plans</p>
+          </div>
+        </div>
+
+        <h4 class="font-extrabold text-blue-950 border-l-4 border-blue-700 pl-2 mt-5 mb-3">Running Plans (Live Timer)</h4>
+        <div id="active-orders-list" class="space-y-3">
+          <div class="bg-white rounded-2xl p-6 text-center text-slate-400 text-sm card-shadow">
+            No active plans yet.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: TEAM & REFERRAL -->
+    <div id="tab-team" class="tab-content hidden">
+      <div class="blue-gradient text-white text-center py-4 font-extrabold text-lg rounded-b-2xl shadow">
+        Team & Referral Commission
+      </div>
+      <div class="p-4 space-y-4">
+        <div class="blue-gradient rounded-2xl p-5 text-white shadow-lg">
+          <h3 id="team-commission" class="text-3xl font-extrabold">Rs 0.00</h3>
+          <p class="text-xs text-blue-200 mt-1">Referral Earnings (Auto: L1 10% • L2 5% • L3 1%)</p>
+          <p class="text-xs font-semibold mt-3">All Team Members: <span id="team-count">0</span> | Invite Code: <span id="user-invite-code" class="text-amber-300 font-bold">AK0000</span></p>
+          <div class="flex gap-2 mt-3">
+            <input id="ref-link-input" readonly class="bg-white text-slate-800 text-xs px-3 py-2.5 rounded-full w-full outline-none font-medium" />
+            <button onclick="copyRefLink()" class="bg-amber-400 text-slate-950 font-extrabold text-xs px-5 py-2.5 rounded-full shrink-0">Copy</button>
+          </div>
+        </div>
+
+        <!-- All Team Table -->
+        <div class="bg-white rounded-2xl p-4 card-shadow">
+          <h4 class="font-extrabold text-blue-950 text-sm">Referral & All Team Members</h4>
+          <p class="text-[11px] text-slate-500 mb-3">Name, Phone & Level of all referred members</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="bg-blue-50 text-blue-900">
+                  <th class="p-2 rounded-l-lg">Name</th>
+                  <th class="p-2">Phone</th>
+                  <th class="p-2 rounded-r-lg">Level</th>
+                </tr>
+              </thead>
+              <tbody id="all-team-tbody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Deposit Team Only Table -->
+        <div class="bg-white rounded-2xl p-4 card-shadow">
+          <h4 class="font-extrabold text-blue-950 text-sm">Active Deposit Team (Approved Only)</h4>
+          <p class="text-[11px] text-slate-500 mb-3">Members with approved deposits</p>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="bg-emerald-50 text-emerald-900">
+                  <th class="p-2 rounded-l-lg">Name</th>
+                  <th class="p-2">Phone</th>
+                  <th class="p-2 rounded-r-lg">Deposit</th>
+                </tr>
+              </thead>
+              <tbody id="deposit-team-tbody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: BASIC PLANS (REPLACING TASK) -->
+    <div id="tab-plans" class="tab-content hidden">
+      <div class="blue-gradient text-white text-center py-4 font-extrabold text-lg rounded-b-2xl shadow">
+        Basic Trading Plans
+      </div>
+      <div class="p-4">
+        <div class="bg-blue-900 text-white rounded-2xl p-4 mb-4 flex items-center justify-between shadow">
+          <div>
+            <p class="text-xs text-blue-200">Daily Trading Packages</p>
+            <h4 class="font-bold text-base">Starts from Rs 600 (Rs 40/Day)</h4>
+          </div>
+          <i class="fa-solid fa-chart-pie text-2xl text-sky-400"></i>
+        </div>
+        <div id="basic-plans-container" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: MINE & PROFILE -->
+    <div id="tab-mine" class="tab-content hidden">
+      <div class="blue-gradient pt-6 pb-8 px-4 text-center text-white rounded-b-3xl">
+        <div class="w-20 h-20 mx-auto rounded-full bg-white/10 border-2 border-white flex items-center justify-center text-3xl font-extrabold shadow-lg">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+        <h3 id="mine-name" class="text-lg font-extrabold mt-2">User</h3>
+        <p id="mine-contact" class="text-xs text-blue-200">03000000000 • user@gmail.com</p>
+        <span id="mine-id-badge" class="inline-block bg-black/30 text-[11px] font-bold px-3 py-1 rounded-full mt-2">ID: USER01</span>
+      </div>
+
+      <div class="px-4 -mt-4 space-y-3">
+        <!-- Balance Box -->
+        <div class="bg-white rounded-2xl p-4 card-shadow grid grid-cols-2 text-center divide-x">
+          <div>
+            <p id="mine-balance" class="text-xl font-extrabold text-blue-900">Rs 0.00</p>
+            <p class="text-xs text-slate-500">Account Balance</p>
+          </div>
+          <div>
+            <p id="mine-earnings" class="text-xl font-extrabold text-emerald-600">Rs 0.00</p>
+            <p class="text-xs text-slate-500">Total Earnings</p>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="bg-white rounded-2xl p-4 card-shadow grid grid-cols-3 gap-2 text-center">
+          <div onclick="openModal('recharge-modal')" class="cursor-pointer">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center"><i class="fa-solid fa-wallet"></i></div>
+            <p class="text-xs font-bold mt-1">Recharge</p>
+          </div>
+          <div onclick="openModal('withdraw-modal')" class="cursor-pointer">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center"><i class="fa-solid fa-money-bill-transfer"></i></div>
+            <p class="text-xs font-bold mt-1">Withdraw</p>
+          </div>
+          <div onclick="openModal('records-modal')" class="cursor-pointer">
+            <div class="w-10 h-10 mx-auto rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center"><i class="fa-solid fa-file-invoice"></i></div>
+            <p class="text-xs font-bold mt-1">Records</p>
+          </div>
+  </div> 
+         <!-- Menu Items -->
+        <div class="space-y-2.5">
+          <div onclick="openModal('records-modal')" class="bg-white p-3.5 rounded-2xl card-shadow flex justify-between items-center cursor-pointer">
+            <span class="text-sm font-bold text-slate-700"><i class="fa-solid fa-clock-rotate-left text-blue-700 mr-2"></i> Transactions Status</span>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+          </div>
+
+          <div onclick="openWhatsAppSupport()" class="bg-white p-3.5 rounded-2xl card-shadow flex justify-between items-center cursor-pointer">
+            <span class="text-sm font-bold text-slate-700"><i class="fa-brands fa-whatsapp text-emerald-600 mr-2"></i> Customer Support (03706428136)</span>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-400"></i>
+          </div>
+
+          <!-- PRIVATE ADMIN PANEL BUTTON (ONLY VISIBLE FOR ADMIN EMAIL) -->
+          <div id="admin-panel-btn" onclick="openAdminPanel()" class="hidden bg-blue-950 text-white p-3.5 rounded-2xl shadow-lg flex justify-between items-center cursor-pointer border border-sky-400">
+            <span class="text-sm font-extrabold"><i class="fa-solid fa-shield-halved text-sky-400 mr-2"></i> Private Admin Panel</span>
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </div>
+
+          <div onclick="logoutUser()" class="bg-white p-3.5 rounded-2xl card-shadow flex justify-between items-center cursor-pointer text-rose-600">
+            <span class="text-sm font-bold"><i class="fa-solid fa-right-from-bracket mr-2"></i> Logout</span>
+            <i class="fa-solid fa-chevron-right text-xs"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOATING WHATSAPP SUPPORT ICON -->
+    <button onclick="openWhatsAppSupport()" class="fixed bottom-20 right-4 w-12 h-12 rounded-full blue-gradient text-white shadow-xl flex items-center justify-center text-xl z-30 border-2 border-white">
+      <i class="fa-solid fa-headset"></i>
+    </button>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-slate-200 grid grid-cols-5 py-2 text-center z-40">
+      <button onclick="switchTab('home')" id="nav-home" class="nav-btn nav-active flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-house text-base"></i>
+        <span class="text-[11px] mt-0.5">Home</span>
+      </button>
+      <button onclick="switchTab('orders')" id="nav-orders" class="nav-btn flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-box-open text-base"></i>
+        <span class="text-[11px] mt-0.5">Orders</span>
+      </button>
+      <button onclick="switchTab('team')" id="nav-team" class="nav-btn flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-users text-base"></i>
+        <span class="text-[11px] mt-0.5">Team</span>
+      </button>
+      <button onclick="switchTab('plans')" id="nav-plans" class="nav-btn flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-chart-simple text-base"></i>
+        <span class="text-[11px] mt-0.5">Plans</span>
+      </button>
+      <button onclick="switchTab('mine')" id="nav-mine" class="nav-btn flex flex-col items-center text-slate-500">
+        <i class="fa-solid fa-user text-base"></i>
+        <span class="text-[11px] mt-0.5">Mine</span>
+      </button>
+    </nav>
+  </div> 
+     <!-- ================= MODALS ================= -->
+
+  <!-- PLAN DETAILS MODAL -->
+  <div id="plan-detail-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 id="detail-plan-title" class="font-extrabold text-blue-950 text-lg">Plan Details</h3>
+        <button onclick="closeModal('plan-detail-modal')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="detail-plan-body" class="py-4 space-y-2 text-sm text-slate-700"></div>
+      <button id="detail-buy-btn" class="w-full blue-gradient text-white font-bold py-3 rounded-full shadow">Activate Plan Now</button>
+    </div>
+  </div>
+
+  <!-- RECHARGE / DEPOSIT MODAL -->
+  <div id="recharge-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-extrabold text-blue-950 text-lg">Deposit Funds</h3>
+        <button onclick="closeModal('recharge-modal')" class="w-8 h-8 rounded-full bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="mt-3 bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs space-y-1">
+        <p class="font-bold text-blue-900">Send Payment to Official Account:</p>
+        <div id="deposit-accounts-display">
+          <p>Method: <b>Easypaisa</b></p>
+          <p>Account Number: <b class="text-blue-700 select-all">03010901786</b></p>
+          <p>Account Title: <b>Qutab Shar</b></p>
+        </div>
+      </div>
+      <div class="space-y-3 mt-4">
+        <input id="dep-amount" type="number" placeholder="Enter Amount (Rs)" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <input id="dep-sender" type="text" placeholder="Your Sender Phone Number" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <input id="dep-tid" type="text" placeholder="Transaction ID (TID)" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <button onclick="submitDeposit()" class="w-full blue-gradient text-white font-bold py-3 rounded-full shadow">Submit Deposit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WITHDRAW MODAL -->
+  <div id="withdraw-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-extrabold text-blue-950 text-lg">Withdraw Funds</h3>
+        <button onclick="closeModal('withdraw-modal')" class="w-8 h-8 rounded-full bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 mt-4">
+        <select id="with-method" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none font-semibold">
+          <option value="Easypaisa">Easypaisa</option>
+          <option value="JazzCash">JazzCash</option>
+        </select>
+        <input id="with-account" type="text" placeholder="Account Number (03...)" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <input id="with-holder" type="text" placeholder="Account Holder Name" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <input id="with-amount" type="number" placeholder="Withdraw Amount (Rs)" class="w-full bg-slate-100 rounded-xl px-4 py-3 text-sm outline-none" />
+        <button onclick="submitWithdraw()" class="w-full blue-gradient text-white font-bold py-3 rounded-full shadow">Request Withdraw</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORDS MODAL -->
+  <div id="records-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl max-h-[85vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-extrabold text-blue-950 text-lg">Transaction Records</h3>
+        <button onclick="closeModal('records-modal')" class="w-8 h-8 rounded-full bg-slate-100"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div id="user-records-list" class="space-y-2.5 mt-3 text-xs"></div>
+    </div>
+  </div>
+
+  <!-- ================= PRIVATE ADMIN PANEL MODAL ================= -->
+  <div id="admin-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-3">
+    <div class="bg-white rounded-3xl w-full max-w-md p-4 shadow-2xl max-h-[92vh] overflow-y-auto">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="font-extrabold text-blue-950 text-lg"><i class="fa-solid fa-shield-halved text-blue-700 mr-1"></i> AK Admin Panel</h3>
+        <button onclick="closeModal('admin-modal')" class="w-8 h-8 rounded-full bg-rose-100 text-rose-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <!-- Admin Navigation Pills -->
+      <div class="flex gap-2 overflow-x-auto py-3 hide-scrollbar">
+        <button onclick="switchAdminTab('deposits')" class="adm-tab bg-blue-900 text-white text-xs font-bold px-4 py-2 rounded-full shrink-0">Deposits</button>
+        <button onclick="switchAdminTab('withdraws')" class="adm-tab bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-full shrink-0">Withdraws</button>
+        <button onclick="switchAdminTab('users')" class="adm-tab bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-full shrink-0">Users & Passwords</button>
+        <button onclick="switchAdminTab('plans')" class="adm-tab bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-full shrink-0">Manage Plans</button>
+        <button onclick="switchAdminTab('accounts')" class="adm-tab bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-full shrink-0">Deposit Accounts</button>
+        <button onclick="switchAdminTab('banners')" class="adm-tab bg-slate-100 text-slate-700 text-xs font-bold px-4 py-2 rounded-full shrink-0">Banners</button>
+      </div>
+
+      <!-- Admin Tab: Deposits -->
+      <div id="adm-deposits" class="adm-section space-y-2.5"></div>
+
+      <!-- Admin Tab: Withdraws -->
+      <div id="adm-withdraws" class="adm-section hidden space-y-2.5"></div>
+
+      <!-- Admin Tab: Users & Passwords + Add Balance -->
+      <div id="adm-users" class="adm-section hidden space-y-3"></div>
+
+      <!-- Admin Tab: Manage Mega & Basic Plans -->
+      <div id="adm-plans" class="adm-section hidden space-y-3">
+        <div class="bg-slate-50 p-3 rounded-2xl border space-y-2">
+          <h4 class="font-bold text-xs text-blue-900">+ Add / Update Plan</h4>
+          <select id="adm-plan-type" class="w-full bg-white border rounded-xl px-3 py-2 text-xs">
+            <option value="mega">Mega Special Offer (Home - 24h)</option>
+            <option value="basic">Basic Plan (Plans Page)</option>
+          </select>
+          <input id="adm-plan-name" type="text" placeholder="Plan Title (e.g. Mega Special Plan 3)" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <input id="adm-plan-price" type="number" placeholder="Deposit Price (Rs)" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <input id="adm-plan-profit" type="number" placeholder="Profit / Return (Rs)" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <input id="adm-plan-days" type="number" placeholder="Cycle Days (1 for 24h, or 30/60/120)" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <textarea id="adm-plan-desc" placeholder="Plan Details / Description" class="w-full bg-white border rounded-xl px-3 py-2 text-xs"></textarea>
+          <button onclick="adminAddPlan()" class="w-full blue-gradient text-white font-bold py-2.5 rounded-full text-xs">Save Plan</button>
+        </div>
+        <div id="adm-plans-list" class="space-y-2"></div>
+      </div>
+
+      <!-- Admin Tab: Deposit Accounts -->
+      <div id="adm-accounts" class="adm-section hidden space-y-3">
+        <div class="bg-slate-50 p-3 rounded-2xl border space-y-2">
+          <h4 class="font-bold text-xs text-blue-900">+ Add Deposit Account</h4>
+          <select id="adm-acc-method" class="w-full bg-white border rounded-xl px-3 py-2 text-xs">
+            <option value="Easypaisa">Easypaisa</option>
+            <option value="JazzCash">JazzCash</option>
+          </select>
+          <input id="adm-acc-num" type="text" placeholder="Account Number" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <input id="adm-acc-name" type="text" placeholder="Account Holder Name" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <button onclick="adminAddAccount()" class="w-full blue-gradient text-white font-bold py-2.5 rounded-full text-xs">Add Account</button>
+        </div>
+        <div id="adm-accounts-list" class="space-y-2"></div>
+  </div>
+    <!-- Admin Tab: Banners -->
+      <div id="adm-banners" class="adm-section hidden space-y-3">
+        <div class="bg-slate-50 p-3 rounded-2xl border space-y-2">
+          <label class="text-xs font-bold">Banner Image URL:</label>
+          <input id="adm-banner-url" type="text" placeholder="https://..." class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <label class="text-xs font-bold">Banner Text:</label>
+          <input id="adm-banner-text" type="text" placeholder="Banner Headline" class="w-full bg-white border rounded-xl px-3 py-2 text-xs" />
+          <button onclick="adminSaveBanner()" class="w-full blue-gradient text-white font-bold py-2.5 rounded-full text-xs">Save Banner</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIREBASE & APPLICATION LOGIC -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore, collection, doc, setDoc, getDoc, getDocs, addDoc, updateDoc, deleteDoc,
+      onSnapshot, query, where, increment
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBpVzS-vuewSlgtf78ajf_aU-Mygg9UJiA",
+      authDomain: "pkr-earning-f15bd.firebaseapp.com",
+      projectId: "pkr-earning-f15bd",
+      storageBucket: "pkr-earning-f15bd.firebasestorage.app",
+      messagingSenderId: "1092045219657",
+      appId: "1:1092045219657:web:187ab8b4d5ed40f09e9c98",
+      measurementId: "G-98ZXWDD3RY"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // ADMIN CREDENTIALS CONFIG
+    const ADMIN_EMAIL = "waqasjatt8846@gmail.com";
+    const ADMIN_PASS = "2649";
+    const ADMIN_PHONE = "03192649784";
+    const SUPPORT_WHATSAPP = "923706428136";
+
+    let currentUser = null;
+    let allUsersCache = [];
+    let allPlansCache = [];
+    let currentCaptcha = "8935";
+
+    // Default Plans Seed (If Firestore is empty)
+    const defaultPlans = [
+      {
+        id: "mega_1",
+        type: "mega",
+        name: "Mega Special Plan 1",
+        price: 15000,
+        profit: 25000,
+        days: 1,
+        cycleLabel: "24 Hours Cycle",
+        desc: "Deposit Rs 15,000 in AK Trading Mega Pool and receive Rs 25,000 total return automatically after 24 hours."
+      },
+      {
+        id: "mega_2",
+        type: "mega",
+        name: "Mega Special Plan 2",
+        price: 35000,
+        profit: 45000,
+        days: 1,
+        cycleLabel: "24 Hours Cycle",
+        desc: "Deposit Rs 35,000 in AK Trading VIP Institutional Pool and receive Rs 45,000 total return after 24 hours."
+      },
+      {
+        id: "basic_1",
+        type: "basic",
+        name: "AK Starter Plan 1",
+        price: 600,
+        profit: 40,
+        days: 60,
+        cycleLabel: "60 Days • Daily Profit",
+        desc: "Entry level trading package. Invest Rs 600 and earn Rs 40 daily profit for 60 days (Total Rs 2,400)."
+      },
+      {
+        id: "basic_2",
+        type: "basic",
+        name: "AK Silver Plan 2",
+        price: 1500,
+        profit: 110,
+        days: 60,
+        cycleLabel: "60 Days • Daily Profit",
+        desc: "Silver trading package. Invest Rs 1,500 and earn Rs 110 daily profit for 60 days (Total Rs 6,600)."
+      },
+      {
+        id: "basic_3",
+        type: "basic",
+        name: "AK Gold Plan 3",
+        price: 3500,
+        profit: 280,
+        days: 60,
+        cycleLabel: "60 Days • Daily Profit",
+        desc: "Gold trading package. Invest Rs 3,500 and earn Rs 280 daily profit for 60 days (Total Rs 16,800)."
+      }
+    ];
+
+    window.showToast = (msg) => {
+      const t = document.getElementById("toast");
+      t.innerText = msg;
+      t.classList.remove("hidden");
+      setTimeout(() => t.classList.add("hidden"), 3000);
+    };
+
+    window.generateCaptcha = () => {
+      currentCaptcha = Math.floor(1000 + Math.random() * 9000).toString();
+      document.getElementById("captcha-display").innerText = currentCaptcha;
+    };
+
+    window.toggleAuth = (mode) => {
+      document.getElementById("login-box").classList.toggle("hidden", mode === "register");
+      document.getElementById("register-box").classList.toggle("hidden", mode === "login");
+    };
+
+    window.openWhatsAppSupport = () => {
+      window.open(`https://wa.me/${SUPPORT_WHATSAPP}?text=Hello%20AK%20Trading%20Support,%20I%20need%20help.`, "_blank");
+    };
+
+    window.openModal = (id) => document.getElementById(id).classList.remove("hidden");
+    window.closeModal = (id) => document.getElementById(id).classList.add("hidden");
+
+    window.switchTab = (tabName) => {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      document.getElementById(`tab-${tabName}`).classList.remove("hidden");
+      document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("nav-active"));
+      document.getElementById(`nav-${tabName}`).classList.add("nav-active");
+    };
+
+    // ENSURE ADMIN ACCOUNT EXISTS IN FIRESTORE
+    async function ensureAdminAndDefaults() {
+      const adminRef = doc(db, "ak_users", "ADMIN01");
+      const adminSnap = await getDoc(adminRef);
+      if (!adminSnap.exists()) {
+        await setDoc(adminRef, {
+          id: "ADMIN01",
+          name: "Waqas Nadeem",
+          email: ADMIN_EMAIL,
+          phone: ADMIN_PHONE,
+          password: ADMIN_PASS,
+          balance: 1000,
+          totalEarnings: 1000,
+          inviteCode: "AKADMIN",
+          referredBy: "",
+          isAdmin: true,
+          createdAt: Date.now()
+        });
+      }
+
+      const plansSnap = await getDocs(collection(db, "ak_plans"));
+      if (plansSnap.empty) {
+        for (const p of defaultPlans) {
+          await setDoc(doc(db, "ak_plans", p.id), p);
+        }
+      }
+
+      const accSnap = await getDocs(collection(db, "ak_deposit_accounts"));
+      if (accSnap.empty) {
+        await setDoc(doc(db, "ak_deposit_accounts", "default_ep"), {
+          method: "Easypaisa",
+          number: "03010901786",
+          title: "Qutab Shar"
+        });
+      }
+    }
+
+    // REGISTER HANDLER
+    window.handleRegister = async () => {
+      const name = document.getElementById("reg-name").value.trim();
+      const phone = document.getElementById("reg-phone").value.trim();
+      const email = document.getElementById("reg-email").value.trim().toLowerCase();
+      const pass = document.getElementById("reg-pass").value.trim();
+      const pass2 = document.getElementById("reg-pass2").value.trim();
+      const cap = document.getElementById("reg-captcha").value.trim();
+      const invite = document.getElementById("reg-invite").value.trim().toUpperCase();
+
+      if (!name || !phone || !pass) return showToast("Please fill name, phone & password");
+      if (pass !== pass2) return showToast("Passwords do not match");
+      if (cap !== currentCaptcha) return showToast("Invalid verification code");
+
+      const uid = "AK" + Math.floor(100000 + Math.random() * 900000);
+      const userData = {
+        id: uid,
+        name,
+        phone,
+        email: email || `${phone}@aktrading.pk`,
+        password: pass,
+        balance: 100, // Welcome Bonus Rs 100
+        totalEarnings: 100,
+        inviteCode: uid,
+        referredBy: invite || "",
+        isAdmin: email === ADMIN_EMAIL,
+        createdAt: Date.now()
+      };
+
+      await setDoc(doc(db, "ak_users", uid), userData);
+      localStorage.setItem("ak_uid", uid);
+      showToast("Account Created! Rs 100 Bonus Added");
+      startAppSession(userData);
+    };
+
+    // LOGIN HANDLER
+    window.handleLogin = async () => {
+      const iden = document.getElementById("login-identifier").value.trim().toLowerCase();
+      const pass = document.getElementById("login-password").value.trim();
+
+      if (!iden || !pass) return showToast("Enter email/phone and password");
+
+      // Direct Admin Check
+      if ((iden === ADMIN_EMAIL || iden === ADMIN_PHONE) && pass === ADMIN_PASS) {
+        await ensureAdminAndDefaults();
+        const adminSnap = await getDoc(doc(db, "ak_users", "ADMIN01"));
+        localStorage.setItem("ak_uid", "ADMIN01");
+        startAppSession(adminSnap.data());
+        return;
+      }
+
+      const snap = await getDocs(collection(db, "ak_users"));
+      let found = null;
+      snap.forEach(d => {
+        const u = d.data();
+        if ((u.email?.toLowerCase() === iden || u.phone === iden) && u.password === pass) {
+          found = u;
+        }
+      });
+
+      if (!found) return showToast("Invalid credentials!");
+      localStorage.setItem("ak_uid", found.id);
+      startAppSession(found);
+    };
+
+    window.logoutUser = () => {
+      localStorage.removeItem("ak_uid");
+      location.reload();
+    };
+
+    // START REAL-TIME SESSION
+    function startAppSession(user) {
+      currentUser = user;
+      document.getElementById("auth-screen").classList.add("hidden");
+      document.getElementById("app-screen").classList.remove("hidden");
+
+      // Private Admin Check (Strictly by Admin Email)
+      if (user.email?.toLowerCase() === ADMIN_EMAIL) {
+        document.getElementById("admin-panel-btn").classList.remove("hidden");
+      } else {
+        document.getElementById("admin-panel-btn").classList.add("hidden");
+      }
+
+      // Real-time listener on Current User
+      onSnapshot(doc(db, "ak_users", user.id), (docSnap) => {
+        if (docSnap.exists()) {
+          currentUser = docSnap.data();
+          updateUserUI();
+        }
+      }); 
+     // Real-time listener on Plans
+      onSnapshot(collection(db, "ak_plans"), (snap) => {
+        allPlansCache = [];
+        snap.forEach(d => allPlansCache.push({ id: d.id, ...d.data() }));
+        renderPlans();
+      });
+
+      // Real-time listener on Orders
+      onSnapshot(query(collection(db, "ak_orders"), where("userId", "==", user.id)), (snap) => {
+        renderOrders(snap);
+      });
+
+      // Real-time listener on All Users (For Team & Admin)
+      onSnapshot(collection(db, "ak_users"), (snap) => {
+        allUsersCache = [];
+        snap.forEach(d => allUsersCache.push(d.data()));
+        renderTeamData();
+      });
+
+      // Real-time listener on Deposit Accounts
+      onSnapshot(collection(db, "ak_deposit_accounts"), (snap) => {
+        const box = document.getElementById("deposit-accounts-display");
+        box.innerHTML = "";
+        snap.forEach(d => {
+          const acc = d.data();
+          box.innerHTML += `
+            <div class="border-b border-blue-200 pb-1.5 mb-1.5 last:border-none">
+              <p>Method: <b>${acc.method}</b></p>
+              <p>Number: <b class="text-blue-700 select-all">${acc.number}</b></p>
+              <p>Title: <b>${acc.title}</b></p>
+            </div>
+          `;
+        });
+      });
+
+      // Real-time Banner Config
+      onSnapshot(doc(db, "ak_settings", "banner"), (snap) => {
+        if (snap.exists()) {
+          const b = snap.data();
+          if (b.url) document.getElementById("home-banner-img").src = b.url;
+          if (b.text) document.getElementById("home-banner-text").innerText = b.text;
+        }
+      });
+
+      // Real-time User Records
+      onSnapshot(query(collection(db, "ak_transactions"), where("userId", "==", user.id)), (snap) => {
+        const list = document.getElementById("user-records-list");
+        list.innerHTML = "";
+        if (snap.empty) list.innerHTML = `<p class="text-center text-slate-400 py-4">No records found.</p>`;
+        snap.forEach(d => {
+          const tx = d.data();
+          const color = tx.status === "approved" ? "text-emerald-600" : tx.status === "rejected" ? "text-rose-600" : "text-amber-600";
+          list.innerHTML += `
+            <div class="bg-slate-50 p-3 rounded-xl border flex justify-between items-center">
+              <div>
+                <p class="font-bold uppercase text-blue-950">${tx.type} • Rs ${tx.amount}</p>
+                <p class="text-[11px] text-slate-500">${tx.details || ""}</p>
+              </div>
+              <span class="font-extrabold uppercase ${color}">${tx.status}</span>
+            </div>
+          `;
+        });
+      });
+    }
+
+    function updateUserUI() {
+      document.getElementById("home-balance").innerText = `Rs ${Number(currentUser.balance || 0).toFixed(2)}`;
+      document.getElementById("home-username").innerText = currentUser.name;
+      document.getElementById("home-total-earnings").innerText = `Rs ${currentUser.totalEarnings || 0}`;
+
+      document.getElementById("mine-name").innerText = currentUser.name;
+      document.getElementById("mine-contact").innerText = `${currentUser.phone} • ${currentUser.email}`;
+      document.getElementById("mine-id-badge").innerText = `ID: ${currentUser.id}`;
+      document.getElementById("mine-balance").innerText = `Rs ${Number(currentUser.balance || 0).toFixed(2)}`;
+      document.getElementById("mine-earnings").innerText = `Rs ${Number(currentUser.totalEarnings || 0).toFixed(2)}`;
+
+      document.getElementById("user-invite-code").innerText = currentUser.inviteCode;
+      document.getElementById("ref-link-input").value = `${window.location.origin}${window.location.pathname}?ref=${currentUser.inviteCode}`;
+    }
+
+    // RENDER MEGA & BASIC PLANS WITH BUY + DETAIL BUTTONS
+    function renderPlans() {
+      const megaBox = document.getElementById("mega-plans-container");
+      const basicBox = document.getElementById("basic-plans-container");
+      megaBox.innerHTML = "";
+      basicBox.innerHTML = "";
+
+      allPlansCache.forEach(plan => {
+        const isMega = plan.type === "mega";
+        const profitLabel = isMega
+          ? `Rs ${plan.profit.toLocaleString()} Return after 24h`
+          : `Rs ${plan.profit} Daily Profit`;
+
+        const cardHTML = `
+          <div class="bg-white rounded-2xl p-4 card-shadow border border-slate-100">
+            <div class="flex justify-between items-center">
+              <h5 class="font-extrabold text-blue-950 text-base">${plan.name}</h5>
+              <span class="bg-blue-100 text-blue-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">${plan.cycleLabel || (plan.days + " Days")}</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-1">Deposit: <b class="text-slate-800">Rs ${plan.price.toLocaleString()}</b></p>
+            <div class="flex flex-wrap gap-2 mt-2.5">
+              <span class="border border-emerald-200 bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full">${profitLabel}</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2.5 mt-3.5">
+              <button onclick="openPlanDetails('${plan.id}')" class="border-2 border-blue-800 text-blue-900 font-bold py-2 rounded-full text-xs hover:bg-blue-50 transition">
+                Plan Details
+              </button>
+              <button onclick="buyPlan('${plan.id}')" class="blue-gradient text-white font-bold py-2 rounded-full text-xs shadow active:scale-95 transition">
+                Buy Plan (Rs ${plan.price})
+              </button>
+            </div>
+          </div>
+        `;
+
+        if (isMega) megaBox.innerHTML += cardHTML;
+        else basicBox.innerHTML += cardHTML;
+      });
+    }
+
+    window.openPlanDetails = (planId) => {
+      const plan = allPlansCache.find(p => p.id === planId);
+      if (!plan) return;
+      document.getElementById("detail-plan-title").innerText = plan.name;
+      document.getElementById("detail-plan-body").innerHTML = `
+        <p><b>Investment Required:</b> Rs ${plan.price.toLocaleString()}</p>
+        <p><b>Profit Return:</b> Rs ${plan.profit.toLocaleString()} (${plan.type === 'mega' ? 'After 24 Hours' : 'Per Day'})</p>
+        <p><b>Duration:</b> ${plan.days} Day(s)</p>
+        <div class="bg-blue-50 p-3 rounded-xl text-xs text-blue-950 mt-2">${plan.desc || "Guaranteed trading returns backed by AK Trading liquidity pool."}</div>
+      `;
+      document.getElementById("detail-buy-btn").onclick = () => {
+        closeModal("plan-detail-modal");
+        buyPlan(planId);
+      };
+      openModal("plan-detail-modal");
+    };
+
+    // BUY PLAN INSTANTLY
+    window.buyPlan = async (planId) => {
+      const plan = allPlansCache.find(p => p.id === planId);
+      if (!plan) return;
+      if (Number(currentUser.balance) < Number(plan.price)) {
+        showToast("Insufficient Balance! Please Recharge first.");
+        openModal("recharge-modal");
+        return;
+      }
+
+      await updateDoc(doc(db, "ak_users", currentUser.id), {
+        balance: increment(-Number(plan.price))
+      });
+
+      await addDoc(collection(db, "ak_orders"), {
+        userId: currentUser.id,
+        planId: plan.id,
+        planName: plan.name,
+        planType: plan.type,
+        price: Number(plan.price),
+        profit: Number(plan.profit),
+        days: Number(plan.days),
+        purchasedAt: Date.now(),
+        nextClaimAt: Date.now() + 24 * 60 * 60 * 1000,
+        status: "running"
+      });
+
+      showToast(`${plan.name} Activated!`);
+      switchTab("orders");
+    };
+
+    // RENDER ACTIVE ORDERS
+    function renderOrders(snap) {
+      const list = document.getElementById("active-orders-list");
+      let activeCount = 0;
+      let totalProfit = 0;
+      let claimable = 0;
+      list.innerHTML = "";
+
+      snap.forEach(d => {
+        const ord = { id: d.id, ...d.data() };
+        activeCount++;
+        const isReady = Date.now() >= ord.nextClaimAt;
+        if (isReady) claimable += ord.profit;
+
+        list.innerHTML += `
+          <div class="bg-white rounded-2xl p-4 card-shadow border-l-4 border-blue-800">
+            <div class="flex justify-between items-center">
+              <h5 class="font-extrabold text-blue-950 text-sm">${ord.planName}</h5>
+              <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-full ${isReady ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                ${isReady ? 'Ready to Claim' : '24h Running'}
+              </span>
+            </div> 
+            <p class="text-xs text-slate-500 mt-1">Invested: Rs ${ord.price} • Profit: <b class="text-emerald-600">Rs ${ord.profit}</b></p>
+            <button onclick="claimOrderProfit('${ord.id}', ${ord.profit})" ${!isReady ? 'disabled' : ''}
+              class="w-full mt-3 py-2 rounded-full text-xs font-bold ${isReady ? 'blue-gradient text-white shadow' : 'bg-slate-200 text-slate-500'}">
+              ${isReady ? `Claim Rs ${ord.profit} Now` : 'Profit Unlocks After 24 Hours'}
+            </button>
+          </div>
+        `;
+      });
+
+      if (activeCount === 0) {
+        list.innerHTML = `<div class="bg-white rounded-2xl p-6 text-center text-slate-400 text-sm card-shadow">No active plans yet.</div>`;
+      }
+
+      document.getElementById("home-orders-count").innerText = activeCount;
+      document.getElementById("ord-active-count").innerText = activeCount;
+      document.getElementById("ord-claimable").innerText = `Rs ${claimable}`;
+    }
+
+    window.claimOrderProfit = async (orderId, amount) => {
+      await updateDoc(doc(db, "ak_users", currentUser.id), {
+        balance: increment(Number(amount)),
+        totalEarnings: increment(Number(amount))
+      });
+      await updateDoc(doc(db, "ak_orders", orderId), {
+        nextClaimAt: Date.now() + 24 * 60 * 60 * 1000
+      });
+      showToast(`Rs ${amount} Profit Added to Balance!`);
+    };
+
+    // SUBMIT DEPOSIT
+    window.submitDeposit = async () => {
+      const amount = Number(document.getElementById("dep-amount").value);
+      const sender = document.getElementById("dep-sender").value.trim();
+      const tid = document.getElementById("dep-tid").value.trim();
+
+      if (!amount || amount <= 0 || !sender || !tid) return showToast("Fill all deposit fields");
+
+      await addDoc(collection(db, "ak_transactions"), {
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userPhone: currentUser.phone,
+        type: "deposit",
+        amount,
+        sender,
+        tid,
+        details: `TID: ${tid} • From: ${sender}`,
+        status: "pending",
+        createdAt: Date.now()
+      });
+
+      closeModal("recharge-modal");
+      showToast("Deposit submitted! Waiting for approval.");
+    };
+
+    // SUBMIT WITHDRAW
+    window.submitWithdraw = async () => {
+      const method = document.getElementById("with-method").value;
+      const account = document.getElementById("with-account").value.trim();
+      const holder = document.getElementById("with-holder").value.trim();
+      const amount = Number(document.getElementById("with-amount").value);
+
+      if (!account || !holder || !amount || amount <= 0) return showToast("Fill all withdraw details");
+      if (amount > Number(currentUser.balance)) return showToast("Insufficient Balance!");
+
+      await updateDoc(doc(db, "ak_users", currentUser.id), {
+        balance: increment(-amount)
+      });
+
+      await addDoc(collection(db, "ak_transactions"), {
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userPhone: currentUser.phone,
+        type: "withdraw",
+        amount,
+        method,
+        account,
+        holder,
+        details: `${method}: ${account} (${holder})`,
+        status: "pending",
+        createdAt: Date.now()
+      });
+
+      closeModal("withdraw-modal");
+      showToast("Withdraw request sent!");
+    };
+
+    // RENDER TEAM & APPROVED DEPOSIT TEAM
+    async function renderTeamData() {
+      const l1 = allUsersCache.filter(u => u.referredBy === currentUser.inviteCode);
+      const l1Codes = l1.map(u => u.inviteCode);
+      const l2 = allUsersCache.filter(u => l1Codes.includes(u.referredBy));
+
+      const allMembers = [
+        ...l1.map(u => ({ ...u, level: "Level 1 (10%)" })),
+        ...l2.map(u => ({ ...u, level: "Level 2 (5%)" }))
+      ];
+
+      document.getElementById("team-count").innerText = allMembers.length;
+      const tbody = document.getElementById("all-team-tbody");
+      tbody.innerHTML = "";
+      allMembers.forEach(m => {
+        tbody.innerHTML += `
+          <tr>
+            <td class="p-2 font-bold">${m.name}</td>
+            <td class="p-2">${m.phone}</td>
+            <td class="p-2 text-emerald-600 font-bold">${m.level}</td>
+          </tr>
+        `;
+      });
+
+      // Approved Deposit Team Only
+      const depTbody = document.getElementById("deposit-team-tbody");
+      depTbody.innerHTML = "";
+      const txSnap = await getDocs(query(collection(db, "ak_transactions"), where("type", "==", "deposit"), where("status", "==", "approved")));
+      const approvedMap = {};
+      txSnap.forEach(d => {
+        const tx = d.data();
+        approvedMap[tx.userId] = (approvedMap[tx.userId] || 0) + Number(tx.amount);
+      });
+
+      allMembers.forEach(m => {
+        if (approvedMap[m.id] > 0) {
+          depTbody.innerHTML += `
+            <tr>
+              <td class="p-2 font-bold">${m.name}</td>
+              <td class="p-2">${m.phone}</td>
+              <td class="p-2 text-blue-800 font-extrabold">Rs ${approvedMap[m.id]}</td>
+            </tr>
+          `;
+        }
+      });
+    }
+
+    window.copyRefLink = () => {
+      const inp = document.getElementById("ref-link-input");
+      inp.select();
+      navigator.clipboard.writeText(inp.value);
+      showToast("Referral Link Copied!");
+    };
+
+    // ================= PRIVATE ADMIN PANEL LOGIC =================
+    window.openAdminPanel = () => {
+      if (currentUser?.email?.toLowerCase() !== ADMIN_EMAIL) return;
+      openModal("admin-modal");
+      loadAdminData();
+    };
+
+    window.switchAdminTab = (tab) => {
+      document.querySelectorAll(".adm-section").forEach(el => el.classList.add("hidden"));
+      document.getElementById(`adm-${tab}`).classList.remove("hidden");
+      document.querySelectorAll(".adm-tab").forEach(b => {
+        b.classList.remove("bg-blue-900", "text-white");
+        b.classList.add("bg-slate-100", "text-slate-700");
+      });
+      event.target.classList.add("bg-blue-900", "text-white");
+      event.target.classList.remove("bg-slate-100", "text-slate-700");
+    };
+
+    function loadAdminData() {
+      // 1. Live Deposits & Withdraws
+      onSnapshot(collection(db, "ak_transactions"), (snap) => {
+        const depBox = document.getElementById("adm-deposits");
+        const withBox = document.getElementById("adm-withdraws");
+        depBox.innerHTML = "";
+        withBox.innerHTML = "";
+
+        snap.forEach(d => {
+          const tx = { id: d.id, ...d.data() };
+          const statusBadge = tx.status === "approved"
+            ? `<span class="text-emerald-600 font-bold text-xs">approved</span>`
+            : tx.status === "rejected"
+            ? `<span class="text-rose-600 font-bold text-xs">rejected</span>`
+            : `<div class="flex gap-1.5 mt-2">
+                <button onclick="adminHandleTx('${tx.id}', '${tx.userId}', '${tx.type}', ${tx.amount}, 'approved')" class="bg-emerald-600 text-white text-xs px-3 py-1 rounded-full font-bold">Approve</button>
+                <button onclick="adminHandleTx('${tx.id}', '${tx.userId}', '${tx.type}', ${tx.amount}, 'rejected')" class="bg-rose-600 text-white text-xs px-3 py-1 rounded-full font-bold">Reject</button>
+              </div>`;
+
+          const card = `
+            <div class="bg-slate-50 border rounded-2xl p-3 text-xs">
+              <div class="flex justify-between">
+                <b class="text-blue-950">${tx.userName} (${tx.userPhone})</b>
+                ${tx.status !== 'pending' ? statusBadge : ''}
+              </div>
+              <p class="mt-1">Amount: <b>Rs ${tx.amount}</b></p>
+              <p class="text-slate-500">${tx.details}</p>
+              ${tx.status === 'pending' ? statusBadge : ''}
+            </div>
+          `;
+
+          if (tx.type === "deposit") depBox.innerHTML += card;
+          else withBox.innerHTML += card;
+        });
+      });
+
+      // 2. Users, Passwords & Balance Control
+      const usersBox = document.getElementById("adm-users");
+      usersBox.innerHTML = "";
+      allUsersCache.forEach(u => {
+        usersBox.innerHTML += `
+          <div class="bg-slate-50 border rounded-2xl p-3 text-xs space-y-1">
+            <div class="flex justify-between">
+              <b class="text-blue-950">${u.name} (${u.id})</b>
+              <span class="font-extrabold text-emerald-700">Rs ${u.balance}</span>
+            </div>
+            <p>Phone: <b>${u.phone}</b> | Email: <b>${u.email}</b></p>
+            <p>Password: <b class="text-rose-600">${u.password}</b></p>
+            <div class="flex gap-2 pt-1.5">
+              <input id="add-bal-${u.id}" type="number" placeholder="Amount (+/-)" class="bg-white border rounded-lg px-2 py-1 w-28 outline-none" />
+              <button onclick="adminUpdateBalance('${u.id}')" class="bg-blue-900 text-white px-3 py-1 rounded-lg font-bold">Update Balance</button>
+            </div>
+          </div>
+        `;
+      }); 
+       // 3. Admin Plans List
+      const plansList = document.getElementById("adm-plans-list");
+      plansList.innerHTML = "";
+      allPlansCache.forEach(p => {
+        plansList.innerHTML += `
+          <div class="bg-white border rounded-xl p-2.5 flex justify-between items-center text-xs">
+            <div>
+              <b>${p.name}</b> <span class="text-blue-700">(${p.type.toUpperCase()})</span>
+              <p class="text-slate-500">Price: Rs ${p.price} • Profit: Rs ${p.profit}</p>
+            </div>
+            <button onclick="adminDeletePlan('${p.id}')" class="bg-rose-100 text-rose-600 px-2.5 py-1 rounded-lg font-bold">Delete</button>
+          </div>
+        `;
+      });
+
+      // 4. Deposit Accounts List
+      onSnapshot(collection(db, "ak_deposit_accounts"), (snap) => {
+        const accList = document.getElementById("adm-accounts-list");
+        accList.innerHTML = "";
+        snap.forEach(d => {
+          const a = d.data();
+          accList.innerHTML += `
+            <div class="bg-white border rounded-xl p-2.5 flex justify-between items-center text-xs">
+              <div>
+                <b>${a.method}: ${a.number}</b>
+                <p class="text-slate-500">${a.title}</p>
+              </div>
+              <button onclick="adminDeleteAccount('${d.id}')" class="bg-rose-100 text-rose-600 px-2.5 py-1 rounded-lg font-bold">Delete</button>
+            </div>
+          `;
+        });
+      });
+    }
+
+    window.adminHandleTx = async (txId, userId, type, amount, decision) => {
+      await updateDoc(doc(db, "ak_transactions", txId), { status: decision });
+      if (type === "deposit" && decision === "approved") {
+        await updateDoc(doc(db, "ak_users", userId), { balance: increment(Number(amount)) });
+      }
+      if (type === "withdraw" && decision === "rejected") {
+        await updateDoc(doc(db, "ak_users", userId), { balance: increment(Number(amount)) });
+      }
+      showToast(`Transaction ${decision}!`);
+    };
+
+    window.adminUpdateBalance = async (uid) => {
+      const val = Number(document.getElementById(`add-bal-${uid}`).value);
+      if (!val) return showToast("Enter valid amount");
+      await updateDoc(doc(db, "ak_users", uid), { balance: increment(val) });
+      showToast("User balance updated instantly!");
+      loadAdminData();
+    };
+
+    window.adminAddPlan = async () => {
+      const type = document.getElementById("adm-plan-type").value;
+      const name = document.getElementById("adm-plan-name").value.trim();
+      const price = Number(document.getElementById("adm-plan-price").value);
+      const profit = Number(document.getElementById("adm-plan-profit").value);
+      const days = Number(document.getElementById("adm-plan-days").value) || 1;
+      const desc = document.getElementById("adm-plan-desc").value.trim();
+
+      if (!name || !price || !profit) return showToast("Fill plan name, price & profit");
+      await addDoc(collection(db, "ak_plans"), {
+        type, name, price, profit, days,
+        cycleLabel: type === "mega" ? "24 Hours Cycle" : `${days} Days • Daily Profit`,
+        desc
+      });
+      showToast("New Plan Added Live!");
+      loadAdminData();
+    };
+
+    window.adminDeletePlan = async (id) => {
+      await deleteDoc(doc(db, "ak_plans", id));
+      showToast("Plan Deleted");
+      loadAdminData();
+    };
+
+    window.adminAddAccount = async () => {
+      const method = document.getElementById("adm-acc-method").value;
+      const number = document.getElementById("adm-acc-num").value.trim();
+      const title = document.getElementById("adm-acc-name").value.trim();
+      if (!number || !title) return showToast("Enter number & title");
+      await addDoc(collection(db, "ak_deposit_accounts"), { method, number, title });
+      showToast("Deposit Account Added!");
+    };
+
+    window.adminDeleteAccount = async (id) => {
+      await deleteDoc(doc(db, "ak_deposit_accounts", id));
+      showToast("Account Deleted");
+    };
+
+    window.adminSaveBanner = async () => {
+      const url = document.getElementById("adm-banner-url").value.trim();
+      const text = document.getElementById("adm-banner-text").value.trim();
+      await setDoc(doc(db, "ak_settings", "banner"), { url, text }, { merge: true });
+      showToast("Banner Updated Live!");
+    };
+
+    // AUTO-LOGIN IF SESSION EXISTS
+    (async () => {
+      await ensureAdminAndDefaults();
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("ref")) {
+        document.getElementById("reg-invite").value = urlParams.get("ref");
+      }
+      const savedUid = localStorage.getItem("ak_uid");
+      if (savedUid) {
+        const snap = await getDoc(doc(db, "ak_users", savedUid));
+        if (snap.exists()) {
+          startAppSession(snap.data());
+        }
+      }
+    })();
+  </script>
+</body>
+</html>
